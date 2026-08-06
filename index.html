@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversor de moedas em tempo real — Razão</title>
+<meta name="description" content="Converta entre real, dólar, euro, libra, peso argentino e iene com cotação em tempo real, gratuita e sem cadastro.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="conversor-moedas.html" class="current">Câmbio</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Conversor de moedas</h1>
+    <p class="lede">Converta valores entre real, dólar, euro, libra, peso argentino e iene com a cotação comercial mais recente disponível.</p>
+  </section>
+
+  <main class="calc">
+    <div class="grid">
+      <div class="card">
+        <h2>Conversor de moedas</h2>
+        <div class="sub">Cotação em tempo real via AwesomeAPI.</div>
+
+        <label for="cb-valor">Valor</label>
+        <input type="number" id="cb-valor" value="100" min="0" step="1">
+
+        <div class="row-inline">
+          <div>
+            <label for="cb-de">De</label>
+            <select id="cb-de">
+              <option value="BRL">BRL — Real</option>
+              <option value="USD" selected>USD — Dólar americano</option>
+              <option value="EUR">EUR — Euro</option>
+              <option value="GBP">GBP — Libra esterlina</option>
+              <option value="ARS">ARS — Peso argentino</option>
+              <option value="JPY">JPY — Iene</option>
+            </select>
+          </div>
+          <div>
+            <label for="cb-para">Para</label>
+            <select id="cb-para">
+              <option value="BRL" selected>BRL — Real</option>
+              <option value="USD">USD — Dólar americano</option>
+              <option value="EUR">EUR — Euro</option>
+              <option value="GBP">GBP — Libra esterlina</option>
+              <option value="ARS">ARS — Peso argentino</option>
+              <option value="JPY">JPY — Iene</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="cb-calc">Converter</button>
+        <div class="status" id="cb-status">Cotações carregadas ao abrir a página.</div>
+      </div>
+
+      <div class="ledger">
+        <h2>Resultado</h2>
+        <div class="ledger-row total"><span class="label">Valor convertido</span><span class="fill"></span><span class="val" id="cb-resultado">—</span></div>
+        <div class="ledger-row"><span class="label">Taxa aplicada</span><span class="fill"></span><span class="val" id="cb-taxa">—</span></div>
+        <div class="ledger-row"><span class="label">Atualizado em</span><span class="fill"></span><span class="val" id="cb-hora">—</span></div>
+        <div class="hint">A cotação vem da <strong>AwesomeAPI</strong> (gratuita, sem chave de acesso). Se a internet estiver bloqueada ou a API fora do ar, o conversor avisa em vez de mostrar um número errado.</div>
+      </div>
+    </div>
+
+    <article class="copy">
+      <h2>De onde vem a cotação</h2>
+      <p>Este conversor busca a cotação comercial de compra (bid) diretamente de uma API pública brasileira no momento em que a página é carregada. Todas as moedas são convertidas usando o real como referência intermediária: primeiro o valor é convertido para reais usando a cotação da moeda de origem, depois esse valor em reais é convertido para a moeda de destino. Isso significa que a taxa exibida é a taxa comercial de mercado no momento exato da consulta — o mesmo tipo de referência usada por bancos e corretoras para negociações entre instituições, não a taxa de balcão de uma casa de câmbio ou de um cartão de crédito internacional.</p>
+
+      <h2>Por que essa cotação é diferente da que você vê no cartão ou na casa de câmbio</h2>
+      <p>A cotação comercial é o ponto de partida, mas nunca é o valor final que você paga numa operação real. Bancos, corretoras de câmbio e operadoras de cartão de crédito aplicam um <strong>spread</strong> — uma margem sobre a cotação comercial — além de impostos como o <strong>IOF</strong>, que no Brasil incide sobre operações de câmbio e compras internacionais. É por isso que o valor que aparece na fatura do cartão depois de uma compra no exterior costuma ser mais alto do que uma simples conversão pela cotação do dia.</p>
+
+      <h2>Quando usar essa cotação</h2>
+      <p>É útil para ter uma referência rápida antes de uma compra internacional, uma viagem, ou para acompanhar a variação cambial de um investimento no exterior — por exemplo, entender se o real está se valorizando ou desvalorizando frente ao dólar em um determinado período. Também ajuda a ter uma primeira noção de quanto custaria converter um valor específico, antes de fechar câmbio de fato com um banco ou corretora.</p>
+
+      <h2>O que essa cotação não substitui</h2>
+      <p>Para uma operação de câmbio real — comprar moeda em espécie, fazer uma remessa internacional ou usar um cartão pré-pago em outra moeda — o valor final vai incluir spread da instituição financeira, IOF e, em alguns casos, taxas fixas de operação, nenhum dos quais aparece nesta simulação. Trate o resultado como uma referência de mercado, não como uma cotação de fechamento de câmbio.</p>
+
+      <dl class="faq">
+        <dt>Por que o conversor às vezes mostra uma mensagem de erro?</dt>
+        <dd>Isso acontece quando a página não consegue se conectar à API de cotações — por exemplo, sem conexão com a internet no momento, ou a API temporariamente fora do ar. Nesses casos, o conversor avisa em vez de calcular com um valor desatualizado ou inventado.</dd>
+        <dt>A cotação é atualizada automaticamente?</dt>
+        <dd>Ela é buscada uma vez ao abrir a página. Para atualizar, recarregue a página no navegador.</dd>
+      </dl>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script src="assets/utils.js"></script>
+<script>
+document.getElementById('footYear').textContent = new Date().getFullYear();
+
+let cotacoes = null;
+const PARES = 'USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL';
+
+async function carregarCotacoes(){
+  const statusEl = document.getElementById('cb-status');
+  try{
+    const resp = await fetch(`https://economia.awesomeapi.com.br/json/last/${PARES}`);
+    if (!resp.ok) throw new Error('resposta não OK');
+    const data = await resp.json();
+    cotacoes = {};
+    Object.values(data).forEach(item=>{
+      cotacoes[item.code] = parseFloat(item.bid);
+    });
+    cotacoes['BRL'] = 1;
+    statusEl.textContent = 'Cotações atualizadas agora há pouco.';
+    statusEl.classList.remove('err');
+  } catch(e){
+    statusEl.textContent = 'Não foi possível buscar a cotação agora. Verifique sua conexão e tente de novo.';
+    statusEl.classList.add('err');
+  }
+}
+
+function converterMoeda(){
+  const valor = parseFloat(document.getElementById('cb-valor').value) || 0;
+  const de = document.getElementById('cb-de').value;
+  const para = document.getElementById('cb-para').value;
+
+  if (!cotacoes || cotacoes[de] === undefined || cotacoes[para] === undefined){
+    document.getElementById('cb-status').textContent = 'Cotação indisponível no momento — tentando de novo...';
+    document.getElementById('cb-status').classList.add('err');
+    carregarCotacoes();
+    return;
+  }
+
+  const emBRL = valor * cotacoes[de];
+  const resultado = emBRL / cotacoes[para];
+  const taxa = cotacoes[de] / cotacoes[para];
+
+  document.getElementById('cb-resultado').textContent = `${para} ${fmtNum(resultado)}`;
+  document.getElementById('cb-taxa').textContent = `1 ${de} = ${fmtNum(taxa, 4)} ${para}`;
+  document.getElementById('cb-hora').textContent = new Date().toLocaleTimeString('pt-BR');
+}
+
+document.getElementById('cb-calc').addEventListener('click', converterMoeda);
+carregarCotacoes();
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de financiamento imobiliário — SAC e Price — Razão</title>
+<meta name="description" content="Simule financiamento imobiliário nos sistemas SAC e Price. Veja a primeira e a última parcela, o total de juros pagos e a tabela de amortização.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html" class="current">Financiamento</a>
+        <a href="conversor-moedas.html">Câmbio</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Simulador de financiamento imobiliário</h1>
+    <p class="lede">Compare os sistemas SAC e Price para o mesmo imóvel e veja o impacto de cada um na parcela e no total de juros pagos.</p>
+  </section>
+
+  <main class="calc">
+    <div class="grid">
+      <div class="card">
+        <h2>Dados do financiamento</h2>
+        <div class="sub">Sistemas SAC (parcela decrescente) ou Price (parcela fixa).</div>
+
+        <label for="fi-valor">Valor do imóvel (R$)</label>
+        <input type="number" id="fi-valor" value="350000" min="0" step="1000">
+
+        <label for="fi-entrada">Entrada (R$)</label>
+        <input type="number" id="fi-entrada" value="70000" min="0" step="1000">
+
+        <label for="fi-taxa">Taxa de juros (% ao ano)</label>
+        <input type="number" id="fi-taxa" value="10.5" min="0" step="0.1">
+
+        <label for="fi-prazo">Prazo (anos)</label>
+        <input type="number" id="fi-prazo" value="30" min="1" step="1">
+
+        <label>Sistema de amortização</label>
+        <div class="toggle" id="fi-sistema">
+          <button class="on" data-val="SAC">SAC</button>
+          <button data-val="PRICE">Price</button>
+        </div>
+
+        <button class="btn-primary" id="fi-calc">Simular</button>
+      </div>
+
+      <div class="ledger">
+        <h2>Resultado</h2>
+        <div class="ledger-row"><span class="label">Valor financiado</span><span class="fill"></span><span class="val" id="fi-financiado">—</span></div>
+        <div class="ledger-row"><span class="label">1ª parcela</span><span class="fill"></span><span class="val" id="fi-primeira">—</span></div>
+        <div class="ledger-row"><span class="label">Última parcela</span><span class="fill"></span><span class="val" id="fi-ultima">—</span></div>
+        <div class="ledger-row cost"><span class="label">Total pago em juros</span><span class="fill"></span><span class="val" id="fi-jurospagos">—</span></div>
+        <div class="ledger-row total"><span class="label">Total pago (financiado)</span><span class="fill"></span><span class="val" id="fi-totalpago">—</span></div>
+
+        <table class="mini" id="fi-tabela">
+          <thead><tr><th>Mês</th><th>Amortização</th><th>Juros</th><th>Parcela</th><th>Saldo devedor</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="hint">No <strong>SAC</strong> a amortização é fixa e a parcela cai com o tempo. No <strong>Price</strong> a parcela é sempre a mesma, mas você paga mais juros no total.</div>
+      </div>
+    </div>
+
+    <article class="copy">
+      <h2>Como funciona a simulação</h2>
+      <p>Esta calculadora projeta, mês a mês, o comportamento de um financiamento imobiliário a partir do valor do imóvel, do valor de entrada e da taxa de juros anual informada. A diferença entre o valor do imóvel e a entrada é o valor efetivamente financiado, sobre o qual incidem os juros ao longo de todo o prazo. A taxa anual é convertida internamente para uma taxa mensal equivalente, já que as parcelas de um financiamento são pagas mês a mês.</p>
+
+      <h2>SAC ou Price: qual escolher?</h2>
+      <p>No sistema <strong>SAC</strong> (Sistema de Amortização Constante), a parcela de amortização — a parte que efetivamente reduz a dívida — é sempre a mesma, e os juros incidem sobre o saldo devedor, que vai diminuindo mês a mês. Isso faz a parcela total começar mais alta e ir caindo ao longo do contrato. No sistema <strong>Price</strong> (Tabela Price), a parcela é fixa do início ao fim, mas isso só é possível porque, no começo do contrato, a maior parte da parcela é juros — a dívida demora mais para começar a cair de verdade. Na prática, o SAC costuma resultar em menos juros pagos no total ao longo de todo o financiamento, mas exige uma parcela inicial mais alta, o que pode pesar na hora da aprovação de crédito junto ao banco, já que a renda exigida costuma ser calculada com base na primeira parcela.</p>
+
+      <h2>Como usar o resultado</h2>
+      <p>Compare a <strong>1ª parcela</strong> nos dois sistemas para saber qual renda mensal você precisa comprovar para ser aprovado. Compare o <strong>total pago em juros</strong> para entender o custo real do financiamento ao longo do tempo — essa é geralmente a diferença mais significativa entre os dois sistemas. A tabela de amortização mostra como o saldo devedor diminui mês a mês, o que ajuda a visualizar quanto da dívida ainda resta em pontos específicos do contrato, útil para decidir sobre uma eventual amortização extraordinária no futuro.</p>
+
+      <h2>O que essa simulação não substitui</h2>
+      <p>Este simulador usa uma taxa de juros fixa e constante ao longo de todo o prazo, para fins de comparação direta entre os dois sistemas. Contratos reais de financiamento imobiliário no Brasil costumam incluir seguros obrigatórios (MIP — Morte e Invalidez Permanente — e DFI — Danos Físicos ao Imóvel), taxa de administração mensal cobrada pelo banco e, dependendo do contrato, correção monetária pela TR ou por outro índice. Esses itens aumentam a parcela final além do valor calculado aqui. Use este resultado como uma estimativa de referência para comparar cenários, não como o valor exato que vai sair no contrato — para isso, é sempre necessário simular diretamente com o banco ou a instituição financeira escolhida.</p>
+
+      <dl class="faq">
+        <dt>A taxa de juros informada é a taxa efetiva do contrato?</dt>
+        <dd>Sim, informe a taxa efetiva anual do financiamento. A calculadora converte automaticamente para uma taxa mensal equivalente para calcular as parcelas.</dd>
+        <dt>Por que a tabela não mostra todos os meses?</dt>
+        <dd>Para manter a leitura simples, a tabela mostra os 6 primeiros e os 6 últimos meses do financiamento — onde a diferença entre SAC e Price fica mais visível.</dd>
+      </dl>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script src="assets/utils.js"></script>
+<script>
+document.getElementById('footYear').textContent = new Date().getFullYear();
+
+let sistemaAtual = 'SAC';
+document.querySelectorAll('#fi-sistema button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#fi-sistema button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    sistemaAtual = btn.dataset.val;
+  });
+});
+
+function calcFinanciamento(){
+  const valorImovel = parseFloat(document.getElementById('fi-valor').value) || 0;
+  const entrada = parseFloat(document.getElementById('fi-entrada').value) || 0;
+  const taxaAno = (parseFloat(document.getElementById('fi-taxa').value) || 0) / 100;
+  const anos = Math.max(1, parseInt(document.getElementById('fi-prazo').value) || 1);
+  const n = anos * 12;
+  const financiado = Math.max(0, valorImovel - entrada);
+  const i = Math.pow(1 + taxaAno, 1/12) - 1;
+
+  let rows = [];
+  let totalJuros = 0;
+  let primeira, ultima;
+
+  if (sistemaAtual === 'SAC'){
+    const amortConst = financiado / n;
+    let saldo = financiado;
+    for (let m=1; m<=n; m++){
+      const juros = saldo * i;
+      const parcela = amortConst + juros;
+      saldo -= amortConst;
+      totalJuros += juros;
+      if (m===1) primeira = parcela;
+      if (m===n) ultima = parcela;
+      rows.push({ m, amort: amortConst, juros, parcela, saldo: Math.max(0,saldo) });
+    }
+  } else {
+    const parcela = i === 0 ? financiado/n : financiado * i / (1 - Math.pow(1+i, -n));
+    let saldo = financiado;
+    for (let m=1; m<=n; m++){
+      const juros = saldo * i;
+      const amort = parcela - juros;
+      saldo -= amort;
+      totalJuros += juros;
+      if (m===1) primeira = parcela;
+      if (m===n) ultima = parcela;
+      rows.push({ m, amort, juros, parcela, saldo: Math.max(0,saldo) });
+    }
+  }
+
+  document.getElementById('fi-financiado').textContent = BRL(financiado);
+  document.getElementById('fi-primeira').textContent = BRL(primeira);
+  document.getElementById('fi-ultima').textContent = BRL(ultima);
+  document.getElementById('fi-jurospagos').textContent = BRL(totalJuros);
+  document.getElementById('fi-totalpago').textContent = BRL(financiado + totalJuros);
+
+  const tbody = document.querySelector('#fi-tabela tbody');
+  tbody.innerHTML = '';
+  const showRow = r => `<tr><td>${r.m}</td><td>${BRL(r.amort)}</td><td>${BRL(r.juros)}</td><td>${BRL(r.parcela)}</td><td>${BRL(r.saldo)}</td></tr>`;
+  rows.slice(0,6).forEach(r=> tbody.insertAdjacentHTML('beforeend', showRow(r)));
+  if (rows.length > 12){
+    tbody.insertAdjacentHTML('beforeend', '<tr class="gap"><td colspan="5">···</td></tr>');
+  }
+  rows.slice(-6).forEach(r=> tbody.insertAdjacentHTML('beforeend', showRow(r)));
+}
+
+document.getElementById('fi-calc').addEventListener('click', calcFinanciamento);
+calcFinanciamento();
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Razão — Calculadoras financeiras: juros compostos, financiamento e câmbio</title>
+<meta name="description" content="Calculadoras financeiras gratuitas e sem cadastro: simulador de juros compostos, financiamento imobiliário (SAC e Price) e conversor de moedas em tempo real.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html" class="current">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="conversor-moedas.html">Câmbio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="eyebrow">Três ferramentas, sem cadastro, sem letra miúda</div>
+      <h1>Suas contas de dinheiro, postas no papel.</h1>
+      <p class="lede">Antes de investir, financiar um imóvel ou trocar moeda, vale a pena ver o número exato — não a estimativa de cabeça. Escolha uma calculadora abaixo.</p>
+    </section>
+
+    <div class="tool-grid">
+      <a class="tool-card" href="juros-compostos.html">
+        <div class="num">01</div>
+        <h3>Juros compostos</h3>
+        <p>Simule quanto um investimento rende com aportes mensais, mês a mês, com gráfico de crescimento.</p>
+      </a>
+      <a class="tool-card" href="financiamento-imobiliario.html">
+        <div class="num">02</div>
+        <h3>Financiamento imobiliário</h3>
+        <p>Compare os sistemas SAC e Price e veja parcela inicial, parcela final e total de juros pagos.</p>
+      </a>
+      <a class="tool-card" href="conversor-moedas.html">
+        <div class="num">03</div>
+        <h3>Conversor de moedas</h3>
+        <p>Cotação em tempo real entre real, dólar, euro, libra, peso argentino e iene.</p>
+      </a>
+    </div>
+
+    <article class="copy">
+      <h2>Por que usar uma calculadora em vez de estimar de cabeça?</h2>
+      <p>Juros compostos, parcelas de financiamento e câmbio têm uma coisa em comum: pequenas diferenças de taxa ou prazo mudam o resultado final muito mais do que parece à primeira vista. Um ponto percentual a mais na taxa de um financiamento de 30 anos, por exemplo, pode significar dezenas de milhares de reais a mais pagos em juros ao longo do contrato. Fazer essa conta de cabeça, ou confiar numa regra de bolso, costuma levar a decisões piores do que simular o número real antes de assinar qualquer coisa.</p>
+      <p class="muted">As calculadoras deste site rodam inteiramente no seu navegador — nenhum dado que você digita é enviado para nenhum servidor, exceto a cotação de câmbio, que é buscada de uma API pública para trazer o valor atualizado.</p>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script>document.getElementById('footYear').textContent = new Date().getFullYear();</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de juros compostos com aporte mensal — Razão</title>
+<meta name="description" content="Calcule quanto seu dinheiro rende com juros compostos e aportes mensais. Veja o total investido, o total em juros e um gráfico de crescimento mês a mês.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html" class="current">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="conversor-moedas.html">Câmbio</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Calculadora de juros compostos</h1>
+    <p class="lede">Informe o capital inicial, o aporte mensal e a taxa de juros para ver como seu dinheiro cresce mês a mês, com juros sobre juros.</p>
+  </section>
+
+  <main class="calc">
+    <div class="grid">
+      <div class="card">
+        <h2>Dados do investimento</h2>
+        <div class="sub">Aportes mensais e juros compostos mês a mês.</div>
+
+        <label for="jc-capital">Capital inicial (R$)</label>
+        <input type="number" id="jc-capital" value="5000" min="0" step="100">
+
+        <label for="jc-aporte">Aporte mensal (R$)</label>
+        <input type="number" id="jc-aporte" value="300" min="0" step="50">
+
+        <label for="jc-taxa">Taxa de juros (% ao mês)</label>
+        <input type="number" id="jc-taxa" value="0.8" min="0" step="0.01">
+
+        <label for="jc-tempo">Período (meses)</label>
+        <input type="number" id="jc-tempo" value="60" min="1" step="1">
+
+        <button class="btn-primary" id="jc-calc">Calcular</button>
+      </div>
+
+      <div class="ledger">
+        <h2>Resultado</h2>
+        <div class="ledger-row"><span class="label">Total investido</span><span class="fill"></span><span class="val" id="jc-investido">—</span></div>
+        <div class="ledger-row"><span class="label">Total em juros</span><span class="fill"></span><span class="val" id="jc-juros">—</span></div>
+        <div class="ledger-row total"><span class="label">Montante final</span><span class="fill"></span><span class="val" id="jc-montante">—</span></div>
+        <canvas id="growthChart" width="800" height="200"></canvas>
+        <div class="hint">A linha <strong>cheia</strong> mostra o montante total acumulado; a linha <strong>pontilhada</strong> mostra apenas o que você depositou, sem os juros.</div>
+      </div>
+    </div>
+
+    <article class="copy">
+      <h2>O que são juros compostos</h2>
+      <p>Juros compostos são juros calculados sobre o capital inicial somado aos juros já acumulados em períodos anteriores — na prática, "juros sobre juros". É diferente do juro simples, em que o rendimento de cada período incide sempre sobre o valor inicial, sem nunca aumentar a base de cálculo. Por causa disso, um investimento em juros compostos tem uma curva de crescimento que começa devagar e acelera com o tempo, em vez de crescer em linha reta.</p>
+
+      <h2>A fórmula usada nesta calculadora</h2>
+      <p>Com aportes mensais, o cálculo é feito mês a mês: o saldo do mês anterior é multiplicado por (1 + taxa mensal), e depois o valor do aporte do mês é somado a esse resultado. Esse novo saldo passa a ser a base do cálculo do mês seguinte, e assim sucessivamente até o fim do período informado. É essencialmente a mesma lógica usada por corretoras, bancos e simuladores de previdência privada para projetar o crescimento de uma reserva financeira ou de um investimento recorrente ao longo do tempo.</p>
+
+      <h2>Como usar o resultado</h2>
+      <p>O <strong>total investido</strong> mostra quanto saiu do seu bolso — a soma do capital inicial com todos os aportes mensais, sem contar nenhum rendimento. O <strong>total em juros</strong> é a diferença entre o montante final e o que você de fato depositou: é o quanto o dinheiro rendeu sozinho, só por estar aplicado. Comparar essas duas colunas é útil para decidir entre investir um valor único hoje ou distribuir esse mesmo valor em aportes menores ao longo do tempo — o gráfico ajuda a visualizar em que ponto os juros passam a crescer mais rápido que os próprios aportes.</p>
+
+      <h2>Por que o prazo importa mais que a taxa</h2>
+      <p>Um erro comum é focar só em taxas de retorno mais altas, buscando o investimento "que rende mais". Na prática, o tempo de exposição ao juro composto costuma pesar mais no resultado final do que uma diferença pequena na taxa mensal — começar mais cedo, mesmo com aportes menores, geralmente supera começar mais tarde com aportes maiores, porque o efeito bola de neve tem mais tempo para agir. Use o campo de período para comparar diferentes horizontes de tempo e ver esse efeito na prática antes de decidir quando começar a investir.</p>
+
+      <p class="muted">Esta calculadora é uma ferramenta educativa de simulação e não constitui recomendação de investimento. Rendimentos reais dependem do produto financeiro escolhido, de taxas de administração, impostos e da variação do mercado.</p>
+
+      <dl class="faq">
+        <dt>A taxa deve ser informada ao mês ou ao ano?</dt>
+        <dd>Esta calculadora trabalha com taxa mensal. Se você tem uma taxa anual, ela precisa ser convertida para uma taxa mensal equivalente antes de preencher o campo.</dd>
+        <dt>O aporte mensal é obrigatório?</dt>
+        <dd>Não — deixe o campo em zero para simular um investimento de valor único, sem aportes recorrentes.</dd>
+      </dl>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script src="assets/utils.js"></script>
+<script>
+document.getElementById('footYear').textContent = new Date().getFullYear();
+
+function calcJurosCompostos(){
+  const capital = parseFloat(document.getElementById('jc-capital').value) || 0;
+  const aporte  = parseFloat(document.getElementById('jc-aporte').value) || 0;
+  const taxa    = (parseFloat(document.getElementById('jc-taxa').value) || 0) / 100;
+  const meses   = Math.max(1, parseInt(document.getElementById('jc-tempo').value) || 1);
+
+  let saldo = capital;
+  let investido = capital;
+  const series = [{ saldo, investido }];
+
+  for (let m = 1; m <= meses; m++){
+    saldo = saldo * (1 + taxa) + aporte;
+    investido += aporte;
+    series.push({ saldo, investido });
+  }
+
+  const juros = saldo - investido;
+
+  document.getElementById('jc-investido').textContent = BRL(investido);
+  document.getElementById('jc-juros').textContent = BRL(juros);
+  document.getElementById('jc-montante').textContent = BRL(saldo);
+
+  drawGrowthChart(series);
+}
+
+function drawGrowthChart(series){
+  const canvas = document.getElementById('growthChart');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  const pad = { l:56, r:16, t:14, b:24 };
+  const maxVal = Math.max(...series.map(s=>s.saldo));
+  const n = series.length;
+
+  const x = i => pad.l + (i/(n-1)) * (W - pad.l - pad.r);
+  const y = v => H - pad.b - (v/maxVal) * (H - pad.t - pad.b);
+
+  ctx.strokeStyle = '#C7D3BC';
+  ctx.lineWidth = 1;
+  ctx.font = '11px IBM Plex Mono, monospace';
+  ctx.fillStyle = '#5B6B51';
+  for (let g=0; g<=4; g++){
+    const val = maxVal * g/4;
+    const yy = y(val);
+    ctx.beginPath(); ctx.moveTo(pad.l, yy); ctx.lineTo(W-pad.r, yy); ctx.stroke();
+    ctx.fillText('R$ ' + Math.round(val).toLocaleString('pt-BR'), 0, yy+4);
+  }
+
+  ctx.setLineDash([3,4]);
+  ctx.strokeStyle = '#5B6B51';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  series.forEach((s,i)=>{ i===0 ? ctx.moveTo(x(i), y(s.investido)) : ctx.lineTo(x(i), y(s.investido)); });
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.strokeStyle = '#A8792E';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  series.forEach((s,i)=>{ i===0 ? ctx.moveTo(x(i), y(s.saldo)) : ctx.lineTo(x(i), y(s.saldo)); });
+  ctx.stroke();
+}
+
+document.getElementById('jc-calc').addEventListener('click', calcJurosCompostos);
+calcJurosCompostos();
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidade — Razão</title>
+<meta name="description" content="Política de privacidade do Razão: como o site trata seus dados, cookies e anúncios de terceiros como o Google AdSense.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="conversor-moedas.html">Câmbio</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Institucional</div>
+    <h1>Política de Privacidade</h1>
+    <p class="lede">Última atualização: agosto de 2026.</p>
+  </section>
+
+  <main class="calc">
+    <article class="copy">
+      <h2>Dados inseridos nas calculadoras</h2>
+      <p>Os valores que você digita nas calculadoras (capital, taxas, prazos, valores de conversão) são processados inteiramente no seu navegador, usando JavaScript. Nenhum desses dados é enviado, armazenado ou registrado em nenhum servidor do Razão. Ao fechar ou recarregar a página, essas informações são descartadas.</p>
+
+      <h2>Cotação de câmbio</h2>
+      <p>A calculadora de conversão de moedas faz uma requisição a uma API pública de terceiros (AwesomeAPI) para obter a cotação atual. Essa requisição não envia nenhum dado pessoal — apenas busca os valores de cotação publicados. Essa API tem sua própria política de privacidade, independente da nossa.</p>
+
+      <h2>Cookies e publicidade</h2>
+      <p>Este site pode exibir anúncios fornecidos pelo Google AdSense. O Google e seus parceiros publicitários podem usar cookies e identificadores semelhantes para exibir anúncios com base nas suas visitas a este e a outros sites. Você pode gerenciar suas preferências de anúncios personalizados diretamente nas <a href="https://adssettings.google.com" target="_blank" rel="noopener">Configurações de Anúncios do Google</a>. Para mais detalhes sobre como o Google usa dados de sites que utilizam seus serviços, consulte a página <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Como o Google usa dados de sites parceiros</a>.</p>
+
+      <h2>Ferramentas de terceiros</h2>
+      <p>O site carrega fontes tipográficas do Google Fonts a partir dos servidores do Google. Isso pode envolver uma requisição do seu navegador diretamente ao Google no momento em que a página carrega, sujeita à política de privacidade do próprio Google.</p>
+
+      <h2>Seus direitos</h2>
+      <p>Como este site não coleta, armazena ou processa dados pessoais em servidores próprios, não há um banco de dados de usuários para consultar, corrigir ou excluir. Dúvidas sobre esta política podem ser enviadas para <strong>contato@razaofinancas.com.br</strong>.</p>
+
+      <h2>Alterações nesta política</h2>
+      <p>Esta política pode ser atualizada periodicamente para refletir mudanças no funcionamento do site ou em exigências legais. A data da última atualização está indicada no topo desta página.</p>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script>document.getElementById('footYear').textContent = new Date().getFullYear();</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quem Somos — Razão</title>
+<meta name="description" content="Conheça o Razão, um conjunto de calculadoras financeiras gratuitas feitas para ajudar em decisões de dinheiro do dia a dia.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="conversor-moedas.html">Câmbio</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Institucional</div>
+    <h1>Quem somos</h1>
+    <p class="lede">O Razão nasceu de uma ideia simples: antes de tomar uma decisão de dinheiro, é melhor ver o número exato do que confiar numa conta de cabeça.</p>
+  </section>
+
+  <main class="calc">
+    <article class="copy">
+      <h2>O que é o Razão</h2>
+      <p>O Razão é um conjunto de calculadoras financeiras gratuitas, pensadas para responder perguntas concretas do dia a dia: quanto um investimento vai render com aportes mensais, quanto custa financiar um imóvel em cada sistema de amortização, e quanto vale um valor em outra moeda hoje. Não é um site de consultoria financeira nem substitui a orientação de um profissional — é uma ferramenta de simulação e educação financeira, feita para dar clareza antes de uma decisão.</p>
+
+      <h2>Como o site é mantido</h2>
+      <p>Todas as calculadoras rodam diretamente no seu navegador, sem enviar os dados que você digita para nenhum servidor. A única exceção é a cotação de câmbio, buscada de uma API pública de terceiros no momento em que a página é carregada. O site é mantido de forma independente e pode exibir anúncios como forma de sustentar seu funcionamento e desenvolvimento contínuo.</p>
+
+      <h2>Contato</h2>
+      <p>Encontrou um erro de cálculo, tem uma sugestão de nova calculadora, ou uma dúvida sobre o site? Escreva para <strong>contato@razaofinancas.com.br</strong>. Respondemos o quanto antes.</p>
+
+      <p class="muted">Última atualização desta página: agosto de 2026.</p>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script>document.getElementById('footYear').textContent = new Date().getFullYear();</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Termos de Uso — Razão</title>
+<meta name="description" content="Termos de uso do Razão: condições de utilização das calculadoras financeiras gratuitas do site.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="conversor-moedas.html">Câmbio</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Institucional</div>
+    <h1>Termos de Uso</h1>
+    <p class="lede">Última atualização: agosto de 2026.</p>
+  </section>
+
+  <main class="calc">
+    <article class="copy">
+      <h2>Aceitação dos termos</h2>
+      <p>Ao acessar e usar o site Razão, você concorda com os termos descritos nesta página. Se você não concordar com algum destes termos, recomendamos não utilizar o site.</p>
+
+      <h2>Natureza das calculadoras</h2>
+      <p>As calculadoras disponíveis neste site — juros compostos, financiamento imobiliário e conversão de moedas — são ferramentas de simulação com finalidade educativa e informativa. Os resultados apresentados são estimativas baseadas nas fórmulas financeiras padrão e nos valores informados por você, e podem não corresponder exatamente às condições reais oferecidas por bancos, corretoras ou instituições financeiras, que costumam incluir taxas, seguros e impostos adicionais não contemplados nestas simulações.</p>
+
+      <h2>Isenção de responsabilidade</h2>
+      <p>O Razão não é uma instituição financeira, não presta consultoria de investimentos e não se responsabiliza por decisões financeiras tomadas com base nos resultados exibidos aqui. Recomendamos sempre confirmar valores diretamente com a instituição financeira envolvida e, quando necessário, buscar orientação de um profissional qualificado antes de tomar decisões financeiras relevantes.</p>
+
+      <h2>Uso permitido</h2>
+      <p>O conteúdo deste site pode ser usado livremente para fins pessoais e não comerciais. A reprodução do código-fonte, do design ou dos textos deste site em outros sites, sem autorização, não é permitida.</p>
+
+      <h2>Disponibilidade do site</h2>
+      <p>Nos esforçamos para manter o site disponível e funcionando corretamente, mas não garantimos disponibilidade ininterrupta. A calculadora de conversão de moedas depende de uma API de terceiros para obter cotações — se esse serviço externo estiver indisponível, a funcionalidade de conversão pode ficar temporariamente fora do ar.</p>
+
+      <h2>Publicidade</h2>
+      <p>Este site pode exibir anúncios de terceiros, incluindo através do Google AdSense, como forma de sustentar seu funcionamento. A presença de um anúncio não constitui endosso ou recomendação do produto ou serviço anunciado por parte do Razão.</p>
+
+      <h2>Alterações nestes termos</h2>
+      <p>Estes termos podem ser atualizados periodicamente. O uso continuado do site após uma alteração implica na aceitação dos novos termos. Dúvidas podem ser enviadas para <strong>contato@razaofinancas.com.br</strong>.</p>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script>document.getElementById('footYear').textContent = new Date().getFullYear();</script>
+</body>
+</html>
