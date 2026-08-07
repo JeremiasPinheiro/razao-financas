@@ -1,1 +1,192 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de financiamento de trator agrícola — Razão</title>
+<meta name="description" content="Simule o financiamento de um trator agrícola nas linhas de crédito rural (Moderfrota, Pronaf) com sistema SAC ou Price, parcela, prazo e total de juros.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="conversor-moedas.html">Câmbio</a>
+        <a href="cripto-imposto.html">Cripto (IR)</a>
+        <a href="financiamento-trator.html" class="current">Financiamento trator</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Simulador de financiamento de trator agrícola</h1>
+    <p class="lede">Simule as parcelas de um financiamento de máquina agrícola nas linhas de crédito rural, comparando os sistemas SAC e Price.</p>
+  </section>
+
+  <main class="calc">
+    <div class="grid">
+      <div class="card">
+        <h2>Dados do financiamento</h2>
+        <div class="sub">Escolha uma linha de crédito rural de referência ou informe uma taxa própria.</div>
+
+        <label for="tr-valor">Valor do trator (R$)</label>
+        <input type="number" id="tr-valor" value="280000" min="0" step="1000">
+
+        <label for="tr-entrada">Entrada (R$)</label>
+        <input type="number" id="tr-entrada" value="40000" min="0" step="1000">
+
+        <label for="tr-linha">Linha de crédito (referência)</label>
+        <select id="tr-linha">
+          <option value="12.5">Moderfrota — 12,5% a.a.</option>
+          <option value="11.5">Moderfrota Pronamp — 11,5% a.a.</option>
+          <option value="2.5">Pronaf Mais Alimentos (até R$100 mil) — 2,5% a.a.</option>
+          <option value="5">Pronaf — demais linhas — 5% a.a.</option>
+          <option value="custom">Taxa personalizada</option>
+        </select>
+
+        <label for="tr-taxa">Taxa de juros (% ao ano)</label>
+        <input type="number" id="tr-taxa" value="12.5" min="0" step="0.1">
+
+        <label for="tr-prazo">Prazo (anos)</label>
+        <input type="number" id="tr-prazo" value="7" min="1" step="1">
+
+        <label>Sistema de amortização</label>
+        <div class="toggle" id="tr-sistema">
+          <button class="on" data-val="SAC">SAC</button>
+          <button data-val="PRICE">Price</button>
+        </div>
+
+        <button class="btn-primary" id="tr-calc">Simular</button>
+      </div>
+
+      <div class="ledger">
+        <h2>Resultado</h2>
+        <div class="ledger-row"><span class="label">Valor financiado</span><span class="fill"></span><span class="val" id="tr-financiado">—</span></div>
+        <div class="ledger-row"><span class="label">1ª parcela</span><span class="fill"></span><span class="val" id="tr-primeira">—</span></div>
+        <div class="ledger-row"><span class="label">Última parcela</span><span class="fill"></span><span class="val" id="tr-ultima">—</span></div>
+        <div class="ledger-row cost"><span class="label">Total pago em juros</span><span class="fill"></span><span class="val" id="tr-jurospagos">—</span></div>
+        <div class="ledger-row total"><span class="label">Total pago (financiado)</span><span class="fill"></span><span class="val" id="tr-totalpago">—</span></div>
+
+        <div class="table-wrap">
+          <table class="mini" id="tr-tabela">
+            <thead><tr><th>Ano</th><th>Amortização</th><th>Juros</th><th>Parcela anual</th><th>Saldo devedor</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="hint">Parcelas mostradas em base <strong>anual</strong>, como costuma ser cobrado em crédito rural vinculado à colheita. No <strong>SAC</strong> a amortização é fixa; no <strong>Price</strong> a parcela é sempre igual.</div>
+      </div>
+    </div>
+
+    <article class="copy">
+      <h2>O que é o Plano Safra e por que ele importa</h2>
+      <p>No Brasil, a maior parte do financiamento de máquinas agrícolas passa pelo Plano Safra, um conjunto de linhas de crédito rural com juros controlados pelo governo federal, renovado a cada ciclo entre julho e junho do ano seguinte. As taxas mudam de um ciclo para outro — por isso esta calculadora traz taxas de referência do ciclo mais recente, mas o valor exato só é confirmado no momento da contratação junto ao banco.</p>
+
+      <h2>Principais linhas para financiar um trator</h2>
+      <p>O <strong>Moderfrota</strong> é a linha mais usada para máquinas e implementos agrícolas em geral, com taxa em torno de 12,5% ao ano no ciclo mais recente (11,5% na modalidade Pronamp, voltada a médios produtores). Para agricultura familiar, o <strong>Pronaf Mais Alimentos</strong> oferece condições bem mais favoráveis — taxas a partir de 2,5% ao ano para equipamentos de até R$100 mil, dentro dos critérios de renda do programa. Cada linha tem regras próprias de quem pode acessar, limite de valor financiado e exigência de garantias, normalmente a alienação fiduciária do próprio trator.</p>
+
+      <h2>Prazos e carência</h2>
+      <p>Financiamentos de trator no crédito rural costumam ter prazo de até 7 anos, com carência de até 14 meses antes do início dos pagamentos — um período pensado para dar tempo até a primeira safra gerar receita. Esta calculadora não modela a carência: ela mostra as parcelas como se o pagamento começasse imediatamente, então o cronograma real de um contrato com carência será um pouco diferente do resultado aqui.</p>
+
+      <h2>SAC ou Price: o que muda no fluxo de caixa</h2>
+      <p>No sistema <strong>SAC</strong>, a amortização é constante e a parcela começa mais alta, caindo ano a ano — o que exige uma capacidade de pagamento maior logo nas primeiras safras. No sistema <strong>Price</strong>, a parcela é igual todo ano, o que facilita o planejamento financeiro, mas resulta em mais juros pagos ao longo de todo o contrato. Para produtores com receita mais previsível ano a ano, o Price tende a ser mais confortável; para quem prefere reduzir o custo total e consegue pagar mais nos primeiros anos, o SAC costuma sair mais barato no fim das contas.</p>
+
+      <p class="muted">Esta calculadora usa taxas de crédito rural apenas como referência ilustrativa — elas mudam a cada Plano Safra e variam conforme a instituição financeira, o porte do produtor e a linha específica contratada. Confirme sempre a taxa vigente e as condições de carência diretamente com o banco antes de fechar o financiamento.</p>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script src="assets/utils.js"></script>
+<script>
+document.getElementById('footYear').textContent = new Date().getFullYear();
+
+document.getElementById('tr-linha').addEventListener('change', (e)=>{
+  const v = e.target.value;
+  if (v !== 'custom'){
+    document.getElementById('tr-taxa').value = v;
+  }
+});
+
+let sistemaAtual = 'SAC';
+document.querySelectorAll('#tr-sistema button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#tr-sistema button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    sistemaAtual = btn.dataset.val;
+  });
+});
+
+function calcTrator(){
+  const valorTrator = parseFloat(document.getElementById('tr-valor').value) || 0;
+  const entrada = parseFloat(document.getElementById('tr-entrada').value) || 0;
+  const taxaAno = (parseFloat(document.getElementById('tr-taxa').value) || 0) / 100;
+  const anos = Math.max(1, parseInt(document.getElementById('tr-prazo').value) || 1);
+  const financiado = Math.max(0, valorTrator - entrada);
+
+  let rows = [];
+  let totalJuros = 0;
+  let primeira, ultima;
+
+  if (sistemaAtual === 'SAC'){
+    const amortConst = financiado / anos;
+    let saldo = financiado;
+    for (let a=1; a<=anos; a++){
+      const juros = saldo * taxaAno;
+      const parcela = amortConst + juros;
+      saldo -= amortConst;
+      totalJuros += juros;
+      if (a===1) primeira = parcela;
+      if (a===anos) ultima = parcela;
+      rows.push({ a, amort: amortConst, juros, parcela, saldo: Math.max(0,saldo) });
+    }
+  } else {
+    const parcela = taxaAno === 0 ? financiado/anos : financiado * taxaAno / (1 - Math.pow(1+taxaAno, -anos));
+    let saldo = financiado;
+    for (let a=1; a<=anos; a++){
+      const juros = saldo * taxaAno;
+      const amort = parcela - juros;
+      saldo -= amort;
+      totalJuros += juros;
+      if (a===1) primeira = parcela;
+      if (a===anos) ultima = parcela;
+      rows.push({ a, amort, juros, parcela, saldo: Math.max(0,saldo) });
+    }
+  }
+
+  document.getElementById('tr-financiado').textContent = BRL(financiado);
+  document.getElementById('tr-primeira').textContent = BRL(primeira);
+  document.getElementById('tr-ultima').textContent = BRL(ultima);
+  document.getElementById('tr-jurospagos').textContent = BRL(totalJuros);
+  document.getElementById('tr-totalpago').textContent = BRL(financiado + totalJuros);
+
+  const tbody = document.querySelector('#tr-tabela tbody');
+  tbody.innerHTML = '';
+  rows.forEach(r=>{
+    tbody.insertAdjacentHTML('beforeend', `<tr><td>${r.a}</td><td>${BRL(r.amort)}</td><td>${BRL(r.juros)}</td><td>${BRL(r.parcela)}</td><td>${BRL(r.saldo)}</td></tr>`);
+  });
+}
+
+document.getElementById('tr-calc').addEventListener('click', calcTrator);
+calcTrator();
+</script>
+</body>
+</html>
