@@ -1,1 +1,174 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de juros compostos com aporte mensal — Razão</title>
+<meta name="description" content="Calcule quanto seu dinheiro rende com juros compostos e aportes mensais. Veja o total investido, o total em juros e um gráfico de crescimento mês a mês.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html" class="current">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="conversor-moedas.html">Câmbio</a>
+        <a href="cripto-imposto.html">Cripto (IR)</a>
+        <a href="financiamento-trator.html">Financiamento trator</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Calculadora de juros compostos</h1>
+    <p class="lede">Informe o capital inicial, o aporte mensal e a taxa de juros para ver como seu dinheiro cresce mês a mês, com juros sobre juros.</p>
+  </section>
+
+  <main class="calc">
+    <div class="grid">
+      <div class="card">
+        <h2>Dados do investimento</h2>
+        <div class="sub">Aportes mensais e juros compostos mês a mês.</div>
+
+        <label for="jc-capital">Capital inicial (R$)</label>
+        <input type="number" id="jc-capital" value="5000" min="0" step="100">
+
+        <label for="jc-aporte">Aporte mensal (R$)</label>
+        <input type="number" id="jc-aporte" value="300" min="0" step="50">
+
+        <label for="jc-taxa">Taxa de juros (% ao mês)</label>
+        <input type="number" id="jc-taxa" value="0.8" min="0" step="0.01">
+
+        <label for="jc-tempo">Período (meses)</label>
+        <input type="number" id="jc-tempo" value="60" min="1" step="1">
+
+        <button class="btn-primary" id="jc-calc">Calcular</button>
+      </div>
+
+      <div class="ledger">
+        <h2>Resultado</h2>
+        <div class="ledger-row"><span class="label">Total investido</span><span class="fill"></span><span class="val" id="jc-investido">—</span></div>
+        <div class="ledger-row"><span class="label">Total em juros</span><span class="fill"></span><span class="val" id="jc-juros">—</span></div>
+        <div class="ledger-row total"><span class="label">Montante final</span><span class="fill"></span><span class="val" id="jc-montante">—</span></div>
+        <canvas id="growthChart" width="800" height="200"></canvas>
+        <div class="hint">A linha <strong>cheia</strong> mostra o montante total acumulado; a linha <strong>pontilhada</strong> mostra apenas o que você depositou, sem os juros.</div>
+      </div>
+    </div>
+
+    <article class="copy">
+      <h2>O que são juros compostos</h2>
+      <p>Juros compostos são juros calculados sobre o capital inicial somado aos juros já acumulados em períodos anteriores — na prática, "juros sobre juros". É diferente do juro simples, em que o rendimento de cada período incide sempre sobre o valor inicial, sem nunca aumentar a base de cálculo. Por causa disso, um investimento em juros compostos tem uma curva de crescimento que começa devagar e acelera com o tempo, em vez de crescer em linha reta.</p>
+
+      <h2>A fórmula usada nesta calculadora</h2>
+      <p>Com aportes mensais, o cálculo é feito mês a mês: o saldo do mês anterior é multiplicado por (1 + taxa mensal), e depois o valor do aporte do mês é somado a esse resultado. Esse novo saldo passa a ser a base do cálculo do mês seguinte, e assim sucessivamente até o fim do período informado. É essencialmente a mesma lógica usada por corretoras, bancos e simuladores de previdência privada para projetar o crescimento de uma reserva financeira ou de um investimento recorrente ao longo do tempo.</p>
+
+      <h2>Como usar o resultado</h2>
+      <p>O <strong>total investido</strong> mostra quanto saiu do seu bolso — a soma do capital inicial com todos os aportes mensais, sem contar nenhum rendimento. O <strong>total em juros</strong> é a diferença entre o montante final e o que você de fato depositou: é o quanto o dinheiro rendeu sozinho, só por estar aplicado. Comparar essas duas colunas é útil para decidir entre investir um valor único hoje ou distribuir esse mesmo valor em aportes menores ao longo do tempo — o gráfico ajuda a visualizar em que ponto os juros passam a crescer mais rápido que os próprios aportes.</p>
+
+      <h2>Por que o prazo importa mais que a taxa</h2>
+      <p>Um erro comum é focar só em taxas de retorno mais altas, buscando o investimento "que rende mais". Na prática, o tempo de exposição ao juro composto costuma pesar mais no resultado final do que uma diferença pequena na taxa mensal — começar mais cedo, mesmo com aportes menores, geralmente supera começar mais tarde com aportes maiores, porque o efeito bola de neve tem mais tempo para agir. Use o campo de período para comparar diferentes horizontes de tempo e ver esse efeito na prática antes de decidir quando começar a investir.</p>
+
+      <p class="muted">Esta calculadora é uma ferramenta educativa de simulação e não constitui recomendação de investimento. Rendimentos reais dependem do produto financeiro escolhido, de taxas de administração, impostos e da variação do mercado.</p>
+
+      <dl class="faq">
+        <dt>A taxa deve ser informada ao mês ou ao ano?</dt>
+        <dd>Esta calculadora trabalha com taxa mensal. Se você tem uma taxa anual, ela precisa ser convertida para uma taxa mensal equivalente antes de preencher o campo.</dd>
+        <dt>O aporte mensal é obrigatório?</dt>
+        <dd>Não — deixe o campo em zero para simular um investimento de valor único, sem aportes recorrentes.</dd>
+      </dl>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script src="assets/utils.js"></script>
+<script>
+document.getElementById('footYear').textContent = new Date().getFullYear();
+
+function calcJurosCompostos(){
+  const capital = parseFloat(document.getElementById('jc-capital').value) || 0;
+  const aporte  = parseFloat(document.getElementById('jc-aporte').value) || 0;
+  const taxa    = (parseFloat(document.getElementById('jc-taxa').value) || 0) / 100;
+  const meses   = Math.max(1, parseInt(document.getElementById('jc-tempo').value) || 1);
+
+  let saldo = capital;
+  let investido = capital;
+  const series = [{ saldo, investido }];
+
+  for (let m = 1; m <= meses; m++){
+    saldo = saldo * (1 + taxa) + aporte;
+    investido += aporte;
+    series.push({ saldo, investido });
+  }
+
+  const juros = saldo - investido;
+
+  document.getElementById('jc-investido').textContent = BRL(investido);
+  document.getElementById('jc-juros').textContent = BRL(juros);
+  document.getElementById('jc-montante').textContent = BRL(saldo);
+
+  drawGrowthChart(series);
+}
+
+function drawGrowthChart(series){
+  const canvas = document.getElementById('growthChart');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  const pad = { l:56, r:16, t:14, b:24 };
+  const maxVal = Math.max(...series.map(s=>s.saldo));
+  const n = series.length;
+
+  const x = i => pad.l + (i/(n-1)) * (W - pad.l - pad.r);
+  const y = v => H - pad.b - (v/maxVal) * (H - pad.t - pad.b);
+
+  ctx.strokeStyle = '#C7D3BC';
+  ctx.lineWidth = 1;
+  ctx.font = '11px IBM Plex Mono, monospace';
+  ctx.fillStyle = '#5B6B51';
+  for (let g=0; g<=4; g++){
+    const val = maxVal * g/4;
+    const yy = y(val);
+    ctx.beginPath(); ctx.moveTo(pad.l, yy); ctx.lineTo(W-pad.r, yy); ctx.stroke();
+    ctx.fillText('R$ ' + Math.round(val).toLocaleString('pt-BR'), 0, yy+4);
+  }
+
+  ctx.setLineDash([3,4]);
+  ctx.strokeStyle = '#5B6B51';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  series.forEach((s,i)=>{ i===0 ? ctx.moveTo(x(i), y(s.investido)) : ctx.lineTo(x(i), y(s.investido)); });
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.strokeStyle = '#A8792E';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  series.forEach((s,i)=>{ i===0 ? ctx.moveTo(x(i), y(s.saldo)) : ctx.lineTo(x(i), y(s.saldo)); });
+  ctx.stroke();
+}
+
+document.getElementById('jc-calc').addEventListener('click', calcJurosCompostos);
+calcJurosCompostos();
+</script>
+</body>
+</html>
