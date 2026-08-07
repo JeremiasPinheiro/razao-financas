@@ -119,9 +119,10 @@
 
 <script src="assets/utils.js"></script>
 <script>
-  document.getElementById('footYear').textContent = new Date().getFullYear();
+  const footYearEl = document.getElementById('footYear');
+  if (footYearEl) footYearEl.textContent = new Date().getFullYear();
 
-  // Cotações padrão de reserva (fallback) caso a API externa seja bloqueada pelo navegador
+  // Cotações padrão de reserva (fallback)
   let cotacoes = {
     'USD': 5.50,
     'EUR': 6.00,
@@ -134,12 +135,12 @@
   async function carregarcotacoes() {
     const statusEl = document.getElementById('cb-status');
     try {
-      // Tenta requisição à AwesomeAPI
-      const resp = await fetch('https://economia.awesomeapi.com/json/last/USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL');
+      // Busca cotações atualizadas via AwesomeAPI
+      const resp = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL?_=' + new Date().getTime());
       if (!resp.ok) throw new Error('Falha na resposta da API');
-      
+
       const data = await resp.json();
-      
+
       if (data.USDBRL) cotacoes['USD'] = parseFloat(data.USDBRL.bid);
       if (data.EURBRL) cotacoes['EUR'] = parseFloat(data.EURBRL.bid);
       if (data.GBPBRL) cotacoes['GBP'] = parseFloat(data.GBPBRL.bid);
@@ -147,27 +148,31 @@
       if (data.JPYBRL) cotacoes['JPY'] = parseFloat(data.JPYBRL.bid);
 
       if (statusEl) {
-        statusEl.textContent = 'Cotações em tempo real atualizadas com sucesso.';
+        statusEl.textContent = 'Cotações atualizadas em tempo real (' + new Date().toLocaleTimeString('pt-BR') + ').';
         statusEl.classList.remove('err');
       }
-    } catch(e) {
+    } catch (e) {
       console.warn('API indisponível ou bloqueada por CORS. Usando cotações de reserva.', e);
       if (statusEl) {
-        statusEl.textContent = 'Cotações aproximadas carregadas (servidor de taxas em tempo real inacessível).';
+        statusEl.textContent = 'Cotações aproximadas carregadas (servidor em tempo real inacessível).';
         statusEl.classList.remove('err');
       }
     }
   }
 
   function converterMoeda() {
-    const valor = parseFloat(document.getElementById('cb-valor').value) || 0;
-    const de = document.getElementById('cb-de').value;
-    const para = document.getElementById('cb-para').value;
+    const valorInput = document.getElementById('cb-valor');
+    const deInput = document.getElementById('cb-de');
+    const paraInput = document.getElementById('cb-para');
+
+    const valor = parseFloat(valorInput ? valorInput.value : 0) || 0;
+    const de = deInput ? deInput.value : 'USD';
+    const para = paraInput ? paraInput.value : 'BRL';
 
     const taxaDe = cotacoes[de] || 1;
     const taxaPara = cotacoes[para] || 1;
 
-    // Converte qualquer moeda para BRL e depois para a moeda de destino
+    // Converte de qualquer moeda para BRL e depois para a moeda destino
     const emBRL = valor * taxaDe;
     const resultado = emBRL / taxaPara;
     const taxaDireta = taxaDe / taxaPara;
@@ -184,11 +189,32 @@
     if (elHora) elHora.textContent = new Date().toLocaleTimeString('pt-BR');
   }
 
-  document.getElementById('cb-calc').addEventListener('click', converterMoeda);
+  // Evento de clique do botão Calcular
+  const btnCalc = document.getElementById('cb-calc');
+  if (btnCalc) {
+    btnCalc.addEventListener('click', async (e) => {
+      e.preventDefault();
+      await carregarcotacoes();
+      converterMoeda();
+    });
+  }
 
-  // Inicializa buscando as cotações e executa o primeiro cálculo
+  // Atualização instantânea ao mudar os campos da tela
+  ['cb-valor', 'cb-de', 'cb-para'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', converterMoeda);
+      el.addEventListener('change', converterMoeda);
+    }
+  });
+
+  // Inicialização: carrega as cotações, calcula e ativa atualização a cada 30 segundos
   carregarcotacoes().then(() => {
     converterMoeda();
+    setInterval(async () => {
+      await carregarcotacoes();
+      converterMoeda();
+    }, 30000); // 30.000 ms = 30 segundos
   });
 </script>
 </body>
