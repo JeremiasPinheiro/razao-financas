@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de financiamento imobiliário — SAC e Price — Razão</title>
+<meta name="description" content="Simule financiamento imobiliário nos sistemas SAC e Price. Veja a primeira e a última parcela, o total de juros pagos e a tabela de amortização.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html" class="current">Financiamento</a>
+        <a href="conversor-moedas.html">Câmbio</a>
+        <a href="cripto-imposto.html">Cripto (IR)</a>
+        <a href="financiamento-trator.html">Financiamento trator</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Simulador de financiamento imobiliário</h1>
+    <p class="lede">Compare os sistemas SAC e Price para o mesmo imóvel e veja o impacto de cada um na parcela e no total de juros pagos.</p>
+  </section>
+
+  <main class="calc">
+    <div class="grid">
+      <div class="card">
+        <h2>Dados do financiamento</h2>
+        <div class="sub">Sistemas SAC (parcela decrescente) ou Price (parcela fixa).</div>
+
+        <label for="fi-valor">Valor do imóvel (R$)</label>
+        <input type="number" id="fi-valor" value="350000" min="0" step="1000">
+
+        <label for="fi-entrada">Entrada (R$)</label>
+        <input type="number" id="fi-entrada" value="70000" min="0" step="1000">
+
+        <label for="fi-taxa">Taxa de juros (% ao ano)</label>
+        <input type="number" id="fi-taxa" value="10.5" min="0" step="0.1">
+
+        <label for="fi-prazo">Prazo (anos)</label>
+        <input type="number" id="fi-prazo" value="30" min="1" step="1">
+
+        <label>Sistema de amortização</label>
+        <div class="toggle" id="fi-sistema">
+          <button class="on" data-val="SAC">SAC</button>
+          <button data-val="PRICE">Price</button>
+        </div>
+
+        <button class="btn-primary" id="fi-calc">Simular</button>
+      </div>
+
+      <div class="ledger">
+        <h2>Resultado</h2>
+        <div class="ledger-row"><span class="label">Valor financiado</span><span class="fill"></span><span class="val" id="fi-financiado">—</span></div>
+        <div class="ledger-row"><span class="label">1ª parcela</span><span class="fill"></span><span class="val" id="fi-primeira">—</span></div>
+        <div class="ledger-row"><span class="label">Última parcela</span><span class="fill"></span><span class="val" id="fi-ultima">—</span></div>
+        <div class="ledger-row cost"><span class="label">Total pago em juros</span><span class="fill"></span><span class="val" id="fi-jurospagos">—</span></div>
+        <div class="ledger-row total"><span class="label">Total pago (financiado)</span><span class="fill"></span><span class="val" id="fi-totalpago">—</span></div>
+
+        <div class="table-wrap">
+          <table class="mini" id="fi-tabela">
+            <thead><tr><th>Mês</th><th>Amortização</th><th>Juros</th><th>Parcela</th><th>Saldo devedor</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="hint">No <strong>SAC</strong> a amortização é fixa e a parcela cai com o tempo. No <strong>Price</strong> a parcela é sempre a mesma, mas você paga mais juros no total.</div>
+      </div>
+    </div>
+
+    <article class="copy">
+      <h2>Como funciona a simulação</h2>
+      <p>Esta calculadora projeta, mês a mês, o comportamento de um financiamento imobiliário a partir do valor do imóvel, do valor de entrada e da taxa de juros anual informada. A diferença entre o valor do imóvel e a entrada é o valor efetivamente financiado, sobre o qual incidem os juros ao longo de todo o prazo. A taxa anual é convertida internamente para uma taxa mensal equivalente, já que as parcelas de um financiamento são pagas mês a mês.</p>
+
+      <h2>SAC ou Price: qual escolher?</h2>
+      <p>No sistema <strong>SAC</strong> (Sistema de Amortização Constante), a parcela de amortização — a parte que efetivamente reduz a dívida — é sempre a mesma, e os juros incidem sobre o saldo devedor, que vai diminuindo mês a mês. Isso faz a parcela total começar mais alta e ir caindo ao longo do contrato. No sistema <strong>Price</strong> (Tabela Price), a parcela é fixa do início ao fim, mas isso só é possível porque, no começo do contrato, a maior parte da parcela é juros — a dívida demora mais para começar a cair de verdade. Na prática, o SAC costuma resultar em menos juros pagos no total ao longo de todo o financiamento, mas exige uma parcela inicial mais alta, o que pode pesar na hora da aprovação de crédito junto ao banco, já que a renda exigida costuma ser calculada com base na primeira parcela.</p>
+
+      <h2>Como usar o resultado</h2>
+      <p>Compare a <strong>1ª parcela</strong> nos dois sistemas para saber qual renda mensal você precisa comprovar para ser aprovado. Compare o <strong>total pago em juros</strong> para entender o custo real do financiamento ao longo do tempo — essa é geralmente a diferença mais significativa entre os dois sistemas. A tabela de amortização mostra como o saldo devedor diminui mês a mês, o que ajuda a visualizar quanto da dívida ainda resta em pontos específicos do contrato, útil para decidir sobre uma eventual amortização extraordinária no futuro.</p>
+
+      <h2>O que essa simulação não substitui</h2>
+      <p>Este simulador usa uma taxa de juros fixa e constante ao longo de todo o prazo, para fins de comparação direta entre os dois sistemas. Contratos reais de financiamento imobiliário no Brasil costumam incluir seguros obrigatórios (MIP — Morte e Invalidez Permanente — e DFI — Danos Físicos ao Imóvel), taxa de administração mensal cobrada pelo banco e, dependendo do contrato, correção monetária pela TR ou por outro índice. Esses itens aumentam a parcela final além do valor calculado aqui. Use este resultado como uma estimativa de referência para comparar cenários, não como o valor exato que vai sair no contrato — para isso, é sempre necessário simular diretamente com o banco ou a instituição financeira escolhida.</p>
+
+      <dl class="faq">
+        <dt>A taxa de juros informada é a taxa efetiva do contrato?</dt>
+        <dd>Sim, informe a taxa efetiva anual do financiamento. A calculadora converte automaticamente para uma taxa mensal equivalente para calcular as parcelas.</dd>
+        <dt>Por que a tabela não mostra todos os meses?</dt>
+        <dd>Para manter a leitura simples, a tabela mostra os 6 primeiros e os 6 últimos meses do financiamento — onde a diferença entre SAC e Price fica mais visível.</dd>
+      </dl>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script src="assets/utils.js"></script>
+<script>
+document.getElementById('footYear').textContent = new Date().getFullYear();
+
+let sistemaAtual = 'SAC';
+document.querySelectorAll('#fi-sistema button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#fi-sistema button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    sistemaAtual = btn.dataset.val;
+  });
+});
+
+function calcFinanciamento(){
+  const valorImovel = parseFloat(document.getElementById('fi-valor').value) || 0;
+  const entrada = parseFloat(document.getElementById('fi-entrada').value) || 0;
+  const taxaAno = (parseFloat(document.getElementById('fi-taxa').value) || 0) / 100;
+  const anos = Math.max(1, parseInt(document.getElementById('fi-prazo').value) || 1);
+  const n = anos * 12;
+  const financiado = Math.max(0, valorImovel - entrada);
+  const i = Math.pow(1 + taxaAno, 1/12) - 1;
+
+  let rows = [];
+  let totalJuros = 0;
+  let primeira, ultima;
+
+  if (sistemaAtual === 'SAC'){
+    const amortConst = financiado / n;
+    let saldo = financiado;
+    for (let m=1; m<=n; m++){
+      const juros = saldo * i;
+      const parcela = amortConst + juros;
+      saldo -= amortConst;
+      totalJuros += juros;
+      if (m===1) primeira = parcela;
+      if (m===n) ultima = parcela;
+      rows.push({ m, amort: amortConst, juros, parcela, saldo: Math.max(0,saldo) });
+    }
+  } else {
+    const parcela = i === 0 ? financiado/n : financiado * i / (1 - Math.pow(1+i, -n));
+    let saldo = financiado;
+    for (let m=1; m<=n; m++){
+      const juros = saldo * i;
+      const amort = parcela - juros;
+      saldo -= amort;
+      totalJuros += juros;
+      if (m===1) primeira = parcela;
+      if (m===n) ultima = parcela;
+      rows.push({ m, amort, juros, parcela, saldo: Math.max(0,saldo) });
+    }
+  }
+
+  document.getElementById('fi-financiado').textContent = BRL(financiado);
+  document.getElementById('fi-primeira').textContent = BRL(primeira);
+  document.getElementById('fi-ultima').textContent = BRL(ultima);
+  document.getElementById('fi-jurospagos').textContent = BRL(totalJuros);
+  document.getElementById('fi-totalpago').textContent = BRL(financiado + totalJuros);
+
+  const tbody = document.querySelector('#fi-tabela tbody');
+  tbody.innerHTML = '';
+  const showRow = r => `<tr><td>${r.m}</td><td>${BRL(r.amort)}</td><td>${BRL(r.juros)}</td><td>${BRL(r.parcela)}</td><td>${BRL(r.saldo)}</td></tr>`;
+  rows.slice(0,6).forEach(r=> tbody.insertAdjacentHTML('beforeend', showRow(r)));
+  if (rows.length > 12){
+    tbody.insertAdjacentHTML('beforeend', '<tr class="gap"><td colspan="5">···</td></tr>');
+  }
+  rows.slice(-6).forEach(r=> tbody.insertAdjacentHTML('beforeend', showRow(r)));
+}
+
+document.getElementById('fi-calc').addEventListener('click', calcFinanciamento);
+calcFinanciamento();
+</script>
+</body>
+</html>
