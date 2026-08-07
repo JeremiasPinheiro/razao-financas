@@ -99,115 +99,127 @@
   </footer>
 </div>
 
-<script src="assets/utils.js"></script>
-<script src="assets/utils.js"></script>
 <script>
-  document.getElementById('footYear').textContent = new Date().getFullYear();
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    // Atualiza o ano no rodapé
+    const footYearEl = document.getElementById('footYear');
+    if (footYearEl) {
+      footYearEl.textContent = new Date().getFullYear();
+    }
 
-  // Função auxiliar para formatar em Real
-  function formatarBRL(valor) {
-    return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  }
+    // Função auxiliar para formatar moeda em Real
+    function formatarBRL(valor) {
+      return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
 
-  let regime = 'NACIONAL';
+    let regime = 'NACIONAL';
 
-  // Configuração dos botões de troca de regime
-  document.querySelectorAll('#cr-regime button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#cr-regime button').forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      
-      regime = btn.dataset.val || btn.textContent.trim().toUpperCase();
-      
-      const totalMesDiv = document.getElementById('cr-totalmes').closest('div');
-      totalMesDiv.style.opacity = '1';
-      document.getElementById('cr-totalmes').disabled = false;
-
-      calcCripto();
+    // Evento de clique nos botões de regime
+    document.querySelectorAll('#cr-regime button').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('#cr-regime button').forEach(b => b.classList.remove('on'));
+        btn.classList.add('on');
+        
+        regime = btn.dataset.val || btn.textContent.trim().toUpperCase();
+        calcCripto();
+      });
     });
+
+    function impostoProgressivo(ganho) {
+      const faixas = [
+        { ate: 5000000, taxa: 0.15 },
+        { ate: 10000000, taxa: 0.175 },
+        { ate: 30000000, taxa: 0.20 },
+        { ate: Infinity, taxa: 0.225 }
+      ];
+      let restante = ganho;
+      let anterior = 0;
+      let imposto = 0;
+
+      for (const faixa of faixas) {
+        if (restante <= 0) break;
+        const larguraFaixa = faixa.ate - anterior;
+        const valorNaFaixa = Math.min(restante, larguraFaixa);
+        imposto += valorNaFaixa * faixa.taxa;
+        restante -= valorNaFaixa;
+        anterior = faixa.ate;
+      }
+      return imposto;
+    }
+
+    function proximoVencimento() {
+      const hoje = new Date();
+      const alvo = new Date(hoje.getFullYear(), hoje.getMonth() + 2, 0);
+      return alvo.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+    }
+
+    function calcCripto() {
+      const totalMesInput = document.getElementById('cr-totalmes');
+      const vendaInput = document.getElementById('cr-venda');
+      const custoInput = document.getElementById('cr-custo');
+
+      const totalMes = totalMesInput ? parseFloat(totalMesInput.value) || 0 : 0;
+      const venda = vendaInput ? parseFloat(vendaInput.value) || 0 : 0;
+      const custo = custoInput ? parseFloat(custoInput.value) || 0 : 0;
+      const ganho = venda - custo;
+
+      const ganhoEl = document.getElementById('cr-ganho');
+      const situacaoEl = document.getElementById('cr-situacao');
+      const aliquotaEl = document.getElementById('cr-aliquota');
+      const impostoEl = document.getElementById('cr-imposto');
+      const vencEl = document.getElementById('cr-vencimento');
+      const hintEl = document.getElementById('cr-hint');
+
+      if (ganhoEl) ganhoEl.textContent = formatarBRL(ganho);
+
+      if (ganho <= 0) {
+        if (situacaoEl) situacaoEl.textContent = 'Prejuízo / Sem Ganho';
+        if (aliquotaEl) aliquotaEl.textContent = '0%';
+        if (impostoEl) impostoEl.textContent = formatarBRL(0);
+        if (vencEl) vencEl.textContent = '-';
+        if (hintEl) hintEl.innerHTML = 'Operação sem ganho de capital tributável.';
+        return;
+      }
+
+      // Isenção Nacional (até R$ 35.000 no mês)
+      if (regime === 'NACIONAL' && totalMes <= 35000) {
+        if (situacaoEl) situacaoEl.textContent = 'Isento';
+        if (aliquotaEl) aliquotaEl.textContent = '0%';
+        if (impostoEl) impostoEl.textContent = formatarBRL(0);
+        if (vencEl) vencEl.textContent = '-';
+        if (hintEl) hintEl.innerHTML = 'Mesmo isento, esse ganho deve ser <strong>informado</strong> na Declaração de Ajuste Anual como rendimento isento.';
+        return;
+      }
+
+      let imposto, aliquotaEfetiva;
+      if (regime === 'NACIONAL') {
+        imposto = impostoProgressivo(ganho);
+        aliquotaEfetiva = ganho > 0 ? (imposto / ganho) : 0;
+        if (hintEl) hintEl.innerHTML = 'Pague via <strong>DARF código 4600</strong> no site da Receita Federal, gerado pelo programa GCAP, até o vencimento indicado.';
+      } else {
+        imposto = ganho * 0.15;
+        aliquotaEfetiva = 0.15;
+        if (hintEl) hintEl.innerHTML = 'Operações em corretora estrangeira seguem a <strong>Lei 14.754/2023</strong>: sem isenção mensal, alíquota fixa de 15%.';
+      }
+
+      if (situacaoEl) situacaoEl.textContent = 'Tributável';
+      if (aliquotaEl) aliquotaEl.textContent = (aliquotaEfetiva * 100).toFixed(1) + '%';
+      if (impostoEl) impostoEl.textContent = formatarBRL(imposto);
+      if (vencEl) vencEl.textContent = regime === 'NACIONAL' ? proximoVencimento() : 'Na Declaração de Ajuste Anual';
+    }
+
+    const btnCalc = document.getElementById('cr-calc');
+    if (btnCalc) {
+      btnCalc.addEventListener('click', (e) => {
+        e.preventDefault();
+        calcCripto();
+      });
+    }
+
+    calcCripto();
   });
-
-  function impostoProgressivo(ganho) {
-    const faixas = [
-      { ate: 5000000, taxa: 0.15 },
-      { ate: 10000000, taxa: 0.175 },
-      { ate: 30000000, taxa: 0.20 },
-      { ate: Infinity, taxa: 0.225 }
-    ];
-    let restante = ganho;
-    let anterior = 0;
-    let imposto = 0;
-
-    for (const faixa of faixas) {
-      if (restante <= 0) break;
-      const larguraFaixa = faixa.ate - anterior;
-      const valorNaFaixa = Math.min(restante, larguraFaixa);
-      imposto += valorNaFaixa * faixa.taxa;
-      restante -= valorNaFaixa;
-      anterior = faixa.ate;
-    }
-    return imposto;
-  }
-
-  function proximoVencimento() {
-    const hoje = new Date();
-    const alvo = new Date(hoje.getFullYear(), hoje.getMonth() + 2, 0);
-    return alvo.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
-  }
-
-  function calcCripto() {
-    const totalMes = parseFloat(document.getElementById('cr-totalmes').value) || 0;
-    const venda = parseFloat(document.getElementById('cr-venda').value) || 0;
-    const custo = parseFloat(document.getElementById('cr-custo').value) || 0;
-    const ganho = venda - custo;
-
-    const ganhoEl = document.getElementById('cr-ganho');
-    const situacaoEl = document.getElementById('cr-situacao');
-    const aliquotaEl = document.getElementById('cr-aliquota');
-    const impostoEl = document.getElementById('cr-imposto');
-    const vencEl = document.getElementById('cr-vencimento');
-    const hintEl = document.getElementById('cr-hint');
-
-    ganhoEl.textContent = formatarBRL(ganho);
-
-    if (ganho <= 0) {
-      situacaoEl.textContent = 'Prejuízo / Sem Ganho';
-      aliquotaEl.textContent = '0%';
-      impostoEl.textContent = formatarBRL(0);
-      vencEl.textContent = '-';
-      hintEl.innerHTML = 'Operação sem ganho de capital tributável.';
-      return;
-    }
-
-    // Regra de Isenção Nacional (até R$ 35.000 no mês)
-    if (regime === 'NACIONAL' && totalMes <= 35000) {
-      situacaoEl.textContent = 'Isento';
-      aliquotaEl.textContent = '0%';
-      impostoEl.textContent = formatarBRL(0);
-      vencEl.textContent = '-';
-      hintEl.innerHTML = 'Mesmo isento, esse ganho deve ser <strong>informado</strong> na Declaração de Ajuste Anual como rendimento isento.';
-      return;
-    }
-
-    let imposto, aliquotaEfetiva;
-    if (regime === 'NACIONAL') {
-      imposto = impostoProgressivo(ganho);
-      aliquotaEfetiva = ganho > 0 ? (imposto / ganho) : 0;
-      hintEl.innerHTML = 'Pague via <strong>DARF código 4600</strong> no site da Receita Federal, gerado pelo programa GCAP, até o vencimento indicado.';
-    } else {
-      imposto = ganho * 0.15;
-      aliquotaEfetiva = 0.15;
-      hintEl.innerHTML = 'Operações em corretora estrangeira seguem a <strong>Lei 14.754/2023</strong>: sem isenção mensal, alíquota fixa de 15%.';
-    }
-
-    situacaoEl.textContent = 'Tributável';
-    aliquotaEl.textContent = (aliquotaEfetiva * 100).toFixed(1) + '%';
-    impostoEl.textContent = formatarBRL(imposto);
-    vencEl.textContent = regime === 'NACIONAL' ? proximoVencimento() : 'Na Declaração de Ajuste Anual';
-  }
-
-  document.getElementById('cr-calc').addEventListener('click', calcCripto);
-  calcCripto();
 </script>
 </body>
 </html>
