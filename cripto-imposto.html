@@ -108,15 +108,35 @@
     return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
-  let regime = 'NACIONAL';
-  document.querySelectorAll('#cr-regime button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#cr-regime button').forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      regime = btn.dataset.val;
-      document.getElementById('cr-totalmes').closest('div').style.opacity = regime === 'NACIONAL' ? '1' : '0.5';
-    });
+let regime = 'NACIONAL';
+document.querySelectorAll('#cr-regime button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#cr-regime button').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    regime = btn.dataset.val;
+    
+    // Mantém a opacidade em 1 para não esbranquiçar a tela
+    document.getElementById('cr-totalmes').closest('div').style.opacity = '1';
+
+    // Recalcula automaticamente ao alternar o botão
+    calcCripto();
   });
+});
+    regime = btn.textContent.trim().toUpperCase();
+
+    // Mantém o campo visível/habilitado, mudando a opacidade conforme a necessidade visual
+    const totalMesDiv = document.getElementById('cr-totalmes').closest('div');
+    if (regime === 'NACIONAL') {
+      totalMesDiv.style.opacity = '1';
+      document.getElementById('cr-totalmes').disabled = false;
+    } else {
+      totalMesDiv.style.opacity = '1'; // Mantenha em 1 para não ficar esbranquiçado
+    }
+
+    // Recalcula o resultado imediatamente ao trocar de botão
+    calcCripto();
+  });
+});
 
   function impostoProgressivo(ganho) {
     const faixas = [
@@ -158,22 +178,22 @@
     const vencEl = document.getElementById('cr-vencimento');
     const hintEl = document.getElementById('cr-hint');
 
-    ganhoEl.textContent = formatarBRL(ganho);
+    let imposto, aliquotaEfetiva;
+if (regime === 'NACIONAL') {
+  imposto = impostoProgressivo(ganho);
+  aliquotaEfetiva = ganho > 0 ? (imposto / ganho) : 0;
+  hintEl.innerHTML = 'Pague via <strong>DARF código 4600</strong> no site da Receita Federal, gerado pelo programa GCAP.';
+} else {
+  // Corretora estrangeira: alíquota fixa de 15% sobre o ganho de capital
+  imposto = ganho * 0.15;
+  aliquotaEfetiva = 0.15;
+  hintEl.innerHTML = 'Operações em corretora estrangeira seguem a <strong>Lei 14.754/2023</strong>: sem isenção mensal, alíquota fixa de 15%.';
+}
 
-    if (ganho <= 0) {
-      situacaoEl.textContent = 'Sem ganho tributável';
-      aliquotaEl.textContent = '-';
-      impostoEl.textContent = formatarBRL(0);
-      vencEl.textContent = '-';
-      hintEl.innerHTML = 'Não houve ganho nesta operação (venda igual ou menor que o custo). Um <strong>prejuízo</strong> pode ser compensado com ganhos futuros.';
-      return;
-    }
-
-    if (regime === 'NACIONAL' && totalMes <= 35000) {
-      situacaoEl.textContent = 'Isento (abaixo de R$35.000/mês)';
-      aliquotaEl.textContent = '0%';
-      impostoEl.textContent = formatarBRL(0);
-      vencEl.textContent = '-';
+situacaoEl.textContent = 'Tributável';
+aliquotaEl.textContent = (aliquotaEfetiva * 100).toFixed(1) + '%';
+impostoEl.textContent = formatarBRL(imposto);
+vencEl.textContent = regime === 'NACIONAL' ? proximoVencimento() : 'Na Declaração de Ajuste Anual';
       hintEl.innerHTML = 'Mesmo isento, esse ganho deve ser <strong>informado</strong> na Declaração de Ajuste Anual como rendimento isento.';
       return;
     }
