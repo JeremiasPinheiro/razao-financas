@@ -123,36 +123,51 @@
   async function carregarcotacoes() {
     const statusEl = document.getElementById('cb-status');
     try {
-      const resp = await fetch(`https://economia.awesomeapi.com.br/json/last/${PARES}`);
-      if (!resp.ok) throw new Error('resposta não OK');
+      const resp = await fetch(`https://economia.awesomeapi.com/json/last/${PARES}`);
+      if (!resp.ok) throw new Error('Resposta não OK');
       const data = await resp.json();
-      
-      cotacoes = {};
-      Object.values(data).forEach(item => {
-        cotacoes[item.code] = parseFloat(item.bid);
-      });
-      cotacoes['BRL'] = 1;
 
-      statusEl.textContent = 'Cotações atualizadas agora há pouco.';
-      statusEl.classList.remove('err');
+      cotacoes = { 'BRL': 1 };
+      
+      // Mapeia tanto a moeda de origem quanto a chave completa retornada pela API
+      Object.values(data).forEach(item => {
+        const valor = parseFloat(item.bid);
+        if (item.code) cotacoes[item.code] = valor;
+        if (item.codein) cotacoes[item.codein] = 1;
+      });
+
+      if (statusEl) {
+        statusEl.textContent = 'Cotações atualizadas agora há pouco.';
+        statusEl.classList.remove('err');
+      }
     } catch(e) {
-      statusEl.textContent = 'Não foi possível buscar a cotação agora. Verifique sua conexão e tente de novo.';
-      statusEl.classList.add('err');
+      if (statusEl) {
+        statusEl.textContent = 'Não foi possível buscar a cotação agora. Verifique sua conexão e tente de novo.';
+        statusEl.classList.add('err');
+      }
     }
   }
 
-  function converterMoeda() {
+  async function converterMoeda() {
+    if (!cotacoes) {
+      await carregarcotacoes();
+    }
+
     const valor = parseFloat(document.getElementById('cb-valor').value) || 0;
     const de = document.getElementById('cb-de').value;
     const para = document.getElementById('cb-para').value;
 
     if (!cotacoes || cotacoes[de] === undefined || cotacoes[para] === undefined) {
-      document.getElementById('cb-status').textContent = 'Cotação indisponível no momento - tentando de novo...';
-      document.getElementById('cb-status').classList.add('err');
-      carregarcotacoes();
+      const statusEl = document.getElementById('cb-status');
+      if (statusEl) {
+        statusEl.textContent = 'Cotação indisponível no momento - tentando de novo...';
+        statusEl.classList.add('err');
+      }
+      await carregarcotacoes();
       return;
     }
 
+    // Calcula o valor em BRL e converte para a moeda destino
     const emBRL = valor * cotacoes[de];
     const resultado = emBRL / cotacoes[para];
     const taxa = cotacoes[de] / cotacoes[para];
@@ -160,9 +175,13 @@
     const resultadoFormatado = resultado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const taxaFormatada = taxa.toLocaleString('pt-BR', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
 
-    document.getElementById('cb-resultado').textContent = `${para} ${resultadoFormatado}`;
-    document.getElementById('cb-taxa').textContent = `1 ${de} = ${taxaFormatada} ${para}`;
-    document.getElementById('cb-hora').textContent = new Date().toLocaleTimeString('pt-BR');
+    const elResultado = document.getElementById('cb-resultado');
+    const elTaxa = document.getElementById('cb-taxa');
+    const elHora = document.getElementById('cb-hora');
+
+    if (elResultado) elResultado.textContent = `${para} ${resultadoFormatado}`;
+    if (elTaxa) elTaxa.textContent = `1 ${de} = ${taxaFormatada} ${para}`;
+    if (elHora) elHora.textContent = new Date().toLocaleTimeString('pt-BR');
   }
 
   document.getElementById('cb-calc').addEventListener('click', converterMoeda);
