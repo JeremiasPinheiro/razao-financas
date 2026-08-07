@@ -122,41 +122,41 @@
   const footYearEl = document.getElementById('footYear');
   if (footYearEl) footYearEl.textContent = new Date().getFullYear();
 
-  // Cotações padrão de reserva (fallback)
+  // Cotações padrão de reserva (fallback comercial)
   let cotacoes = {
-    'USD': 5.50,
+    'USD': 5.45,
     'EUR': 6.00,
     'GBP': 7.00,
-    'ARS': 0.0058,
-    'JPY': 0.036,
+    'ARS': 0.0055,
+    'JPY': 0.035,
     'BRL': 1.00
   };
 
   async function carregarcotacoes() {
     const statusEl = document.getElementById('cb-status');
     try {
-      // Requisição explícita para o Dólar Comercial (USD-BRL) e demais moedas
-      const resp = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL?_=' + new Date().getTime());
+      // Requisita cotações comerciais em tempo real evitando cache
+      const resp = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL?timestamp=' + Date.now());
       if (!resp.ok) throw new Error('Falha na resposta da API');
 
       const data = await resp.json();
 
-      // Mapeamento explícito das cotações comerciais (bid = preço de compra comercial)
-      if (data.USDBRL) cotacoes['USD'] = parseFloat(data.USDBRL.bid);
-      if (data.EURBRL) cotacoes['EUR'] = parseFloat(data.EURBRL.bid);
-      if (data.GBPBRL) cotacoes['GBP'] = parseFloat(data.GBPBRL.bid);
-      if (data.ARSBRL) cotacoes['ARS'] = parseFloat(data.ARSBRL.bid);
-      if (data.JPYBRL) cotacoes['JPY'] = parseFloat(data.JPYBRL.bid);
+      // Mapeamento explícito das cotações comerciais (USD Comercial e demais moedas)
+      if (data.USDBRL) cotacoes['USD'] = parseFloat(data.USDBRL.ask || data.USDBRL.bid);
+      if (data.EURBRL) cotacoes['EUR'] = parseFloat(data.EURBRL.ask || data.EURBRL.bid);
+      if (data.GBPBRL) cotacoes['GBP'] = parseFloat(data.GBPBRL.ask || data.GBPBRL.bid);
+      if (data.ARSBRL) cotacoes['ARS'] = parseFloat(data.ARSBRL.ask || data.ARSBRL.bid);
+      if (data.JPYBRL) cotacoes['JPY'] = parseFloat(data.JPYBRL.ask || data.JPYBRL.bid);
 
       if (statusEl) {
-        statusEl.textContent = 'Cotações do Dólar Comercial e moedas atualizadas (' + new Date().toLocaleTimeString('pt-BR') + ').';
+        statusEl.textContent = 'Dólar Comercial e demais moedas em tempo real (' + new Date().toLocaleTimeString('pt-BR') + ').';
         statusEl.classList.remove('err');
       }
     } catch (e) {
-      console.warn('API indisponível ou bloqueada por CORS. Usando cotações de reserva.', e);
+      console.warn('API indisponível ou bloqueada. Usando cotações de reserva.', e);
       if (statusEl) {
         statusEl.textContent = 'Cotações aproximadas carregadas (servidor em tempo real inacessível).';
-        statusEl.classList.remove('err');
+        statusEl.classList.add('err');
       }
     }
   }
@@ -173,6 +173,7 @@
     const taxaDe = cotacoes[de] || 1;
     const taxaPara = cotacoes[para] || 1;
 
+    // Converte de qualquer moeda para BRL e depois para a moeda destino
     const emBRL = valor * taxaDe;
     const resultado = emBRL / taxaPara;
     const taxaDireta = taxaDe / taxaPara;
@@ -189,6 +190,7 @@
     if (elHora) elHora.textContent = new Date().toLocaleTimeString('pt-BR');
   }
 
+  // Evento do botão Calcular
   const btnCalc = document.getElementById('cb-calc');
   if (btnCalc) {
     btnCalc.addEventListener('click', async (e) => {
@@ -198,6 +200,7 @@
     });
   }
 
+  // Atualização instantânea enquanto digita ou altera as seleções de moedas
   ['cb-valor', 'cb-de', 'cb-para'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
@@ -206,6 +209,7 @@
     }
   });
 
+  // Inicializa, calcula e atualiza a cada 30 segundos automaticamente
   carregarcotacoes().then(() => {
     converterMoeda();
     setInterval(async () => {
