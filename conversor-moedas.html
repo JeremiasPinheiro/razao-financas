@@ -115,53 +115,58 @@
 
 <script src="assets/utils.js"></script>
 <script>
-document.getElementById('footYear').textContent = new Date().getFullYear();
+  document.getElementById('footYear').textContent = new Date().getFullYear();
 
-let cotacoes = null;
-const PARES = 'USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL';
+  let cotacoes = null;
+  const PARES = 'USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL';
 
-async function carregarCotacoes(){
-  const statusEl = document.getElementById('cb-status');
-  try{
-    const resp = await fetch(`https://economia.awesomeapi.com.br/json/last/${PARES}`);
-    if (!resp.ok) throw new Error('resposta não OK');
-    const data = await resp.json();
-    cotacoes = {};
-    Object.values(data).forEach(item=>{
-      cotacoes[item.code] = parseFloat(item.bid);
-    });
-    cotacoes['BRL'] = 1;
-    statusEl.textContent = 'Cotações atualizadas agora há pouco.';
-    statusEl.classList.remove('err');
-  } catch(e){
-    statusEl.textContent = 'Não foi possível buscar a cotação agora. Verifique sua conexão e tente de novo.';
-    statusEl.classList.add('err');
-  }
-}
+  async function carregarcotacoes() {
+    const statusEl = document.getElementById('cb-status');
+    try {
+      const resp = await fetch(`https://economia.awesomeapi.com.br/json/last/${PARES}`);
+      if (!resp.ok) throw new Error('resposta não OK');
+      const data = await resp.json();
+      
+      cotacoes = {};
+      Object.values(data).forEach(item => {
+        cotacoes[item.code] = parseFloat(item.bid);
+      });
+      cotacoes['BRL'] = 1;
 
-function converterMoeda(){
-  const valor = parseFloat(document.getElementById('cb-valor').value) || 0;
-  const de = document.getElementById('cb-de').value;
-  const para = document.getElementById('cb-para').value;
-
-  if (!cotacoes || cotacoes[de] === undefined || cotacoes[para] === undefined){
-    document.getElementById('cb-status').textContent = 'Cotação indisponível no momento — tentando de novo...';
-    document.getElementById('cb-status').classList.add('err');
-    carregarCotacoes();
-    return;
+      statusEl.textContent = 'Cotações atualizadas agora há pouco.';
+      statusEl.classList.remove('err');
+    } catch(e) {
+      statusEl.textContent = 'Não foi possível buscar a cotação agora. Verifique sua conexão e tente de novo.';
+      statusEl.classList.add('err');
+    }
   }
 
-  const emBRL = valor * cotacoes[de];
-  const resultado = emBRL / cotacoes[para];
-  const taxa = cotacoes[de] / cotacoes[para];
+  function converterMoeda() {
+    const valor = parseFloat(document.getElementById('cb-valor').value) || 0;
+    const de = document.getElementById('cb-de').value;
+    const para = document.getElementById('cb-para').value;
 
-  document.getElementById('cb-resultado').textContent = `${para} ${fmtNum(resultado)}`;
-  document.getElementById('cb-taxa').textContent = `1 ${de} = ${fmtNum(taxa, 4)} ${para}`;
-  document.getElementById('cb-hora').textContent = new Date().toLocaleTimeString('pt-BR');
-}
+    if (!cotacoes || cotacoes[de] === undefined || cotacoes[para] === undefined) {
+      document.getElementById('cb-status').textContent = 'Cotação indisponível no momento - tentando de novo...';
+      document.getElementById('cb-status').classList.add('err');
+      carregarcotacoes();
+      return;
+    }
 
-document.getElementById('cb-calc').addEventListener('click', converterMoeda);
-carregarCotacoes();
+    const emBRL = valor * cotacoes[de];
+    const resultado = emBRL / cotacoes[para];
+    const taxa = cotacoes[de] / cotacoes[para];
+
+    const resultadoFormatado = resultado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const taxaFormatada = taxa.toLocaleString('pt-BR', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+
+    document.getElementById('cb-resultado').textContent = `${para} ${resultadoFormatado}`;
+    document.getElementById('cb-taxa').textContent = `1 ${de} = ${taxaFormatada} ${para}`;
+    document.getElementById('cb-hora').textContent = new Date().toLocaleTimeString('pt-BR');
+  }
+
+  document.getElementById('cb-calc').addEventListener('click', converterMoeda);
+  carregarcotacoes();
 </script>
 </body>
 </html>
