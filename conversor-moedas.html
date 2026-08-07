@@ -1,1 +1,167 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversor de moedas em tempo real — Razão</title>
+<meta name="description" content="Converta entre real, dólar, euro, libra, peso argentino e iene com cotação em tempo real, gratuita e sem cadastro.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="conversor-moedas.html" class="current">Câmbio</a>
+        <a href="cripto-imposto.html">Cripto (IR)</a>
+        <a href="financiamento-trator.html">Financiamento trator</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Conversor de moedas</h1>
+    <p class="lede">Converta valores entre real, dólar, euro, libra, peso argentino e iene com a cotação comercial mais recente disponível.</p>
+  </section>
+
+  <main class="calc">
+    <div class="grid">
+      <div class="card">
+        <h2>Conversor de moedas</h2>
+        <div class="sub">Cotação em tempo real via AwesomeAPI.</div>
+
+        <label for="cb-valor">Valor</label>
+        <input type="number" id="cb-valor" value="100" min="0" step="1">
+
+        <div class="row-inline">
+          <div>
+            <label for="cb-de">De</label>
+            <select id="cb-de">
+              <option value="BRL">BRL — Real</option>
+              <option value="USD" selected>USD — Dólar americano</option>
+              <option value="EUR">EUR — Euro</option>
+              <option value="GBP">GBP — Libra esterlina</option>
+              <option value="ARS">ARS — Peso argentino</option>
+              <option value="JPY">JPY — Iene</option>
+            </select>
+          </div>
+          <div>
+            <label for="cb-para">Para</label>
+            <select id="cb-para">
+              <option value="BRL" selected>BRL — Real</option>
+              <option value="USD">USD — Dólar americano</option>
+              <option value="EUR">EUR — Euro</option>
+              <option value="GBP">GBP — Libra esterlina</option>
+              <option value="ARS">ARS — Peso argentino</option>
+              <option value="JPY">JPY — Iene</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="cb-calc">Converter</button>
+        <div class="status" id="cb-status">Cotações carregadas ao abrir a página.</div>
+      </div>
+
+      <div class="ledger">
+        <h2>Resultado</h2>
+        <div class="ledger-row total"><span class="label">Valor convertido</span><span class="fill"></span><span class="val" id="cb-resultado">—</span></div>
+        <div class="ledger-row"><span class="label">Taxa aplicada</span><span class="fill"></span><span class="val" id="cb-taxa">—</span></div>
+        <div class="ledger-row"><span class="label">Atualizado em</span><span class="fill"></span><span class="val" id="cb-hora">—</span></div>
+        <div class="hint">A cotação vem da <strong>AwesomeAPI</strong> (gratuita, sem chave de acesso). Se a internet estiver bloqueada ou a API fora do ar, o conversor avisa em vez de mostrar um número errado.</div>
+      </div>
+    </div>
+
+    <article class="copy">
+      <h2>De onde vem a cotação</h2>
+      <p>Este conversor busca a cotação comercial de compra (bid) diretamente de uma API pública brasileira no momento em que a página é carregada. Todas as moedas são convertidas usando o real como referência intermediária: primeiro o valor é convertido para reais usando a cotação da moeda de origem, depois esse valor em reais é convertido para a moeda de destino. Isso significa que a taxa exibida é a taxa comercial de mercado no momento exato da consulta — o mesmo tipo de referência usada por bancos e corretoras para negociações entre instituições, não a taxa de balcão de uma casa de câmbio ou de um cartão de crédito internacional.</p>
+
+      <h2>Por que essa cotação é diferente da que você vê no cartão ou na casa de câmbio</h2>
+      <p>A cotação comercial é o ponto de partida, mas nunca é o valor final que você paga numa operação real. Bancos, corretoras de câmbio e operadoras de cartão de crédito aplicam um <strong>spread</strong> — uma margem sobre a cotação comercial — além de impostos como o <strong>IOF</strong>, que no Brasil incide sobre operações de câmbio e compras internacionais. É por isso que o valor que aparece na fatura do cartão depois de uma compra no exterior costuma ser mais alto do que uma simples conversão pela cotação do dia.</p>
+
+      <h2>Quando usar essa cotação</h2>
+      <p>É útil para ter uma referência rápida antes de uma compra internacional, uma viagem, ou para acompanhar a variação cambial de um investimento no exterior — por exemplo, entender se o real está se valorizando ou desvalorizando frente ao dólar em um determinado período. Também ajuda a ter uma primeira noção de quanto custaria converter um valor específico, antes de fechar câmbio de fato com um banco ou corretora.</p>
+
+      <h2>O que essa cotação não substitui</h2>
+      <p>Para uma operação de câmbio real — comprar moeda em espécie, fazer uma remessa internacional ou usar um cartão pré-pago em outra moeda — o valor final vai incluir spread da instituição financeira, IOF e, em alguns casos, taxas fixas de operação, nenhum dos quais aparece nesta simulação. Trate o resultado como uma referência de mercado, não como uma cotação de fechamento de câmbio.</p>
+
+      <dl class="faq">
+        <dt>Por que o conversor às vezes mostra uma mensagem de erro?</dt>
+        <dd>Isso acontece quando a página não consegue se conectar à API de cotações — por exemplo, sem conexão com a internet no momento, ou a API temporariamente fora do ar. Nesses casos, o conversor avisa em vez de calcular com um valor desatualizado ou inventado.</dd>
+        <dt>A cotação é atualizada automaticamente?</dt>
+        <dd>Ela é buscada uma vez ao abrir a página. Para atualizar, recarregue a página no navegador.</dd>
+      </dl>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script src="assets/utils.js"></script>
+<script>
+document.getElementById('footYear').textContent = new Date().getFullYear();
+
+let cotacoes = null;
+const PARES = 'USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL';
+
+async function carregarCotacoes(){
+  const statusEl = document.getElementById('cb-status');
+  try{
+    const resp = await fetch(`https://economia.awesomeapi.com.br/json/last/${PARES}`);
+    if (!resp.ok) throw new Error('resposta não OK');
+    const data = await resp.json();
+    cotacoes = {};
+    Object.values(data).forEach(item=>{
+      cotacoes[item.code] = parseFloat(item.bid);
+    });
+    cotacoes['BRL'] = 1;
+    statusEl.textContent = 'Cotações atualizadas agora há pouco.';
+    statusEl.classList.remove('err');
+  } catch(e){
+    statusEl.textContent = 'Não foi possível buscar a cotação agora. Verifique sua conexão e tente de novo.';
+    statusEl.classList.add('err');
+  }
+}
+
+function converterMoeda(){
+  const valor = parseFloat(document.getElementById('cb-valor').value) || 0;
+  const de = document.getElementById('cb-de').value;
+  const para = document.getElementById('cb-para').value;
+
+  if (!cotacoes || cotacoes[de] === undefined || cotacoes[para] === undefined){
+    document.getElementById('cb-status').textContent = 'Cotação indisponível no momento — tentando de novo...';
+    document.getElementById('cb-status').classList.add('err');
+    carregarCotacoes();
+    return;
+  }
+
+  const emBRL = valor * cotacoes[de];
+  const resultado = emBRL / cotacoes[para];
+  const taxa = cotacoes[de] / cotacoes[para];
+
+  document.getElementById('cb-resultado').textContent = `${para} ${fmtNum(resultado)}`;
+  document.getElementById('cb-taxa').textContent = `1 ${de} = ${fmtNum(taxa, 4)} ${para}`;
+  document.getElementById('cb-hora').textContent = new Date().toLocaleTimeString('pt-BR');
+}
+
+document.getElementById('cb-calc').addEventListener('click', converterMoeda);
+carregarCotacoes();
+</script>
+</body>
+</html>
