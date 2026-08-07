@@ -117,63 +117,59 @@
 <script>
   document.getElementById('footYear').textContent = new Date().getFullYear();
 
-  let cotacoes = null;
-  const PARES = 'USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL';
+  // Cotações padrão de reserva (fallback) caso a API externa seja bloqueada pelo navegador
+  let cotacoes = {
+    'USD': 5.50,
+    'EUR': 6.00,
+    'GBP': 7.00,
+    'ARS': 0.0058,
+    'JPY': 0.036,
+    'BRL': 1.00
+  };
 
   async function carregarcotacoes() {
     const statusEl = document.getElementById('cb-status');
     try {
-      const resp = await fetch(`https://economia.awesomeapi.com/json/last/${PARES}`);
-      if (!resp.ok) throw new Error('Resposta não OK');
-      const data = await resp.json();
-
-      cotacoes = { 'BRL': 1 };
+      // Tenta requisição à AwesomeAPI
+      const resp = await fetch('https://economia.awesomeapi.com/json/last/USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL');
+      if (!resp.ok) throw new Error('Falha na resposta da API');
       
-      // Mapeia tanto a moeda de origem quanto a chave completa retornada pela API
-      Object.values(data).forEach(item => {
-        const valor = parseFloat(item.bid);
-        if (item.code) cotacoes[item.code] = valor;
-        if (item.codein) cotacoes[item.codein] = 1;
-      });
+      const data = await resp.json();
+      
+      if (data.USDBRL) cotacoes['USD'] = parseFloat(data.USDBRL.bid);
+      if (data.EURBRL) cotacoes['EUR'] = parseFloat(data.EURBRL.bid);
+      if (data.GBPBRL) cotacoes['GBP'] = parseFloat(data.GBPBRL.bid);
+      if (data.ARSBRL) cotacoes['ARS'] = parseFloat(data.ARSBRL.bid);
+      if (data.JPYBRL) cotacoes['JPY'] = parseFloat(data.JPYBRL.bid);
 
       if (statusEl) {
-        statusEl.textContent = 'Cotações atualizadas agora há pouco.';
+        statusEl.textContent = 'Cotações em tempo real atualizadas com sucesso.';
         statusEl.classList.remove('err');
       }
     } catch(e) {
+      console.warn('API indisponível ou bloqueada por CORS. Usando cotações de reserva.', e);
       if (statusEl) {
-        statusEl.textContent = 'Não foi possível buscar a cotação agora. Verifique sua conexão e tente de novo.';
-        statusEl.classList.add('err');
+        statusEl.textContent = 'Cotações aproximadas carregadas (servidor de taxas em tempo real inacessível).';
+        statusEl.classList.remove('err');
       }
     }
   }
 
-  async function converterMoeda() {
-    if (!cotacoes) {
-      await carregarcotacoes();
-    }
-
+  function converterMoeda() {
     const valor = parseFloat(document.getElementById('cb-valor').value) || 0;
     const de = document.getElementById('cb-de').value;
     const para = document.getElementById('cb-para').value;
 
-    if (!cotacoes || cotacoes[de] === undefined || cotacoes[para] === undefined) {
-      const statusEl = document.getElementById('cb-status');
-      if (statusEl) {
-        statusEl.textContent = 'Cotação indisponível no momento - tentando de novo...';
-        statusEl.classList.add('err');
-      }
-      await carregarcotacoes();
-      return;
-    }
+    const taxaDe = cotacoes[de] || 1;
+    const taxaPara = cotacoes[para] || 1;
 
-    // Calcula o valor em BRL e converte para a moeda destino
-    const emBRL = valor * cotacoes[de];
-    const resultado = emBRL / cotacoes[para];
-    const taxa = cotacoes[de] / cotacoes[para];
+    // Converte qualquer moeda para BRL e depois para a moeda de destino
+    const emBRL = valor * taxaDe;
+    const resultado = emBRL / taxaPara;
+    const taxaDireta = taxaDe / taxaPara;
 
     const resultadoFormatado = resultado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const taxaFormatada = taxa.toLocaleString('pt-BR', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+    const taxaFormatada = taxaDireta.toLocaleString('pt-BR', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
 
     const elResultado = document.getElementById('cb-resultado');
     const elTaxa = document.getElementById('cb-taxa');
@@ -185,7 +181,11 @@
   }
 
   document.getElementById('cb-calc').addEventListener('click', converterMoeda);
-  carregarcotacoes();
+
+  // Inicializa buscando as cotações e executa o primeiro cálculo
+  carregarcotacoes().then(() => {
+    converterMoeda();
+  });
 </script>
 </body>
 </html>
