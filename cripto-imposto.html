@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de imposto de renda sobre criptomoedas — Razão</title>
+<meta name="description" content="Calcule se sua venda de criptomoedas está isenta de imposto e, se não estiver, o valor do DARF a pagar com base nas alíquotas progressivas de ganho de capital.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="conversor-moedas.html">Câmbio</a>
+        <a href="cripto-imposto.html" class="current">Cripto (IR)</a>
+        <a href="financiamento-trator.html">Financiamento trator</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Imposto sobre ganho de capital em criptomoedas</h1>
+    <p class="lede">Descubra se a venda está isenta pela regra dos R$35.000 mensais e, se não estiver, quanto de imposto pagar via DARF.</p>
+  </section>
+
+  <main class="calc">
+    <div class="grid">
+      <div class="card">
+        <h2>Dados da operação</h2>
+        <div class="sub">Preencha com os valores da venda que você quer apurar.</div>
+
+        <label>Corretora usada na operação</label>
+        <div class="toggle" id="cr-regime">
+          <button class="on" data-val="NACIONAL">Nacional</button>
+          <button data-val="ESTRANGEIRA">Estrangeira</button>
+        </div>
+
+        <label for="cr-totalmes">Total vendido em cripto no mês (R$)</label>
+        <input type="number" id="cr-totalmes" value="20000" min="0" step="500">
+
+        <label for="cr-venda">Valor de venda desta operação (R$)</label>
+        <input type="number" id="cr-venda" value="20000" min="0" step="500">
+
+        <label for="cr-custo">Custo de aquisição da porção vendida (R$)</label>
+        <input type="number" id="cr-custo" value="12000" min="0" step="500">
+
+        <button class="btn-primary" id="cr-calc">Calcular</button>
+      </div>
+
+      <div class="ledger">
+        <h2>Resultado</h2>
+        <div class="ledger-row"><span class="label">Ganho de capital apurado</span><span class="fill"></span><span class="val" id="cr-ganho">—</span></div>
+        <div class="ledger-row"><span class="label">Situação</span><span class="fill"></span><span class="val" id="cr-situacao">—</span></div>
+        <div class="ledger-row"><span class="label">Alíquota efetiva</span><span class="fill"></span><span class="val" id="cr-aliquota">—</span></div>
+        <div class="ledger-row cost"><span class="label">Imposto devido (DARF)</span><span class="fill"></span><span class="val" id="cr-imposto">—</span></div>
+        <div class="ledger-row total"><span class="label">Vencimento estimado</span><span class="fill"></span><span class="val" id="cr-vencimento">—</span></div>
+        <div class="hint" id="cr-hint">Preencha os campos e clique em calcular.</div>
+      </div>
+    </div>
+
+    <article class="copy">
+      <h2>A regra da isenção de R$35.000</h2>
+      <p>Para pessoas físicas que operam em corretoras nacionais, a Receita Federal isenta de imposto o ganho obtido em meses em que o total de vendas de criptoativos — somando todas as moedas e todas as corretoras nacionais usadas — não ultrapassa R$35.000. Esse limite não é corrigido pela inflação desde que foi estabelecido em 2019, e vale para o total movimentado no mês, não por operação isolada. Se você vendeu R$10.000 em Bitcoin e mais R$28.000 em Ethereum no mesmo mês, o total de R$38.000 já ultrapassa o limite, mesmo que cada venda individual pareça pequena.</p>
+
+      <h2>Como calcular o ganho de capital manualmente</h2>
+      <p>O ganho é a diferença entre o valor recebido na venda e o custo de aquisição da porção vendida. Quando você comprou o criptoativo em lotes diferentes, a Receita Federal exige o uso do <strong>custo médio ponderado</strong>: some o valor total gasto em todas as compras e divida pela quantidade total de moedas compradas, para achar o custo médio por unidade. Ao vender parte da posição, multiplique a quantidade vendida pelo custo médio para achar o custo da porção vendida, e subtraia esse valor do total recebido na venda — essa diferença é o ganho tributável.</p>
+
+      <h2>Alíquotas: corretora nacional x estrangeira</h2>
+      <p>Para operações em corretoras nacionais, quando o total do mês ultrapassa R$35.000, aplica-se a tabela progressiva de ganho de capital: <strong>15%</strong> sobre a parcela do ganho até R$5 milhões, <strong>17,5%</strong> de R$5 milhões a R$10 milhões, <strong>20%</strong> de R$10 milhões a R$30 milhões e <strong>22,5%</strong> acima disso. Para a grande maioria dos investidores de varejo, o ganho fica inteiro na primeira faixa, então a alíquota efetiva é simplesmente 15%. Já para operações em corretoras estrangeiras, desde a Lei 14.754/2023, não existe isenção mensal — todo ganho é tributável, mas a alíquota é fixa em 15%, apurada anualmente na declaração de ajuste, com possibilidade de compensar prejuízos dentro do mesmo ano-base.</p>
+
+      <h2>Como e quando pagar</h2>
+      <p>O imposto sobre operações em corretora nacional é apurado mês a mês no programa GCAP (Ganho de Capital) da Receita Federal, e pago via DARF com o código de receita <strong>4600</strong>, até o último dia útil do mês seguinte ao da venda com lucro. Perder esse prazo gera multa de 0,33% ao dia sobre o valor devido, limitada a 20%, além de juros pela taxa Selic. Como as corretoras nacionais são obrigadas a informar movimentações à Receita Federal, o risco de ser identificado em caso de omissão é alto.</p>
+
+      <p class="muted">Esta calculadora é uma ferramenta educativa e não substitui orientação de um contador ou o preenchimento oficial do programa GCAP da Receita Federal. As regras tributárias sobre criptoativos podem mudar; confirme sempre as alíquotas e prazos vigentes antes de pagar um DARF.</p>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script src="assets/utils.js"></script>
+<script>
+document.getElementById('footYear').textContent = new Date().getFullYear();
+
+let regime = 'NACIONAL';
+document.querySelectorAll('#cr-regime button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#cr-regime button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    regime = btn.dataset.val;
+    document.getElementById('cr-totalmes').closest('div').style.opacity = regime === 'NACIONAL' ? '1' : '0.5';
+  });
+});
+
+function impostoProgressivo(ganho){
+  // Faixas oficiais de ganho de capital (Lei 13.259/2016), aplicadas de forma marginal
+  const faixas = [
+    { ate: 5000000, taxa: 0.15 },
+    { ate: 10000000, taxa: 0.175 },
+    { ate: 30000000, taxa: 0.20 },
+    { ate: Infinity, taxa: 0.225 }
+  ];
+  let restante = ganho;
+  let anterior = 0;
+  let imposto = 0;
+  for (const faixa of faixas){
+    if (restante <= 0) break;
+    const larguraFaixa = faixa.ate - anterior;
+    const valorNaFaixa = Math.min(restante, larguraFaixa);
+    imposto += valorNaFaixa * faixa.taxa;
+    restante -= valorNaFaixa;
+    anterior = faixa.ate;
+  }
+  return imposto;
+}
+
+function proximoVencimento(){
+  const hoje = new Date();
+  // último dia do mês seguinte ao mês seguinte (venda em mês M, DARF até o último dia útil de M+1)
+  const alvo = new Date(hoje.getFullYear(), hoje.getMonth() + 2, 0);
+  return alvo.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' }) + ' (aprox., confira dias úteis)';
+}
+
+function calcCripto(){
+  const totalMes = parseFloat(document.getElementById('cr-totalmes').value) || 0;
+  const venda = parseFloat(document.getElementById('cr-venda').value) || 0;
+  const custo = parseFloat(document.getElementById('cr-custo').value) || 0;
+  const ganho = venda - custo;
+
+  const ganhoEl = document.getElementById('cr-ganho');
+  const situacaoEl = document.getElementById('cr-situacao');
+  const aliquotaEl = document.getElementById('cr-aliquota');
+  const impostoEl = document.getElementById('cr-imposto');
+  const vencEl = document.getElementById('cr-vencimento');
+  const hintEl = document.getElementById('cr-hint');
+
+  ganhoEl.textContent = BRL(ganho);
+
+  if (ganho <= 0){
+    situacaoEl.textContent = 'Sem ganho tributável';
+    aliquotaEl.textContent = '—';
+    impostoEl.textContent = BRL(0);
+    vencEl.textContent = '—';
+    hintEl.innerHTML = 'Não houve ganho nesta operação (venda igual ou menor que o custo). Um <strong>prejuízo</strong> pode ser compensado com ganhos de meses futuros dentro do mesmo regime, desde que registrado corretamente no GCAP.';
+    return;
+  }
+
+  if (regime === 'NACIONAL' && totalMes <= 35000){
+    situacaoEl.textContent = 'Isento (abaixo de R$35.000/mês)';
+    aliquotaEl.textContent = '0%';
+    impostoEl.textContent = BRL(0);
+    vencEl.textContent = '—';
+    hintEl.innerHTML = 'Mesmo isento, esse ganho deve ser <strong>informado</strong> na Declaração de Ajuste Anual como rendimento isento — a isenção não dispensa a declaração.';
+    return;
+  }
+
+  let imposto, aliquotaEfetiva;
+  if (regime === 'NACIONAL'){
+    imposto = impostoProgressivo(ganho);
+    aliquotaEfetiva = imposto / ganho;
+    hintEl.innerHTML = 'Pague via <strong>DARF código 4600</strong> no site da Receita Federal, gerado pelo programa GCAP, até o vencimento indicado.';
+  } else {
+    imposto = ganho * 0.15;
+    aliquotaEfetiva = 0.15;
+    hintEl.innerHTML = 'Operações em corretora estrangeira seguem a <strong>Lei 14.754/2023</strong>: sem isenção mensal, alíquota fixa de 15%, apurada na Declaração de Ajuste Anual.';
+  }
+
+  situacaoEl.textContent = 'Tributável';
+  aliquotaEl.textContent = fmtNum(aliquotaEfetiva * 100, 1) + '%';
+  impostoEl.textContent = BRL(imposto);
+  vencEl.textContent = regime === 'NACIONAL' ? proximoVencimento() : 'Na Declaração de Ajuste Anual';
+}
+
+document.getElementById('cr-calc').addEventListener('click', calcCripto);
+calcCripto();
+</script>
+</body>
+</html>
