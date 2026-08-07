@@ -112,74 +112,81 @@
 
 <script src="assets/utils.js"></script>
 <script>
-document.getElementById('footYear').textContent = new Date().getFullYear();
+  document.getElementById('footYear').textContent = new Date().getFullYear();
 
-let sistemaAtual = 'SAC';
-document.querySelectorAll('#fi-sistema button').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('#fi-sistema button').forEach(b=>b.classList.remove('on'));
-    btn.classList.add('on');
-    sistemaAtual = btn.dataset.val;
+  // Função para formatar moeda em Reais (BRL)
+  function formatarBRL(valor) {
+    return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  let sistemaAtual = 'SAC';
+  document.querySelectorAll('#fi-sistema button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#fi-sistema button').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      sistemaAtual = btn.dataset.val;
+    });
   });
-});
 
-function calcFinanciamento(){
-  const valorImovel = parseFloat(document.getElementById('fi-valor').value) || 0;
-  const entrada = parseFloat(document.getElementById('fi-entrada').value) || 0;
-  const taxaAno = (parseFloat(document.getElementById('fi-taxa').value) || 0) / 100;
-  const anos = Math.max(1, parseInt(document.getElementById('fi-prazo').value) || 1);
-  const n = anos * 12;
-  const financiado = Math.max(0, valorImovel - entrada);
-  const i = Math.pow(1 + taxaAno, 1/12) - 1;
+  function calcFinanciamento() {
+    const valorImovel = parseFloat(document.getElementById('fi-valor').value) || 0;
+    const entrada = parseFloat(document.getElementById('fi-entrada').value) || 0;
+    const taxaAno = (parseFloat(document.getElementById('fi-taxa').value) || 0) / 100;
+    const anos = Math.max(1, parseInt(document.getElementById('fi-prazo').value) || 1);
+    const n = anos * 12;
+    const financiado = Math.max(0, valorImovel - entrada);
+    const i = Math.pow(1 + taxaAno, 1/12) - 1;
 
-  let rows = [];
-  let totalJuros = 0;
-  let primeira, ultima;
+    let rows = [];
+    let totalJuros = 0;
+    let primeira = 0;
+    let ultima = 0;
 
-  if (sistemaAtual === 'SAC'){
-    const amortConst = financiado / n;
-    let saldo = financiado;
-    for (let m=1; m<=n; m++){
-      const juros = saldo * i;
-      const parcela = amortConst + juros;
-      saldo -= amortConst;
-      totalJuros += juros;
-      if (m===1) primeira = parcela;
-      if (m===n) ultima = parcela;
-      rows.push({ m, amort: amortConst, juros, parcela, saldo: Math.max(0,saldo) });
+    if (sistemaAtual === 'SAC') {
+      const amortConst = financiado / n;
+      let saldo = financiado;
+      for (let m = 1; m <= n; m++) {
+        const juros = saldo * i;
+        const parcela = amortConst + juros;
+        saldo -= amortConst;
+        totalJuros += juros;
+        if (m === 1) primeira = parcela;
+        if (m === n) ultima = parcela;
+        rows.push({ m, amort: amortConst, juros, parcela, saldo: Math.max(0, saldo) });
+      }
+    } else {
+      const parcela = i === 0 ? financiado / n : financiado * i / (1 - Math.pow(1 + i, -n));
+      let saldo = financiado;
+      for (let m = 1; m <= n; m++) {
+        const juros = saldo * i;
+        const amort = parcela - juros;
+        saldo -= amort;
+        totalJuros += juros;
+        if (m === 1) primeira = parcela;
+        if (m === n) ultima = parcela;
+        rows.push({ m, amort, juros, parcela, saldo: Math.max(0, saldo) });
+      }
     }
-  } else {
-    const parcela = i === 0 ? financiado/n : financiado * i / (1 - Math.pow(1+i, -n));
-    let saldo = financiado;
-    for (let m=1; m<=n; m++){
-      const juros = saldo * i;
-      const amort = parcela - juros;
-      saldo -= amort;
-      totalJuros += juros;
-      if (m===1) primeira = parcela;
-      if (m===n) ultima = parcela;
-      rows.push({ m, amort, juros, parcela, saldo: Math.max(0,saldo) });
+
+    document.getElementById('fi-financiado').textContent = formatarBRL(financiado);
+    document.getElementById('fi-primeira').textContent = formatarBRL(primeira);
+    document.getElementById('fi-ultima').textContent = formatarBRL(ultima);
+    document.getElementById('fi-jurospagos').textContent = formatarBRL(totalJuros);
+    document.getElementById('fi-totalpago').textContent = formatarBRL(financiado + totalJuros);
+
+    const tbody = document.querySelector('#fi-tabela tbody');
+    tbody.innerHTML = '';
+    const showRow = r => `<tr><td>${r.m}</td><td>${formatarBRL(r.amort)}</td><td>${formatarBRL(r.juros)}</td><td>${formatarBRL(r.parcela)}</td><td>${formatarBRL(r.saldo)}</td></tr>`;
+    
+    rows.slice(0, 6).forEach(r => tbody.insertAdjacentHTML('beforeend', showRow(r)));
+    if (rows.length > 12) {
+      tbody.insertAdjacentHTML('beforeend', '<tr class="gap"><td colspan="5">...</td></tr>');
     }
+    rows.slice(-6).forEach(r => tbody.insertAdjacentHTML('beforeend', showRow(r)));
   }
 
-  document.getElementById('fi-financiado').textContent = BRL(financiado);
-  document.getElementById('fi-primeira').textContent = BRL(primeira);
-  document.getElementById('fi-ultima').textContent = BRL(ultima);
-  document.getElementById('fi-jurospagos').textContent = BRL(totalJuros);
-  document.getElementById('fi-totalpago').textContent = BRL(financiado + totalJuros);
-
-  const tbody = document.querySelector('#fi-tabela tbody');
-  tbody.innerHTML = '';
-  const showRow = r => `<tr><td>${r.m}</td><td>${BRL(r.amort)}</td><td>${BRL(r.juros)}</td><td>${BRL(r.parcela)}</td><td>${BRL(r.saldo)}</td></tr>`;
-  rows.slice(0,6).forEach(r=> tbody.insertAdjacentHTML('beforeend', showRow(r)));
-  if (rows.length > 12){
-    tbody.insertAdjacentHTML('beforeend', '<tr class="gap"><td colspan="5">···</td></tr>');
-  }
-  rows.slice(-6).forEach(r=> tbody.insertAdjacentHTML('beforeend', showRow(r)));
-}
-
-document.getElementById('fi-calc').addEventListener('click', calcFinanciamento);
-calcFinanciamento();
+  document.getElementById('fi-calc').addEventListener('click', calcFinanciamento);
+  calcFinanciamento();
 </script>
 </body>
 </html>
