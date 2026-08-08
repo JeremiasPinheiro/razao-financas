@@ -128,6 +128,7 @@
     return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
+  // Atualização automática da taxa de juros conforme a linha selecionada
   const trLinha = document.getElementById('tr-linha');
   if (trLinha) {
     trLinha.addEventListener('change', (e) => {
@@ -139,11 +140,14 @@
   }
 
   let sistemaAtual = 'SAC';
+
+  // Gerencia a troca de botões (SAC / Price) e recalcula automaticamente
   document.querySelectorAll('#tr-sistema button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('#tr-sistema button').forEach(b => b.classList.remove('on'));
       btn.classList.add('on');
       sistemaAtual = btn.dataset.val;
+      calcTrator(); // Dispara o cálculo ao trocar o sistema de amortização
     });
   });
 
@@ -160,47 +164,70 @@
     let ultima = 0;
 
     if (sistemaAtual === 'SAC') {
+      // Sistema SAC (Parcelas Decrescentes)
       const amortConst = financiado / anos;
       let saldo = financiado;
+
       for (let a = 1; a <= anos; a++) {
         const juros = saldo * taxaAno;
         const parcela = amortConst + juros;
         saldo -= amortConst;
         totalJuros += juros;
+
         if (a === 1) primeira = parcela;
         if (a === anos) ultima = parcela;
+
         rows.push({ a, amort: amortConst, juros, parcela, saldo: Math.max(0, saldo) });
       }
     } else {
-      const parcela = taxaAno === 0 ? financiado / anos : financiado * taxaAno / (1 - Math.pow(1 + taxaAno, -anos));
+      // Tabela Price (Parcelas Fixas)
+      const parcela = taxaAno === 0 
+        ? financiado / anos 
+        : (financiado * taxaAno) / (1 - Math.pow(1 + taxaAno, -anos));
+
       let saldo = financiado;
+
       for (let a = 1; a <= anos; a++) {
         const juros = saldo * taxaAno;
         const amort = parcela - juros;
         saldo -= amort;
         totalJuros += juros;
+
         if (a === 1) primeira = parcela;
         if (a === anos) ultima = parcela;
+
         rows.push({ a, amort, juros, parcela, saldo: Math.max(0, saldo) });
       }
     }
 
+    // Exibição dos totais na tela
     document.getElementById('tr-financiado').textContent = formatarBRL(financiado);
     document.getElementById('tr-primeira').textContent = formatarBRL(primeira);
     document.getElementById('tr-ultima').textContent = formatarBRL(ultima);
     document.getElementById('tr-jurospagos').textContent = formatarBRL(totalJuros);
     document.getElementById('tr-totalpago').textContent = formatarBRL(financiado + totalJuros);
 
+    // Preenchimento da tabela de parcelas anuais
     const tbody = document.querySelector('#tr-tabela tbody');
     if (tbody) {
       tbody.innerHTML = '';
       rows.forEach(r => {
-        tbody.insertAdjacentHTML('beforeend', `<tr><td>${r.a}</td><td>${formatarBRL(r.amort)}</td><td>${formatarBRL(r.juros)}</td><td>${formatarBRL(r.parcela)}</td><td>${formatarBRL(r.saldo)}</td></tr>`);
+        const rowHTML = `<tr>
+          <td>${r.a}º Ano</td>
+          <td>${formatarBRL(r.amort)}</td>
+          <td>${formatarBRL(r.juros)}</td>
+          <td>${formatarBRL(r.parcela)}</td>
+          <td>${formatarBRL(r.saldo)}</td>
+        </tr>`;
+        tbody.insertAdjacentHTML('beforeend', rowHTML);
       });
     }
   }
 
+  // Ouvinte para o botão calcular
   document.getElementById('tr-calc').addEventListener('click', calcTrator);
+
+  // Cálculo inicial na abertura da página
   calcTrator();
 </script>
 </body>
