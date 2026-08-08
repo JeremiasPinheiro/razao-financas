@@ -103,9 +103,14 @@
   </footer>
 </div>
 
-<script src="assets/utils.js"></script>
 <script>
-  document.getElementById('footYear').textContent = new Date().getFullYear();
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Atualiza o ano do rodapé
+  const footYearEl = document.getElementById('footYear');
+  if (footYearEl) {
+    footYearEl.textContent = new Date().getFullYear();
+  }
 
   // Função para formatar moeda em Reais (BRL)
   function formatarBRL(valor) {
@@ -113,10 +118,15 @@
   }
 
   function calcJurosCompostos() {
-    const capital = parseFloat(document.getElementById('jc-capital').value) || 0;
-    const aporte = parseFloat(document.getElementById('jc-aporte').value) || 0;
-    const taxa = (parseFloat(document.getElementById('jc-taxa').value) || 0) / 100;
-    const meses = Math.max(1, parseInt(document.getElementById('jc-tempo').value) || 1);
+    const capitalInput = document.getElementById('jc-capital');
+    const aporteInput = document.getElementById('jc-aporte');
+    const taxaInput = document.getElementById('jc-taxa');
+    const tempoInput = document.getElementById('jc-tempo');
+
+    const capital = parseFloat(capitalInput ? capitalInput.value : 0) || 0;
+    const aporte = parseFloat(aporteInput ? aporteInput.value : 0) || 0;
+    const taxa = (parseFloat(taxaInput ? taxaInput.value : 0) || 0) / 100;
+    const meses = Math.max(1, parseInt(tempoInput ? tempoInput.value : 1) || 1);
 
     let saldo = capital;
     let investido = capital;
@@ -130,9 +140,13 @@
 
     const juros = saldo - investido;
 
-    document.getElementById('jc-investido').textContent = formatarBRL(investido);
-    document.getElementById('jc-juros').textContent = formatarBRL(juros);
-    document.getElementById('jc-montante').textContent = formatarBRL(saldo);
+    const investidoEl = document.getElementById('jc-investido');
+    const jurosEl = document.getElementById('jc-juros');
+    const montanteEl = document.getElementById('jc-montante');
+
+    if (investidoEl) investidoEl.textContent = formatarBRL(investido);
+    if (jurosEl) jurosEl.textContent = formatarBRL(juros);
+    if (montanteEl) montanteEl.textContent = formatarBRL(saldo);
 
     drawGrowthChart(series);
   }
@@ -140,45 +154,70 @@
   function drawGrowthChart(series) {
     const canvas = document.getElementById('growthChart');
     if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
-    const W = canvas.width, H = canvas.height;
+    const W = canvas.width;
+    const H = canvas.height;
     ctx.clearRect(0, 0, W, H);
 
     const pad = { l: 56, r: 16, t: 14, b: 24 };
-    const maxVal = Math.max(...series.map(s => s.saldo));
+    const maxVal = Math.max(...series.map(s => s.saldo), 1);
     const n = series.length;
 
-    const x = i => pad.l + (i / (n - 1)) * (W - pad.l - pad.r);
+    const x = i => pad.l + (n > 1 ? (i / (n - 1)) * (W - pad.l - pad.r) : 0);
     const y = v => H - pad.b - (v / maxVal) * (H - pad.t - pad.b);
 
+    // Linhas de grade e eixos
     ctx.strokeStyle = '#C7D3BC';
     ctx.lineWidth = 1;
     ctx.font = '11px IBM Plex Mono, monospace';
-    ctx.fillStyle = '#5B6B51';
+    ctx.fillStyle = '#5B6851';
+
     for (let g = 0; g <= 4; g++) {
       const val = maxVal * g / 4;
       const yy = y(val);
-      ctx.beginPath(); ctx.moveTo(pad.l, yy); ctx.lineTo(W - pad.r, yy); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pad.l, yy);
+      ctx.lineTo(W - pad.r, yy);
+      ctx.stroke();
       ctx.fillText('R$ ' + Math.round(val).toLocaleString('pt-BR'), 0, yy + 4);
     }
 
+    // Linha do Total Investido (Pontilhada)
     ctx.setLineDash([3, 4]);
-    ctx.strokeStyle = '#5B6B51';
+    ctx.strokeStyle = '#5B6851';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
-    series.forEach((s, i) => { i === 0 ? ctx.moveTo(x(i), y(s.investido)) : ctx.lineTo(x(i), y(s.investido)); });
+    series.forEach((s, i) => {
+      if (i === 0) ctx.moveTo(x(i), y(s.investido));
+      else ctx.lineTo(x(i), y(s.investido));
+    });
     ctx.stroke();
-    ctx.setLineDash([]);
 
+    // Linha do Saldo Total / Montante (Contínua)
+    ctx.setLineDash([]);
     ctx.strokeStyle = '#A8792E';
     ctx.lineWidth = 2.5;
     ctx.beginPath();
-    series.forEach((s, i) => { i === 0 ? ctx.moveTo(x(i), y(s.saldo)) : ctx.lineTo(x(i), y(s.saldo)); });
+    series.forEach((s, i) => {
+      if (i === 0) ctx.moveTo(x(i), y(s.saldo));
+      else ctx.lineTo(x(i), y(s.saldo));
+    });
     ctx.stroke();
   }
 
-  document.getElementById('jc-calc').addEventListener('click', calcJurosCompostos);
+  // Evento do botão Calcular
+  const btnCalc = document.getElementById('jc-calc');
+  if (btnCalc) {
+    btnCalc.addEventListener('click', (e) => {
+      e.preventDefault();
+      calcJurosCompostos();
+    });
+  }
+
+  // Executa o cálculo inicial
   calcJurosCompostos();
+});
 </script>
 </body>
 </html>
