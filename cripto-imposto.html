@@ -99,7 +99,6 @@
   </footer>
 </div>
 
-<script src="assets/utils.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -109,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     footYearEl.textContent = new Date().getFullYear();
   }
 
-  // Função auxiliar para formatar moeda em Real
+  // Função auxiliar para formatar moeda em Real (BRL)
   function formatarBRL(valor) {
     return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
@@ -123,13 +122,13 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('#cr-regime button').forEach(b => b.classList.remove('on'));
       btn.classList.add('on');
 
-      // Obtém do dataset.val ou do texto do botão
+      // Obtém o valor do dataset ou texto do botão
       regime = btn.dataset.val || btn.textContent.trim().toUpperCase();
       calcCripto();
     });
   });
 
-  // Cálculo de imposto progressivo nacional
+  // Cálculo de Imposto de Renda sobre Ganho de Capital (Regime Nacional - Tabela Progressiva)
   function impostoProgressivo(ganho) {
     const faixas = [
       { ate: 5000000, taxa: 0.15 },
@@ -145,11 +144,12 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const faixa of faixas) {
       if (restante <= 0) break;
       const larguraFaixa = faixa.ate - anterior;
-      const valorNaFaixa = Math.min(restante, larguraFaixa);
-      imposto += valorNaFaixa * faixa.taxa;
-      restante -= valorNaFaixa;
+      const valorTributavelAqui = Math.min(restante, larguraFaixa);
+      imposto += valorTributavelAqui * faixa.taxa;
+      restante -= valorTributavelAqui;
       anterior = faixa.ate;
     }
+
     return imposto;
   }
 
@@ -164,9 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const vendaInput = document.getElementById('cr-venda');
     const custoInput = document.getElementById('cr-custo');
 
-    const totalMes = totalMesInput ? parseFloat(totalMesInput.value) || 0 : 0;
-    const venda = vendaInput ? parseFloat(vendaInput.value) || 0 : 0;
-    const custo = custoInput ? parseFloat(custoInput.value) || 0 : 0;
+    const totalMes = parseFloat(totalMesInput ? totalMesInput.value : 0) || 0;
+    const venda = parseFloat(vendaInput ? vendaInput.value : 0) || 0;
+    const custo = parseFloat(custoInput ? custoInput.value : 0) || 0;
     const ganho = venda - custo;
 
     const ganhoEl = document.getElementById('cr-ganho');
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Regime Estrangeiro (Lei 14.754/2023 - Alíquota fixa de 15% sem isenção mensal)
       imposto = ganho * 0.15;
       aliquotaEfetiva = 0.15;
-      if (hintEl) hintEl.innerHTML = 'Operações em corretora estrangeira seguem a <strong>Lei 14.754/2023</strong>: sem isenção mensal (15%).';
+      if (hintEl) hintEl.innerHTML = 'Operações em corretora estrangeira seguem a <strong>Lei 14.754/2023</strong>.';
     }
 
     if (situacaoEl) situacaoEl.textContent = 'Tributável';
