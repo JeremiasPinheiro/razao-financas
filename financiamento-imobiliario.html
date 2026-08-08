@@ -114,9 +114,14 @@
   </footer>
 </div>
 
-<script src="assets/utils.js"></script>
 <script>
-  document.getElementById('footYear').textContent = new Date().getFullYear();
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Atualiza o ano no rodapé
+  const footYearEl = document.getElementById('footYear');
+  if (footYearEl) {
+    footYearEl.textContent = new Date().getFullYear();
+  }
 
   // Função para formatar moeda em Reais (BRL)
   function formatarBRL(valor) {
@@ -127,23 +132,31 @@
 
   // Gerencia a troca de botões (SAC / Price) e recalcula automaticamente
   document.querySelectorAll('#fi-sistema button').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
       document.querySelectorAll('#fi-sistema button').forEach(b => b.classList.remove('on'));
       btn.classList.add('on');
-      sistemaAtual = btn.dataset.val;
-      calcFinanciamento(); // Dispara o recalculamento ao trocar de sistema
+      
+      // Obtém o valor via dataset ou do texto do botão
+      sistemaAtual = btn.dataset.val || btn.textContent.trim().toUpperCase();
+      calcFinanciamento();
     });
   });
 
   function calcFinanciamento() {
-    const valorImovel = parseFloat(document.getElementById('fi-valor').value) || 0;
-    const entrada = parseFloat(document.getElementById('fi-entrada').value) || 0;
-    const taxaAno = (parseFloat(document.getElementById('fi-taxa').value) || 0) / 100;
-    const anos = Math.max(1, parseInt(document.getElementById('fi-prazo').value) || 1);
-    
-    const n = anos * 12;
+    const valorImovelInput = document.getElementById('fi-valor');
+    const entradaInput = document.getElementById('fi-entrada');
+    const taxaAnoInput = document.getElementById('fi-taxa');
+    const prazoInput = document.getElementById('fi-prazo');
+
+    const valorImovel = parseFloat(valorImovelInput ? valorImovelInput.value : 0) || 0;
+    const entrada = parseFloat(entradaInput ? entradaInput.value : 0) || 0;
+    const taxaAno = (parseFloat(taxaAnoInput ? taxaAnoInput.value : 0) || 0) / 100;
+    const anos = Math.max(1, parseInt(prazoInput ? prazoInput.value : 1) || 1);
+
+    const n = anos * 12; // total de meses
     const financiado = Math.max(0, valorImovel - entrada);
-    
+
     // Taxa mensal equivalente
     const i = Math.pow(1 + taxaAno, 1 / 12) - 1;
 
@@ -153,6 +166,7 @@
     let ultima = 0;
 
     if (sistemaAtual === 'SAC') {
+      // Sistema SAC (Amortização Constante)
       const amortConst = financiado / n;
       let saldo = financiado;
 
@@ -168,7 +182,7 @@
         rows.push({ m, amort: amortConst, juros, parcela, saldo: Math.max(0, saldo) });
       }
     } else {
-      // Tabela Price
+      // Tabela Price (Parcelas Fixas)
       const parcelaFixed = i === 0 
         ? financiado / n 
         : (financiado * i) / (1 - Math.pow(1 + i, -n));
@@ -189,37 +203,54 @@
     }
 
     // Atualização dos totais na tela
-    document.getElementById('fi-financiado').textContent = formatarBRL(financiado);
-    document.getElementById('fi-primeira').textContent = formatarBRL(primeira);
-    document.getElementById('fi-ultima').textContent = formatarBRL(ultima);
-    document.getElementById('fi-jurospagos').textContent = formatarBRL(totalJuros);
-    document.getElementById('fi-totalpago').textContent = formatarBRL(financiado + totalJuros);
+    const financiadoEl = document.getElementById('fi-financiado');
+    const primeiraEl = document.getElementById('fi-primeira');
+    const ultimaEl = document.getElementById('fi-ultima');
+    const jurosPagosEl = document.getElementById('fi-jurospagos');
+    const totalPagoEl = document.getElementById('fi-totalpago');
+
+    if (financiadoEl) financiadoEl.textContent = formatarBRL(financiado);
+    if (primeiraEl) primeiraEl.textContent = formatarBRL(primeira);
+    if (ultimaEl) ultimaEl.textContent = formatarBRL(ultima);
+    if (jurosPagosEl) jurosPagosEl.textContent = formatarBRL(totalJuros);
+    if (totalPagoEl) totalPagoEl.textContent = formatarBRL(financiado + totalJuros);
 
     // Preenchimento da tabela de parcelas
     const tbody = document.querySelector('#fi-tabela tbody');
-    tbody.innerHTML = '';
+    if (tbody) {
+      tbody.innerHTML = '';
 
-    const showRow = r => `<tr>
-      <td>${r.m}</td>
-      <td>${formatarBRL(r.amort)}</td>
-      <td>${formatarBRL(r.juros)}</td>
-      <td>${formatarBRL(r.parcela)}</td>
-      <td>${formatarBRL(r.saldo)}</td>
-    </tr>`;
+      const showRow = r => `<tr>
+        <td>${r.m}ª</td>
+        <td>${formatarBRL(r.amort)}</td>
+        <td>${formatarBRL(r.juros)}</td>
+        <td>${formatarBRL(r.parcela)}</td>
+        <td>${formatarBRL(r.saldo)}</td>
+      </tr>`;
 
-    // Exibe os primeiros 6 e os últimos 6 meses
-    rows.slice(0, 6).forEach(r => tbody.insertAdjacentHTML('beforeend', showRow(r)));
-    if (rows.length > 12) {
-      tbody.insertAdjacentHTML('beforeend', '<tr class="gap"><td colspan="5">...</td></tr>');
-      rows.slice(-6).forEach(r => tbody.insertAdjacentHTML('beforeend', showRow(r)));
+      // Exibe os primeiros 6 e os últimos 6 meses caso o prazo seja longo
+      if (rows.length > 12) {
+        rows.slice(0, 6).forEach(r => tbody.insertAdjacentHTML('beforeend', showRow(r)));
+        tbody.insertAdjacentHTML('beforeend', '<tr class="gap"><td colspan="5">...</td></tr>');
+        rows.slice(-6).forEach(r => tbody.insertAdjacentHTML('beforeend', showRow(r)));
+      } else {
+        rows.forEach(r => tbody.insertAdjacentHTML('beforeend', showRow(r)));
+      }
     }
   }
 
-  // Ouvinte do botão de calcular
-  document.getElementById('fi-calc').addEventListener('click', calcFinanciamento);
+  // Ouvinte do botão Calcular
+  const btnCalc = document.getElementById('fi-calc');
+  if (btnCalc) {
+    btnCalc.addEventListener('click', (e) => {
+      e.preventDefault();
+      calcFinanciamento();
+    });
+  }
 
   // Cálculo inicial automático
   calcFinanciamento();
+});
 </script>
 </body>
 </html>
