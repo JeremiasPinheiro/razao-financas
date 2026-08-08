@@ -124,11 +124,14 @@
   }
 
   let sistemaAtual = 'SAC';
+
+  // Gerencia a troca de botões (SAC / Price) e recalcula automaticamente
   document.querySelectorAll('#fi-sistema button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('#fi-sistema button').forEach(b => b.classList.remove('on'));
       btn.classList.add('on');
       sistemaAtual = btn.dataset.val;
+      calcFinanciamento(); // Dispara o recalculamento ao trocar de sistema
     });
   });
 
@@ -137,9 +140,12 @@
     const entrada = parseFloat(document.getElementById('fi-entrada').value) || 0;
     const taxaAno = (parseFloat(document.getElementById('fi-taxa').value) || 0) / 100;
     const anos = Math.max(1, parseInt(document.getElementById('fi-prazo').value) || 1);
+    
     const n = anos * 12;
     const financiado = Math.max(0, valorImovel - entrada);
-    const i = Math.pow(1 + taxaAno, 1/12) - 1;
+    
+    // Taxa mensal equivalente
+    const i = Math.pow(1 + taxaAno, 1 / 12) - 1;
 
     let rows = [];
     let totalJuros = 0;
@@ -149,47 +155,70 @@
     if (sistemaAtual === 'SAC') {
       const amortConst = financiado / n;
       let saldo = financiado;
+
       for (let m = 1; m <= n; m++) {
         const juros = saldo * i;
         const parcela = amortConst + juros;
         saldo -= amortConst;
         totalJuros += juros;
+
         if (m === 1) primeira = parcela;
         if (m === n) ultima = parcela;
+
         rows.push({ m, amort: amortConst, juros, parcela, saldo: Math.max(0, saldo) });
       }
     } else {
-      const parcela = i === 0 ? financiado / n : financiado * i / (1 - Math.pow(1 + i, -n));
+      // Tabela Price
+      const parcelaFixed = i === 0 
+        ? financiado / n 
+        : (financiado * i) / (1 - Math.pow(1 + i, -n));
+
       let saldo = financiado;
+
       for (let m = 1; m <= n; m++) {
         const juros = saldo * i;
-        const amort = parcela - juros;
+        const amort = parcelaFixed - juros;
         saldo -= amort;
         totalJuros += juros;
-        if (m === 1) primeira = parcela;
-        if (m === n) ultima = parcela;
-        rows.push({ m, amort, juros, parcela, saldo: Math.max(0, saldo) });
+
+        if (m === 1) primeira = parcelaFixed;
+        if (m === n) ultima = parcelaFixed;
+
+        rows.push({ m, amort, juros, parcela: parcelaFixed, saldo: Math.max(0, saldo) });
       }
     }
 
+    // Atualização dos totais na tela
     document.getElementById('fi-financiado').textContent = formatarBRL(financiado);
     document.getElementById('fi-primeira').textContent = formatarBRL(primeira);
     document.getElementById('fi-ultima').textContent = formatarBRL(ultima);
     document.getElementById('fi-jurospagos').textContent = formatarBRL(totalJuros);
     document.getElementById('fi-totalpago').textContent = formatarBRL(financiado + totalJuros);
 
+    // Preenchimento da tabela de parcelas
     const tbody = document.querySelector('#fi-tabela tbody');
     tbody.innerHTML = '';
-    const showRow = r => `<tr><td>${r.m}</td><td>${formatarBRL(r.amort)}</td><td>${formatarBRL(r.juros)}</td><td>${formatarBRL(r.parcela)}</td><td>${formatarBRL(r.saldo)}</td></tr>`;
-    
+
+    const showRow = r => `<tr>
+      <td>${r.m}</td>
+      <td>${formatarBRL(r.amort)}</td>
+      <td>${formatarBRL(r.juros)}</td>
+      <td>${formatarBRL(r.parcela)}</td>
+      <td>${formatarBRL(r.saldo)}</td>
+    </tr>`;
+
+    // Exibe os primeiros 6 e os últimos 6 meses
     rows.slice(0, 6).forEach(r => tbody.insertAdjacentHTML('beforeend', showRow(r)));
     if (rows.length > 12) {
       tbody.insertAdjacentHTML('beforeend', '<tr class="gap"><td colspan="5">...</td></tr>');
+      rows.slice(-6).forEach(r => tbody.insertAdjacentHTML('beforeend', showRow(r)));
     }
-    rows.slice(-6).forEach(r => tbody.insertAdjacentHTML('beforeend', showRow(r)));
   }
 
+  // Ouvinte do botão de calcular
   document.getElementById('fi-calc').addEventListener('click', calcFinanciamento);
+
+  // Cálculo inicial automático
   calcFinanciamento();
 </script>
 </body>
