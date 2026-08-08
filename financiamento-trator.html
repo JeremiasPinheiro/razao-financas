@@ -119,11 +119,16 @@
   </footer>
 </div>
 
-<script src="assets/utils.js"></script>
 <script>
-  document.getElementById('footYear').textContent = new Date().getFullYear();
+document.addEventListener('DOMContentLoaded', () => {
 
-  // Função auxiliar para formatar moeda em Reais (BRL)
+  // Atualiza o ano no rodapé
+  const footYearEl = document.getElementById('footYear');
+  if (footYearEl) {
+    footYearEl.textContent = new Date().getFullYear();
+  }
+
+  // Função auxiliar para formatar moeda em Real (BRL)
   function formatarBRL(valor) {
     return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
@@ -133,8 +138,9 @@
   if (trLinha) {
     trLinha.addEventListener('change', (e) => {
       const v = e.target.value;
-      if (v !== 'custom') {
-        document.getElementById('tr-taxa').value = v;
+      const trTaxa = document.getElementById('tr-taxa');
+      if (trTaxa && v !== 'custom') {
+        trTaxa.value = v;
       }
     });
   }
@@ -143,19 +149,25 @@
 
   // Gerencia a troca de botões (SAC / Price) e recalcula automaticamente
   document.querySelectorAll('#tr-sistema button').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
       document.querySelectorAll('#tr-sistema button').forEach(b => b.classList.remove('on'));
       btn.classList.add('on');
-      sistemaAtual = btn.dataset.val;
-      calcTrator(); // Dispara o cálculo ao trocar o sistema de amortização
+      sistemaAtual = btn.dataset.val || btn.textContent.trim().toUpperCase();
+      calcTrator();
     });
   });
 
   function calcTrator() {
-    const valorTrator = parseFloat(document.getElementById('tr-valor').value) || 0;
-    const entrada = parseFloat(document.getElementById('tr-entrada').value) || 0;
-    const taxaAno = (parseFloat(document.getElementById('tr-taxa').value) || 0) / 100;
-    const anos = Math.max(1, parseInt(document.getElementById('tr-prazo').value) || 1);
+    const valorTratorInput = document.getElementById('tr-valor');
+    const entradaInput = document.getElementById('tr-entrada');
+    const taxaInput = document.getElementById('tr-taxa');
+    const prazoInput = document.getElementById('tr-prazo');
+
+    const valorTrator = parseFloat(valorTratorInput ? valorTratorInput.value : 0) || 0;
+    const entrada = parseFloat(entradaInput ? entradaInput.value : 0) || 0;
+    const taxaAno = (parseFloat(taxaInput ? taxaInput.value : 0) || 0) / 100;
+    const anos = Math.max(1, parseInt(prazoInput ? prazoInput.value : 1) || 1);
     const financiado = Math.max(0, valorTrator - entrada);
 
     let rows = [];
@@ -177,13 +189,22 @@
         if (a === 1) primeira = parcela;
         if (a === anos) ultima = parcela;
 
-        rows.push({ a, amort: amortConst, juros, parcela, saldo: Math.max(0, saldo) });
+        rows.push({
+          a,
+          amort: amortConst,
+          juros,
+          parcela,
+          saldo: Math.max(0, saldo)
+        });
       }
     } else {
       // Tabela Price (Parcelas Fixas)
-      const parcela = taxaAno === 0 
-        ? financiado / anos 
-        : (financiado * taxaAno) / (1 - Math.pow(1 + taxaAno, -anos));
+      let parcela = 0;
+      if (taxaAno === 0) {
+        parcela = financiado / anos;
+      } else {
+        parcela = (financiado * taxaAno) / (1 - Math.pow(1 + taxaAno, -anos));
+      }
 
       let saldo = financiado;
 
@@ -196,16 +217,28 @@
         if (a === 1) primeira = parcela;
         if (a === anos) ultima = parcela;
 
-        rows.push({ a, amort, juros, parcela, saldo: Math.max(0, saldo) });
+        rows.push({
+          a,
+          amort,
+          juros,
+          parcela,
+          saldo: Math.max(0, saldo)
+        });
       }
     }
 
     // Exibição dos totais na tela
-    document.getElementById('tr-financiado').textContent = formatarBRL(financiado);
-    document.getElementById('tr-primeira').textContent = formatarBRL(primeira);
-    document.getElementById('tr-ultima').textContent = formatarBRL(ultima);
-    document.getElementById('tr-jurospagos').textContent = formatarBRL(totalJuros);
-    document.getElementById('tr-totalpago').textContent = formatarBRL(financiado + totalJuros);
+    const elFinanciado = document.getElementById('tr-financiado');
+    const elPrimeira = document.getElementById('tr-primeira');
+    const elUltima = document.getElementById('tr-ultima');
+    const elJurosPagos = document.getElementById('tr-jurospagos');
+    const elTotalPago = document.getElementById('tr-totalpago');
+
+    if (elFinanciado) elFinanciado.textContent = formatarBRL(financiado);
+    if (elPrimeira) elPrimeira.textContent = formatarBRL(primeira);
+    if (elUltima) elUltima.textContent = formatarBRL(ultima);
+    if (elJurosPagos) elJurosPagos.textContent = formatarBRL(totalJuros);
+    if (elTotalPago) elTotalPago.textContent = formatarBRL(financiado + totalJuros);
 
     // Preenchimento da tabela de parcelas anuais
     const tbody = document.querySelector('#tr-tabela tbody');
@@ -225,10 +258,17 @@
   }
 
   // Ouvinte para o botão calcular
-  document.getElementById('tr-calc').addEventListener('click', calcTrator);
+  const btnCalc = document.getElementById('tr-calc');
+  if (btnCalc) {
+    btnCalc.addEventListener('click', (e) => {
+      e.preventDefault();
+      calcTrator();
+    });
+  }
 
   // Cálculo inicial na abertura da página
   calcTrator();
+});
 </script>
 </body>
 </html>
