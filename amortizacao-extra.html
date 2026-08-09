@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Amortização Extra e Quitação Antecipada — Razão</title>
+<meta name="description" content="Simule o impacto de um aporte extra num financiamento: quanto tempo você economiza ou quanto sua parcela cai, e quanto poupa em juros.">
+<link rel="stylesheet" href="style.css">
+
+<!-- Código do Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4283089731677395" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="salario-liquido.html">Salário Líquido</a>
+        <a href="emprestimo-pessoal.html">Empréstimo</a>
+        <a href="conversor-moedas.html">Câmbio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="eyebrow">Calculadora</div>
+      <h1>Amortização extra e quitação antecipada</h1>
+      <p class="lede">Veja o efeito real de um aporte extra num financiamento: quanto tempo você tira do contrato, ou quanto sua parcela cai — e quanto isso poupa em juros.</p>
+    </section>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Dados do financiamento</h2>
+        <label for="ae-saldo">Saldo devedor atual (R$)</label>
+        <input type="number" id="ae-saldo" value="180000" min="0" step="1000">
+
+        <label for="ae-taxa">Taxa de juros mensal (%)</label>
+        <input type="number" id="ae-taxa" value="0.85" min="0" step="0.01">
+
+        <label for="ae-prazo">Prazo restante (meses)</label>
+        <input type="number" id="ae-prazo" value="240" min="1" step="1">
+
+        <label for="ae-extra">Valor do aporte extra (R$)</label>
+        <input type="number" id="ae-extra" value="20000" min="0" step="500">
+
+        <label>O que fazer com o aporte</label>
+        <div class="toggle" id="ae-modo">
+          <button class="on" data-val="PRAZO">Reduzir prazo</button>
+          <button data-val="PARCELA">Reduzir parcela</button>
+        </div>
+
+        <button class="primary" id="ae-calc">Simular</button>
+      </div>
+
+      <div class="ledger">
+        <h2>Resultado</h2>
+        <div class="ledger-row">
+          <span>Parcela atual (antes do aporte)</span>
+          <span class="val" id="ae-parcela-antes">—</span>
+        </div>
+        <div class="ledger-row">
+          <span id="ae-label-depois">Novo prazo (após o aporte)</span>
+          <span class="val" id="ae-depois">—</span>
+        </div>
+        <div class="ledger-row total">
+          <span>Total economizado em juros</span>
+          <span class="val" id="ae-economia">—</span>
+        </div>
+        <div class="hint" id="ae-hint"></div>
+      </div>
+    </div>
+
+    <article class="copy">
+      <h2>O que acontece quando você amortiza um valor extra</h2>
+      <p>Um financiamento é pago pela Tabela Price: parcela fixa, calculada sobre o saldo devedor e a taxa de juros contratada. Quando você faz um aporte extra e pede para <strong>abater diretamente do saldo devedor</strong> (não para adiantar parcelas), esse valor reduz a base sobre a qual os juros futuros incidem — e você escolhe entre duas formas de aproveitar essa redução.</p>
+      
+      <div class="formula">
+        Nova parcela = Novo saldo × [ i × (1+i)ⁿ ] / [ (1+i)ⁿ − 1 ]<br>
+        Novo prazo: mesmo saldo e mesma parcela, resolvendo para <strong>n</strong> em vez de recalcular a parcela.
+      </div>
+
+      <h2>Reduzir prazo x reduzir parcela</h2>
+      <p>Ao <strong>reduzir o prazo</strong>, a parcela mensal continua a mesma de antes, mas o contrato termina mais cedo — essa opção costuma gerar a maior economia total em juros, porque você reduz o tempo de exposição aos juros compostos. Ao <strong>reduzir a parcela</strong>, o prazo original é mantido, mas o valor mensal cai — essa opção alivia o orçamento mês a mês, só que poupa menos juros no total, porque o dinheiro continua "exposto" aos juros pelo mesmo tempo, só que sobre um saldo menor.</p>
+
+      <h2>Vale mais a pena amortizar ou investir o dinheiro?</h2>
+      <p>Uma regra prática: compare a taxa de juros do seu financiamento com o retorno líquido que você conseguiria investindo esse mesmo dinheiro. Se o financiamento cobra mais juros do que você conseguiria ganhar investindo com segurança semelhante, amortizar tende a valer mais a pena — é como conseguir esse retorno garantido, sem risco, na forma de juros que você deixa de pagar.</p>
+      
+      <p class="muted">Simulação educativa com taxa de juros constante ao longo de todo o prazo restante. Contratos reais podem ter taxas pós-fixadas ou correção monetária que alteram esse resultado.</p>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const footYearEl = document.getElementById('footYear');
+  if (footYearEl) {
+    footYearEl.textContent = new Date().getFullYear();
+  }
+
+  function formatarBRL(valor) { 
+    return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
+  }
+
+  let modo = 'PRAZO';
+  document.querySelectorAll('#ae-modo button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#ae-modo button').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      modo = btn.dataset.val;
+      calcular();
+    });
+  });
+
+  function parcelaPrice(pv, i, n) {
+    if (pv <= 0) return 0;
+    if (i === 0) return pv / n;
+    return pv * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+  }
+
+  function jurosTotais(pv, i, n, parcela) {
+    let saldo = pv;
+    let total = 0;
+    for (let m = 1; m <= n; m++) {
+      const juros = saldo * i;
+      const amort = parcela - juros;
+      saldo = Math.max(0, saldo - amort);
+      total += juros;
+      if (saldo <= 0.01) break;
+    }
+    return total;
+  }
+
+  function calcular() {
+    const saldoEl = document.getElementById('ae-saldo');
+    const taxaEl = document.getElementById('ae-taxa');
+    const prazoEl = document.getElementById('ae-prazo');
+    const extraEl = document.getElementById('ae-extra');
+    if (!saldoEl || !taxaEl || !prazoEl || !extraEl) return;
+
+    const saldo = parseFloat(saldoEl.value) || 0;
+    const i = (parseFloat(taxaEl.value) || 0) / 100;
+    const n = Math.max(1, parseInt(prazoEl.value) || 1);
+    const extraInput = parseFloat(extraEl.value) || 0;
+    const extra = Math.min(extraInput, saldo);
+
+    const parcelaAtual = parcelaPrice(saldo, i, n);
+    const jurosAntes = jurosTotais(saldo, i, n, parcelaAtual);
+    const novoSaldo = Math.max(0, saldo - extra);
+
+    const parcelaAntesOut = document.getElementById('ae-parcela-antes');
+    const labelDepois = document.getElementById('ae-label-depois');
+    const depoisOut = document.getElementById('ae-depois');
+    const economiaOut = document.getElementById('ae-economia');
+    const hintOut = document.getElementById('ae-hint');
+
+    if (parcelaAntesOut) parcelaAntesOut.textContent = formatarBRL(parcelaAtual);
+
+    if (novoSaldo === 0) {
+      if (labelDepois) labelDepois.textContent = 'Situação do contrato';
+      if (depoisOut) depoisOut.textContent = 'Quitado integralmente';
+      if (economiaOut) economiaOut.textContent = formatarBRL(jurosAntes);
+      if (hintOut) hintOut.innerHTML = `Com este aporte, o saldo devedor foi totalmente zerado. Você economiza <strong>${formatarBRL(jurosAntes)}</strong> em juros.`;
+      return;
+    }
+
+    if (modo === 'PRAZO') {
+      let saldoSim = novoSaldo;
+      let meses = 0;
+      let jurosDepois = 0;
+      while (saldoSim > 0.01 && meses < 1200) {
+        const juros = saldoSim * i;
+        const amort = parcelaAtual - juros;
+        if (amort <= 0) { meses = n; break; }
+        saldoSim = Math.max(0, saldoSim - amort);
+        jurosDepois += juros;
+        meses++;
+      }
+      const mesesEconomizados = n - meses;
+      if (labelDepois) labelDepois.textContent = 'Novo prazo (mesma parcela)';
+      if (depoisOut) depoisOut.textContent = `${meses} meses (${mesesEconomizados} a menos)`;
+      if (economiaOut) economiaOut.textContent = formatarBRL(jurosAntes - jurosDepois);
+      if (hintOut) hintOut.innerHTML = `Mantendo a parcela de <strong>${formatarBRL(parcelaAtual)}</strong>, o contrato termina cerca de <strong>${mesesEconomizados} meses mais cedo</strong>.`;
+    } else {
+      const novaParcela = parcelaPrice(novoSaldo, i, n);
+      const jurosDepois = jurosTotais(novoSaldo, i, n, novaParcela);
+      if (labelDepois) labelDepois.textContent = 'Nova parcela (mesmo prazo)';
+      if (depoisOut) depoisOut.textContent = formatarBRL(novaParcela);
+      if (economiaOut) economiaOut.textContent = formatarBRL(jurosAntes - jurosDepois);
+      if (hintOut) hintOut.innerHTML = `Mantendo o prazo de <strong>${n} meses</strong>, a parcela cai de ${formatarBRL(parcelaAtual)} para <strong>${formatarBRL(novaParcela)}</strong>.`;
+    }
+  }
+
+  const btn = document.getElementById('ae-calc');
+  if (btn) btn.addEventListener('click', calcular);
+  
+  // Realiza a primeira simulação ao carregar a página
+  calcular();
+});
+</script>
+</body>
+</html>
