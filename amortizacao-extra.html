@@ -13,16 +13,17 @@
 body{ margin:0; background:repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px), var(--paper); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; line-height:1.5; }
 .wrap{ max-width:920px; margin:0 auto; padding:0 24px 60px; }
 h1,h2{ font-family:'Fraunces',serif; font-weight:600; margin:0; }
-header{ padding:26px 0 18px; border-bottom:2px solid var(--ink); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+
+/* Header e Menu de Navegação */
+header{ padding:26px 0 18px; border-bottom:2px solid var(--ink); display:flex; flex-direction:column; gap:16px; }
 .brand{ display:flex; align-items:baseline; gap:12px; text-decoration:none; color:var(--ink); }
 .brand .mark{ font-family:'Fraunces',serif; font-weight:700; font-size:1.3rem; border:1.5px solid var(--ink); border-radius:3px; padding:1px 8px; }
 .brand .tag{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--ink-soft); letter-spacing:0.1em; text-transform:uppercase; }
 
-/* Menu de Navegação Integrado */
-nav.main-nav { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
-nav.main-nav a { font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-soft); text-decoration:none; padding:4px 8px; border-radius:3px; transition:background 0.2s, color 0.2s; }
-nav.main-nav a:hover { background:var(--paper-line); color:var(--ink); }
-nav.main-nav a.active { color:var(--brass-dark); font-weight:600; border-bottom:2px solid var(--brass); }
+nav.sitenav { display:flex; gap:8px 12px; flex-wrap:wrap; align-items:center; }
+nav.sitenav a { font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-soft); text-decoration:none; padding:3px 6px; border-radius:3px; transition:background 0.2s, color 0.2s; }
+nav.sitenav a:hover { background:var(--paper-line); color:var(--ink); }
+nav.sitenav a.active { color:var(--brass-dark); font-weight:600; border-bottom:2px solid var(--brass); }
 
 .hero{ padding:36px 0 6px; }
 .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:0.74rem; color:var(--brass-dark); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; }
@@ -59,11 +60,20 @@ article p{ margin:0 0 14px; }
       <span class="mark">R</span>
       <span class="tag">Razão · ferramentas financeiras</span>
     </a>
-    <nav class="main-nav">
+    <nav class="sitenav">
       <a href="index.html">Início</a>
-      <a href="juros-compostos.html">Juros Compostos</a>
-      <a href="financiamento.html">Financiamento</a>
+      <a href="juros-compostos.html">Juros compostos</a>
+      <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+      <a href="financiamento-trator.html">Financiamento Trator</a>
       <a href="amortizacao-extra.html" class="active">Amortização Extra</a>
+      <a href="emprestimo-pessoal.html">Empréstimo</a>
+      <a href="independencia-financeira.html">Independência Financeira</a>
+      <a href="preco-medio.html">Preço Médio</a>
+      <a href="salario-liquido.html">Salário Líquido</a>
+      <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+      <a href="conversor-moedas.html">Conversor de Moedas</a>
+      <a href="cripto-imposto.html">Cripto Imposto</a>
+      <a href="faturamento-mei.html">Faturamento MEI</a>
     </nav>
   </header>
 
