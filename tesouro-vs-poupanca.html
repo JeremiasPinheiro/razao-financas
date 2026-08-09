@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tesouro Selic ou CDB x Poupança — Comparador — Razão</title>
+<meta name="description" content="Compare o rendimento líquido da poupança com o Tesouro Selic ou um CDB, considerando o imposto de renda regressivo sobre investimentos.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{ --paper:#EDF1E6; --paper-line:#C7D3BC; --card:#FBFAF6; --ink:#1E2A18; --ink-soft:#5B6B51; --brass:#A8792E; --brass-dark:#8A5F1F; --alert:#A6503A; --good:#3E6B4F; }
+*{box-sizing:border-box;}
+body{ margin:0; background:repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px), var(--paper); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; line-height:1.5; }
+.wrap{ max-width:920px; margin:0 auto; padding:0 24px 60px; }
+h1,h2{ font-family:'Fraunces',serif; font-weight:600; margin:0; }
+
+/* Estilização do Header e Navegação Sitenav */
+header{ padding:26px 0 18px; border-bottom:2px solid var(--ink); display:flex; flex-direction:column; gap:16px; }
+.brand{ display:flex; align-items:baseline; gap:12px; text-decoration:none; color:var(--ink); }
+.brand .mark{ font-family:'Fraunces',serif; font-weight:700; font-size:1.3rem; border:1.5px solid var(--ink); border-radius:3px; padding:1px 8px; }
+.brand .tag{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--ink-soft); letter-spacing:0.1em; text-transform:uppercase; }
+
+nav.sitenav { display:flex; gap:8px 12px; flex-wrap:wrap; align-items:center; }
+nav.sitenav a { font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-soft); text-decoration:none; padding:3px 6px; border-radius:3px; transition:background 0.2s, color 0.2s; }
+nav.sitenav a:hover { background:var(--paper-line); color:var(--ink); }
+nav.sitenav a.active { color:var(--brass-dark); font-weight:600; border-bottom:2px solid var(--brass); }
+
+.hero{ padding:36px 0 6px; }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:0.74rem; color:var(--brass-dark); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; }
+.hero h1{ font-size:clamp(1.6rem,4vw,2.2rem); max-width:680px; }
+.hero p{ color:var(--ink-soft); max-width:620px; margin-top:12px; }
+
+.grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:28px; }
+@media (max-width:700px){ .grid{ grid-template-columns:1fr; } }
+.card{ background:var(--card); border:1px solid var(--paper-line); border-radius:6px; padding:24px; }
+.card h2{ font-size:1.1rem; margin-bottom:14px; }
+label{ display:block; font-size:0.76rem; color:var(--ink-soft); margin:14px 0 5px; font-family:'IBM Plex Mono',monospace; }
+label:first-of-type{ margin-top:0; }
+input[type=number]{ width:100%; padding:10px 12px; font-family:'IBM Plex Mono',monospace; background:var(--paper); border:1.5px solid var(--paper-line); border-radius:4px; color:var(--ink); font-size:0.95rem; }
+input[type=number]:focus{ outline:none; border-color:var(--brass); }
+button.primary{ margin-top:18px; width:100%; padding:12px; border:none; border-radius:4px; background:var(--brass); color:var(--card); font-family:'IBM Plex Mono',monospace; font-size:0.85rem; cursor:pointer; }
+button.primary:hover{ background:var(--brass-dark); }
+
+.compare{ margin-top:28px; display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+@media (max-width:700px){ .compare{ grid-template-columns:1fr; } }
+.compare .col{ background:var(--card); border:1px solid var(--paper-line); border-radius:6px; padding:22px; }
+.compare .col h3{ font-family:'Fraunces',serif; font-size:1.05rem; margin:0 0 14px; }
+.compare .col.winner{ border-color:var(--brass); box-shadow:0 0 0 1.5px var(--brass); }
+
+.ledger-row{ display:flex; justify-content:space-between; gap:8px; padding:8px 0; border-bottom:1px dotted var(--paper-line); font-size:0.9rem; }
+.ledger-row .val{ font-family:'IBM Plex Mono',monospace; font-weight:600; }
+.ledger-row.total .val{ color:var(--good); font-size:1.05rem; }
+.ledger-row.cost .val{ color:var(--alert); }
+
+article{ max-width:700px; margin-top:40px; }
+article h2{ font-size:1.2rem; margin-top:28px; margin-bottom:10px; }
+article p{ margin:0 0 14px; }
+.formula{ background:var(--card); border:1px solid var(--paper-line); border-left:3px solid var(--brass); border-radius:4px; padding:14px 18px; font-family:'IBM Plex Mono',monospace; font-size:0.86rem; margin:14px 0; }
+.muted{ color:var(--ink-soft); font-size:0.88rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a href="index.html" class="brand">
+      <span class="mark">R</span>
+      <span class="tag">Razão · ferramentas financeiras</span>
+    </a>
+    <nav class="sitenav">
+      <a href="index.html">Início</a>
+      <a href="juros-compostos.html">Juros compostos</a>
+      <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+      <a href="financiamento-trator.html">Financiamento Trator</a>
+      <a href="amortizacao-extra.html">Amortização Extra</a>
+      <a href="emprestimo-pessoal.html">Empréstimo</a>
+      <a href="independencia-financeira.html">Independência Financeira</a>
+      <a href="preco-medio.html">Preço Médio</a>
+      <a href="salario-liquido.html">Salário Líquido</a>
+      <a href="tesouro-vs-poupanca.html" class="active">Tesouro vs Poupança</a>
+      <a href="conversor-moedas.html">Conversor de Moedas</a>
+      <a href="cripto-imposto.html">Cripto Imposto</a>
+      <a href="faturamento-mei.html">Faturamento MEI</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Tesouro Selic / CDB x Poupança</h1>
+    <p>Compare o rendimento líquido (depois do imposto de renda) entre deixar o dinheiro na poupança ou aplicar em Tesouro Selic ou CDB.</p>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Dados da simulação</h2>
+      <label for="tp-inicial">Aporte inicial (R$)</label>
+      <input type="number" id="tp-inicial" value="5000" min="0" step="100">
+      <label for="tp-mensal">Aporte mensal (R$)</label>
+      <input type="number" id="tp-mensal" value="500" min="0" step="50">
+      <label for="tp-prazo">Prazo (meses)</label>
+      <input type="number" id="tp-prazo" value="24" min="1" step="1">
+      <label for="tp-selic">Taxa Selic / CDI anual (%)</label>
+      <input type="number" id="tp-selic" value="11" min="0" step="0.1">
+      <button class="primary" id="tp-calc">Comparar</button>
+    </div>
+    <div class="card">
+      <h2>O que está sendo calculado</h2>
+      <p style="font-size:0.88rem; color:var(--ink-soft); margin:0 0 10px;">A poupança usa a regra oficial: 0,5% ao mês quando a Selic está acima de 8,5% ao ano, ou 70% da Selic quando está em 8,5% ao ano ou menos.</p>
+      <p style="font-size:0.88rem; color:var(--ink-soft); margin:0;">O Tesouro Selic/CDB usa 100% da taxa informada como rendimento bruto, com desconto de Imposto de Renda regressivo conforme o prazo.</p>
+    </div>
+  </div>
+
+  <div class="compare" id="tp-resultado"></div>
+
+  <article>
+    <h2>Como a poupança rende</h2>
+    <p>A regra da poupança depende do patamar da taxa Selic no momento:</p>
+    <div class="formula">Se Selic > 8,5% a.a.: rendimento = 0,5% ao mês + TR<br>Se Selic ≤ 8,5% a.a.: rendimento = 70% da Selic (ao mês) + TR</div>
+    <p>A poupança é isenta de Imposto de Renda para pessoa física — essa é sua principal vantagem. Nesta calculadora, a Taxa Referencial (TR) é considerada zero, prática comum em simulações, já que a TR está próxima de zero há anos.</p>
+    <h2>Como o Tesouro Selic e o CDB são tributados</h2>
+    <p>Diferente da poupança, o Tesouro Selic e o CDB pagam Imposto de Renda sobre o rendimento, numa tabela regressiva — quanto mais tempo o dinheiro fica aplicado, menor a alíquota:</p>
+    <div class="formula">Até 180 dias: 22,5%<br>De 181 a 360 dias: 20%<br>De 361 a 720 dias: 17,5%<br>Acima de 720 dias: 15%</div>
+    <p>Por isso, mesmo com uma alíquota de imposto maior que zero, o Tesouro Selic e um CDB com boa taxa costumam superar a poupança quando a Selic está em patamares elevados — o rendimento bruto mais alto compensa o imposto descontado.</p>
+    <h2>Quando a poupança pode competir</h2>
+    <p>Em cenários de Selic muito baixa (histórico recente: abaixo de 8,5% ao ano), a diferença entre os dois investimentos diminui, porque a fórmula da poupança passa a acompanhar parte da Selic, e o Tesouro Selic rende proporcionalmente menos em termos absolutos, ainda que sua vantagem relativa (por não ter imposto tão alto em prazos longos) se mantenha.</p>
+    <p class="muted">Simulação educativa com taxa constante durante todo o período. CDBs de bancos diferentes pagam percentuais diferentes do CDI — confirme a taxa exata antes de investir.</p>
+  </article>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  function formatarBRL(valor) { return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+
+  function aliquotaIR(dias){
+    if (dias <= 180) return 0.225;
+    if (dias <= 360) return 0.20;
+    if (dias <= 720) return 0.175;
+    return 0.15;
+  }
+
+  function calcular(){
+    const inicialEl = document.getElementById('tp-inicial');
+    const mensalEl = document.getElementById('tp-mensal');
+    const prazoEl = document.getElementById('tp-prazo');
+    const selicEl = document.getElementById('tp-selic');
+    const resultadoEl = document.getElementById('tp-resultado');
+    if (!inicialEl || !mensalEl || !prazoEl || !selicEl || !resultadoEl) return;
+
+    const inicial = parseFloat(inicialEl.value) || 0;
+    const mensal = parseFloat(mensalEl.value) || 0;
+    const meses = Math.max(1, parseInt(prazoEl.value) || 1);
+    const selicAno = (parseFloat(selicEl.value) || 0) / 100;
+
+    // Poupança
+    let taxaPoupancaMes;
+    if (selicAno > 0.085){
+      taxaPoupancaMes = 0.005;
+    } else {
+      const selicMes = Math.pow(1 + selicAno, 1/12) - 1;
+      taxaPoupancaMes = selicMes * 0.7;
+    }
+    let saldoPoup = inicial;
+    let investidoPoup = inicial;
+    for (let m = 1; m <= meses; m++){
+      saldoPoup = saldoPoup * (1 + taxaPoupancaMes) + mensal;
+      investidoPoup += mensal;
+    }
+    const rendPoup = saldoPoup - investidoPoup;
+
+    // Tesouro Selic / CDB
+    const taxaMes = Math.pow(1 + selicAno, 1/12) - 1;
+    let saldoTes = inicial;
+    let investidoTes = inicial;
+    for (let m = 1; m <= meses; m++){
+      saldoTes = saldoTes * (1 + taxaMes) + mensal;
+      investidoTes += mensal;
+    }
+    const rendBrutoTes = saldoTes - investidoTes;
+    const dias = meses * 30;
+    const aliquota = aliquotaIR(dias);
+    const impostoTes = Math.max(0, rendBrutoTes) * aliquota;
+    const rendLiquidoTes = rendBrutoTes - impostoTes;
+    const saldoFinalTes = investidoTes + rendLiquidoTes;
+
+    const poupVence = saldoPoup >= saldoFinalTes;
+
+    resultadoEl.innerHTML = `
+      <div class="col ${poupVence ? 'winner' : ''}">
+        <h3>Poupança</h3>
+        <div class="ledger-row"><span>Total investido</span><span class="val">${formatarBRL(investidoPoup)}</span></div>
+        <div class="ledger-row"><span>Rendimento (isento de IR)</span><span class="val">${formatarBRL(rendPoup)}</span></div>
+        <div class="ledger-row total"><span>Valor final líquido</span><span class="val">${formatarBRL(saldoPoup)}</span></div>
+      </div>
+      <div class="col ${!poupVence ? 'winner' : ''}">
+        <h3>Tesouro Selic / CDB</h3>
+        <div class="ledger-row"><span>Total investido</span><span class="val">${formatarBRL(investidoTes)}</span></div>
+        <div class="ledger-row"><span>Rendimento bruto</span><span class="val">${formatarBRL(rendBrutoTes)}</span></div>
+        <div class="ledger-row cost"><span>Imposto de Renda (${(aliquota*100).toFixed(1)}%)</span><span class="val">${formatarBRL(impostoTes)}</span></div>
+        <div class="ledger-row total"><span>Valor final líquido</span><span class="val">${formatarBRL(saldoFinalTes)}</span></div>
+      </div>
+    `;
+  }
+
+  const inputs = document.querySelectorAll('#tp-inicial, #tp-mensal, #tp-prazo, #tp-selic');
+  inputs.forEach(input => input.addEventListener('input', calcular));
+
+  const btn = document.getElementById('tp-calc');
+  if (btn) btn.addEventListener('click', calcular);
+  
+  calcular();
+});
+</script>
+</body>
+</html>
