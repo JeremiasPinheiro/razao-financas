@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Preço Médio de Ações e FIIs — Razão</title>
+<meta name="description" content="Calcule o preço médio de aquisição das suas ações ou fundos imobiliários a partir de múltiplas compras, com quantidade total e investimento acumulado.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{ --paper:#EDF1E6; --paper-line:#C7D3BC; --card:#FBFAF6; --ink:#1E2A18; --ink-soft:#5B6B51; --brass:#A8792E; --brass-dark:#8A5F1F; --alert:#A6503A; --good:#3E6B4F; }
+*{box-sizing:border-box;}
+body{ margin:0; background:repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px), var(--paper); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; line-height:1.5; }
+.wrap{ max-width:920px; margin:0 auto; padding:0 24px 60px; }
+h1,h2{ font-family:'Fraunces',serif; font-weight:600; margin:0; }
+
+/* Header e Navegação Sitenav */
+header{ padding:26px 0 18px; border-bottom:2px solid var(--ink); display:flex; flex-direction:column; gap:16px; }
+.brand{ display:flex; align-items:baseline; gap:12px; text-decoration:none; color:var(--ink); }
+.brand .mark{ font-family:'Fraunces',serif; font-weight:700; font-size:1.3rem; border:1.5px solid var(--ink); border-radius:3px; padding:1px 8px; }
+.brand .tag{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--ink-soft); letter-spacing:0.1em; text-transform:uppercase; }
+
+nav.sitenav { display:flex; gap:8px 12px; flex-wrap:wrap; align-items:center; }
+nav.sitenav a { font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-soft); text-decoration:none; padding:3px 6px; border-radius:3px; transition:background 0.2s, color 0.2s; }
+nav.sitenav a:hover { background:var(--paper-line); color:var(--ink); }
+nav.sitenav a.active { color:var(--brass-dark); font-weight:600; border-bottom:2px solid var(--brass); }
+
+.hero{ padding:36px 0 6px; }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:0.74rem; color:var(--brass-dark); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; }
+.hero h1{ font-size:clamp(1.6rem,4vw,2.2rem); max-width:680px; }
+.hero p{ color:var(--ink-soft); max-width:620px; margin-top:12px; }
+
+.card{ background:var(--card); border:1px solid var(--paper-line); border-radius:6px; padding:24px; margin-top:28px; }
+.card h2{ font-size:1.1rem; margin-bottom:14px; }
+.lote{ display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:10px; align-items:end; margin-bottom:10px; }
+@media (max-width:640px){ .lote{ grid-template-columns:1fr 1fr; } }
+.lote label{ font-size:0.72rem; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; display:block; margin-bottom:4px; }
+.lote input{ width:100%; padding:9px 10px; font-family:'IBM Plex Mono',monospace; background:var(--paper); border:1.5px solid var(--paper-line); border-radius:4px; color:var(--ink); font-size:0.9rem; }
+.lote input[readonly]{ background:rgba(0,0,0,0.03); opacity:0.85; }
+.lote input:focus{ outline:none; border-color:var(--brass); }
+.lote .remove{ background:none; border:1.5px solid var(--paper-line); border-radius:4px; color:var(--alert); cursor:pointer; padding:9px 10px; font-family:'IBM Plex Mono',monospace; font-size:0.8rem; }
+
+button.secondary{ margin-top:6px; padding:9px 14px; border:1.5px dashed var(--paper-line); border-radius:4px; background:none; color:var(--brass-dark); font-family:'IBM Plex Mono',monospace; font-size:0.8rem; cursor:pointer; }
+button.primary{ margin-top:18px; width:100%; padding:12px; border:none; border-radius:4px; background:var(--brass); color:var(--card); font-family:'IBM Plex Mono',monospace; font-size:0.85rem; cursor:pointer; }
+button.primary:hover{ background:var(--brass-dark); }
+
+.ledger{ background:var(--card); border:1px solid var(--paper-line); border-radius:6px; padding:24px; margin-top:20px; }
+.ledger h2{ font-size:1.1rem; margin-bottom:14px; }
+.ledger-row{ display:flex; justify-content:space-between; gap:8px; padding:8px 0; border-bottom:1px dotted var(--paper-line); font-size:0.92rem; }
+.ledger-row .val{ font-family:'IBM Plex Mono',monospace; font-weight:600; }
+.ledger-row.total .val{ color:var(--good); font-size:1.05rem; }
+
+article{ max-width:700px; margin-top:40px; }
+article h2{ font-size:1.2rem; margin-top:28px; margin-bottom:10px; }
+article p{ margin:0 0 14px; }
+.formula{ background:var(--card); border:1px solid var(--paper-line); border-left:3px solid var(--brass); border-radius:4px; padding:14px 18px; font-family:'IBM Plex Mono',monospace; font-size:0.86rem; margin:14px 0; }
+.muted{ color:var(--ink-soft); font-size:0.88rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a href="index.html" class="brand">
+      <span class="mark">R</span>
+      <span class="tag">Razão · ferramentas financeiras</span>
+    </a>
+    <nav class="sitenav">
+      <a href="index.html">Início</a>
+      <a href="juros-compostos.html">Juros compostos</a>
+      <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+      <a href="financiamento-trator.html">Financiamento Trator</a>
+      <a href="amortizacao-extra.html">Amortização Extra</a>
+      <a href="emprestimo-pessoal.html">Empréstimo</a>
+      <a href="independencia-financeira.html">Independência Financeira</a>
+      <a href="preco-medio.html" class="active">Preço Médio</a>
+      <a href="salario-liquido.html">Salário Líquido</a>
+      <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+      <a href="conversor-moedas.html">Conversor de Moedas</a>
+      <a href="cripto-imposto.html">Cripto Imposto</a>
+      <a href="faturamento-mei.html">Faturamento MEI</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Preço médio de ações e FIIs</h1>
+    <p>Adicione cada compra que você fez de um ativo e veja o preço médio ponderado de aquisição.</p>
+  </section>
+
+  <div class="card">
+    <h2>Suas compras</h2>
+    <div id="pm-lista"></div>
+    <button class="secondary" id="pm-add">+ Adicionar compra</button>
+    <button class="primary" id="pm-calc">Calcular preço médio</button>
+  </div>
+
+  <div class="ledger">
+    <h2>Resultado</h2>
+    <div class="ledger-row"><span>Quantidade total de cotas/ações</span><span class="val" id="pm-qtd">—</span></div>
+    <div class="ledger-row"><span>Investimento total acumulado</span><span class="val" id="pm-total">—</span></div>
+    <div class="ledger-row total"><span>Preço médio de aquisição</span><span class="val" id="pm-medio">—</span></div>
+  </div>
+
+  <article>
+    <h2>O que é o preço médio e por que ele muda a cada compra</h2>
+    <p>Quando você compra o mesmo ativo em momentos diferentes, a preços diferentes, o preço médio é o valor de referência que representa o custo de aquisição de toda a posição — é ele que a Receita Federal usa como base para calcular ganho de capital numa venda futura, e é ele que mostra se o ativo está, no total, dando lucro ou prejuízo frente à cotação atual.</p>
+    <div class="formula">Preço médio = Σ (Quantidade do lote × Preço do lote) / Σ (Quantidade total de todos os lotes)</div>
+    <p>É uma média ponderada, não uma média simples: comprar um lote grande a um preço baixo pesa mais no resultado final do que um lote pequeno a um preço alto. Cada nova compra recalcula o preço médio de toda a posição, misturando o custo do que você já tinha com o custo da nova compra.</p>
+    <h2>Como usar esta calculadora</h2>
+    <p>Adicione uma linha para cada compra que você fez do mesmo ativo — pode ser ao longo de meses ou anos, não precisa ser no mesmo dia. Inclua a quantidade de cotas ou ações e o preço unitário pago em cada uma. O resultado mostra a posição consolidada: quantas unidades você tem no total, quanto gastou no total, e o preço médio por unidade dessa posição inteira.</p>
+    <h2>Preço médio não é o mesmo que ganho ou prejuízo</h2>
+    <p>O preço médio, sozinho, não diz se o investimento está indo bem — ele só mostra o seu custo de entrada. Para saber se há lucro ou prejuízo na posição, é preciso comparar o preço médio com a cotação atual do ativo no mercado.</p>
+    <p class="muted">Esta calculadora não considera taxas de corretagem, emolumentos ou custódia, que podem estar embutidos ou não no preço que você pagou por lote — inclua-os no preço unitário se quiser um preço médio mais preciso.</p>
+  </article>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  function formatarBRL(valor) { 
+    return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
+  }
+
+  const lista = document.getElementById('pm-lista');
+  let contador = 0;
+
+  function criarLinha(qtd, preco){
+    contador++;
+    const id = contador;
+    const div = document.createElement('div');
+    div.className = 'lote';
+    div.dataset.id = id;
+    div.innerHTML = `
+      <div><label>Quantidade</label><input type="number" class="pm-qtd-input" min="0" step="1" value="${qtd}"></div>
+      <div><label>Preço unitário (R$)</label><input type="number" class="pm-preco-input" min="0" step="0.01" value="${preco}"></div>
+      <div><label>Total do lote</label><input type="text" class="pm-lote-total" value="—" readonly tabindex="-1"></div>
+      <button class="remove" title="Remover">✕</button>
+    `;
+    const removeBtn = div.querySelector('.remove');
+    if (removeBtn) removeBtn.addEventListener('click', () => { div.remove(); calcular(); });
+    div.querySelectorAll('input').forEach(inp => inp.addEventListener('input', calcular));
+    if (lista) lista.appendChild(div);
+  }
+
+  function calcular(){
+    if (!lista) return;
+    let qtdTotal = 0;
+    let investimentoTotal = 0;
+
+    lista.querySelectorAll('.lote').forEach(linha => {
+      const qtdInput = linha.querySelector('.pm-qtd-input');
+      const precoInput = linha.querySelector('.pm-preco-input');
+      const totalOut = linha.querySelector('.pm-lote-total');
+      if (!qtdInput || !precoInput) return;
+
+      const qtd = parseFloat(qtdInput.value) || 0;
+      const preco = parseFloat(precoInput.value) || 0;
+      const totalLote = qtd * preco;
+
+      if (totalOut) totalOut.value = formatarBRL(totalLote);
+
+      qtdTotal += qtd;
+      investimentoTotal += totalLote;
+    });
+
+    const precoMedio = qtdTotal > 0 ? investimentoTotal / qtdTotal : 0;
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set('pm-qtd', qtdTotal.toLocaleString('pt-BR'));
+    set('pm-total', formatarBRL(investimentoTotal));
+    set('pm-medio', formatarBRL(precoMedio));
+  }
+
+  const addBtn = document.getElementById('pm-add');
+  if (addBtn) addBtn.addEventListener('click', () => criarLinha(100, 10));
+
+  const calcBtn = document.getElementById('pm-calc');
+  if (calcBtn) calcBtn.addEventListener('click', calcular);
+
+  criarLinha(100, 25.40);
+  criarLinha(50, 27.10);
+  calcular();
+});
+</script>
+</body>
+</html>
