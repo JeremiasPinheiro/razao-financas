@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Empréstimo Pessoal e Consignado — Razão</title>
+<meta name="description" content="Simule o valor da parcela, o custo total dos juros e o cronograma de amortização do seu empréstimo pessoal ou consignado.">
+<link rel="stylesheet" href="style.css">
+
+<!-- Código do Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4283089731677395" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="salario-liquido.html">Salário Líquido</a>
+        <a href="emprestimo-pessoal.html" class="current">Empréstimo</a>
+        <a href="conversor-moedas.html">Câmbio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="eyebrow">Calculadora</div>
+      <h1>Empréstimo pessoal e consignado</h1>
+      <p class="lede">Simule o valor das parcelas mensais, os juros totais cobrados pela Tabela Price e o custo final do empréstimo antes de assinar o contrato.</p>
+    </section>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Dados do empréstimo</h2>
+        <label for="ep-valor">Valor solicitado (R$)</label>
+        <input type="number" id="ep-valor" value="10000" min="100" step="500">
+
+        <label for="ep-taxa">Taxa de juros mensal (%)</label>
+        <input type="number" id="ep-taxa" value="2.1" min="0.1" step="0.1">
+
+        <label for="ep-prazo">Prazo de pagamento (meses)</label>
+        <input type="number" id="ep-prazo" value="24" min="1" step="1">
+
+        <button class="primary" id="ep-calc">Simular Empréstimo</button>
+      </div>
+
+      <div class="ledger">
+        <h2>Resultado da simulação</h2>
+        <div class="ledger-row">
+          <span>Valor da parcela mensal</span>
+          <span class="val" id="ep-parcela">—</span>
+        </div>
+        <div class="ledger-row">
+          <span>Total de juros a pagar</span>
+          <span class="val" id="ep-juros">—</span>
+        </div>
+        <div class="ledger-row total">
+          <span>Custo total final</span>
+          <span class="val" id="ep-total">—</span>
+        </div>
+        <div class="hint" id="ep-hint"></div>
+      </div>
+    </div>
+
+    <article class="copy">
+      <h2>Como funciona o cálculo do empréstimo?</h2>
+      <p>A maioria das instituições financeiras no Brasil utiliza o sistema de amortização da <strong>Tabela Price</strong> para empréstimos pessoais e consignados. Nesse sistema, todas as parcelas mensais possuem o mesmo valor do início ao fim do contrato.</p>
+
+      <h2>O que é a taxa de juros e o CET?</h2>
+      <p>A taxa de juros mensal representa o custo cobrado pelo banco para emprestar o dinheiro. No entanto, ao contratar um empréstimo, fique atento ao <strong>CET (Custo Efetivo Total)</strong>, que inclui além dos juros, tarifas administrativas, IOF (Imposto sobre Operações Financeiras) e seguros.</p>
+
+      <p class="muted">Esta simulação considera apenas a taxa de juros nominal digitada. O valor real das parcelas pode variar levemente de acordo com a inclusão de taxas e IOF por parte da instituição financeira.</p>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const footYearEl = document.getElementById('footYear');
+  if (footYearEl) {
+    footYearEl.textContent = new Date().getFullYear();
+  }
+
+  function formatarBRL(valor) {
+    return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  function calcular() {
+    const valorEl = document.getElementById('ep-valor');
+    const taxaEl = document.getElementById('ep-taxa');
+    const prazoEl = document.getElementById('ep-prazo');
+
+    if (!valorEl || !taxaEl || !prazoEl) return;
+
+    const pv = parseFloat(valorEl.value) || 0;
+    const i = (parseFloat(taxaEl.value) || 0) / 100;
+    const n = Math.max(1, parseInt(prazoEl.value) || 1);
+
+    if (pv <= 0) return;
+
+    let pmt = 0;
+    if (i === 0) {
+      pmt = pv / n;
+    } else {
+      pmt = pv * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+    }
+
+    const totalPago = pmt * n;
+    const totalJuros = totalPago - pv;
+
+    const parcelaOut = document.getElementById('ep-parcela');
+    const jurosOut = document.getElementById('ep-juros');
+    const totalOut = document.getElementById('ep-total');
+    const hintOut = document.getElementById('ep-hint');
+
+    if (parcelaOut) parcelaOut.textContent = formatarBRL(pmt);
+    if (jurosOut) jurosOut.textContent = formatarBRL(totalJuros);
+    if (totalOut) totalOut.textContent = formatarBRL(totalPago);
+
+    if (hintOut) {
+      const percJuros = ((totalJuros / pv) * 100).toFixed(1);
+      hintOut.innerHTML = `Ao final de <strong>${n} meses</strong>, você terá pago <strong>${formatarBRL(totalJuros)}</strong> em juros (equivalente a ${percJuros}% do valor financiado).`;
+    }
+  }
+
+  const btn = document.getElementById('ep-calc');
+  if (btn) btn.addEventListener('click', calcular);
+
+  calcular();
+});
+</script>
+</body>
+</html>
