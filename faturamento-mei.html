@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Limite de Faturamento do MEI 2026 — Razão</title>
+<meta name="description" content="Simule se o faturamento do seu MEI vai ficar dentro do limite de R$81.000 em 2026, com cálculo proporcional pelo mês de abertura e alerta de desenquadramento.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{ --paper:#EDF1E6; --paper-line:#C7D3BC; --card:#FBFAF6; --ink:#1E2A18; --ink-soft:#5B6B51; --brass:#A8792E; --brass-dark:#8A5F1F; --alert:#A6503A; --good:#3E6B4F; --warn:#B08A2E; }
+*{box-sizing:border-box;}
+body{ margin:0; background:repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px), var(--paper); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; line-height:1.5; }
+.wrap{ max-width:920px; margin:0 auto; padding:0 24px 60px; }
+h1,h2{ font-family:'Fraunces',serif; font-weight:600; margin:0; }
+
+/* Estilização do Header e Navegação Sitenav */
+header{ padding:26px 0 18px; border-bottom:2px solid var(--ink); display:flex; flex-direction:column; gap:16px; }
+.brand{ display:flex; align-items:baseline; gap:12px; text-decoration:none; color:var(--ink); }
+.brand .mark{ font-family:'Fraunces',serif; font-weight:700; font-size:1.3rem; border:1.5px solid var(--ink); border-radius:3px; padding:1px 8px; }
+.brand .tag{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--ink-soft); letter-spacing:0.1em; text-transform:uppercase; }
+
+nav.sitenav { display:flex; gap:8px 12px; flex-wrap:wrap; align-items:center; }
+nav.sitenav a { font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-soft); text-decoration:none; padding:3px 6px; border-radius:3px; transition:background 0.2s, color 0.2s; }
+nav.sitenav a:hover { background:var(--paper-line); color:var(--ink); }
+nav.sitenav a.active { color:var(--brass-dark); font-weight:600; border-bottom:2px solid var(--brass); }
+
+.hero{ padding:36px 0 6px; }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:0.74rem; color:var(--brass-dark); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; }
+.hero h1{ font-size:clamp(1.6rem,4vw,2.2rem); max-width:680px; }
+.hero p{ color:var(--ink-soft); max-width:620px; margin-top:12px; }
+
+.grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:28px; }
+@media (max-width:700px){ .grid{ grid-template-columns:1fr; } }
+.card,.ledger{ background:var(--card); border:1px solid var(--paper-line); border-radius:6px; padding:24px; }
+.card h2,.ledger h2{ font-size:1.1rem; margin-bottom:14px; }
+label{ display:block; font-size:0.76rem; color:var(--ink-soft); margin:14px 0 5px; font-family:'IBM Plex Mono',monospace; }
+label:first-of-type{ margin-top:0; }
+input[type=number],select{ width:100%; padding:10px 12px; font-family:'IBM Plex Mono',monospace; background:var(--paper); border:1.5px solid var(--paper-line); border-radius:4px; color:var(--ink); font-size:0.95rem; }
+input[type=number]:focus,select:focus{ outline:none; border-color:var(--brass); }
+button.primary{ margin-top:18px; width:100%; padding:12px; border:none; border-radius:4px; background:var(--brass); color:var(--card); font-family:'IBM Plex Mono',monospace; font-size:0.85rem; cursor:pointer; }
+button.primary:hover{ background:var(--brass-dark); }
+
+.ledger-row{ display:flex; justify-content:space-between; gap:8px; padding:8px 0; border-bottom:1px dotted var(--paper-line); font-size:0.92rem; }
+.ledger-row .val{ font-family:'IBM Plex Mono',monospace; font-weight:600; }
+.status-box{ margin-top:16px; padding:14px 16px; border-radius:4px; font-family:'IBM Plex Mono',monospace; font-size:0.85rem; border:1.5px solid; }
+.status-box.ok{ background:rgba(62,107,79,0.08); border-color:var(--good); color:var(--good); }
+.status-box.warn{ background:rgba(176,138,46,0.1); border-color:var(--warn); color:var(--warn); }
+.status-box.danger{ background:rgba(166,80,58,0.08); border-color:var(--alert); color:var(--alert); }
+
+article{ max-width:700px; margin-top:40px; }
+article h2{ font-size:1.2rem; margin-top:28px; margin-bottom:10px; }
+article p{ margin:0 0 14px; }
+.formula{ background:var(--card); border:1px solid var(--paper-line); border-left:3px solid var(--brass); border-radius:4px; padding:14px 18px; font-family:'IBM Plex Mono',monospace; font-size:0.86rem; margin:14px 0; }
+.muted{ color:var(--ink-soft); font-size:0.88rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a href="index.html" class="brand">
+      <span class="mark">R</span>
+      <span class="tag">Razão · ferramentas financeiras</span>
+    </a>
+    <nav class="sitenav">
+      <a href="index.html">Início</a>
+      <a href="juros-compostos.html">Juros compostos</a>
+      <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+      <a href="financiamento-trator.html">Financiamento Trator</a>
+      <a href="amortizacao-extra.html">Amortização Extra</a>
+      <a href="emprestimo-pessoal.html">Empréstimo</a>
+      <a href="independencia-financeira.html">Independência Financeira</a>
+      <a href="preco-medio.html">Preço Médio</a>
+      <a href="salario-liquido.html">Salário Líquido</a>
+      <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+      <a href="conversor-moedas.html">Conversor de Moedas</a>
+      <a href="cripto-imposto.html">Cripto Imposto</a>
+      <a href="faturamento-mei.html" class="active">Faturamento MEI</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Limite de faturamento do MEI</h1>
+    <p>Veja se o seu MEI está dentro do limite anual de R$81.000 e o que acontece se ultrapassar.</p>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Dados do seu MEI</h2>
+      <label for="mei-mes">Mês de abertura no ano</label>
+      <select id="mei-mes">
+        <option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option>
+        <option value="4">Abril</option><option value="5">Maio</option><option value="6">Junho</option>
+        <option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option>
+        <option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
+      </select>
+      <label for="mei-acumulado">Faturamento acumulado no ano (R$)</label>
+      <input type="number" id="mei-acumulado" value="45000" min="0" step="500">
+      <label for="mei-media">Média mensal estimada daqui pra frente (R$)</label>
+      <input type="number" id="mei-media" value="7000" min="0" step="100">
+      <button class="primary" id="mei-calc">Calcular</button>
+    </div>
+    <div class="ledger">
+      <h2>Resultado</h2>
+      <div class="ledger-row"><span>Limite proporcional para este ano</span><span class="val" id="mei-limite">—</span></div>
+      <div class="ledger-row"><span>Faturamento acumulado</span><span class="val" id="mei-acum-out">—</span></div>
+      <div class="ledger-row"><span>Meses restantes no ano</span><span class="val" id="mei-restantes">—</span></div>
+      <div class="ledger-row"><span>Projeção de faturamento até dezembro</span><span class="val" id="mei-projecao">—</span></div>
+      <div class="status-box" id="mei-status"></div>
+    </div>
+  </div>
+
+  <article>
+    <h2>O limite anual do MEI</h2>
+    <p>O MEI pode faturar até <strong>R$81.000 por ano</strong> — esse valor está fixo desde 2018 e continua valendo em 2026, mesmo com propostas em tramitação no Congresso para aumentá-lo. Não existe um "limite mensal" oficial; a referência de R$6.750/mês é apenas o valor médio (R$81.000 ÷ 12), usado como régua de acompanhamento.</p>
+    <h2>Limite proporcional no ano de abertura</h2>
+    <p>Quem abre o MEI no meio do ano não tem direito ao limite cheio de R$81.000 — o limite é proporcional aos meses restantes, contando o mês de abertura:</p>
+    <div class="formula">Limite proporcional = R$6.750 × número de meses restantes no ano (incluindo o mês de abertura)</div>
+    <p>Por exemplo, um MEI aberto em julho tem 6 meses ativos naquele ano (julho a dezembro), então o limite daquele ano é R$6.750 × 6 = R$40.500 — não os R$81.000 cheios.</p>
+    <h2>O que acontece se você ultrapassar o limite</h2>
+    <p>Existem duas faixas de consequência, dependendo de quanto você ultrapassa o teto:</p>
+    <div class="formula">Até 20% acima do limite (até R$97.200): você continua como MEI até dezembro, mas paga um DAS complementar sobre o valor excedente, e migra para Microempresa (ME) em janeiro do ano seguinte.<br><br>Acima de 20% do limite (mais de R$97.200): o desenquadramento é retroativo a 1º de janeiro do próprio ano — você passa a dever impostos como Microempresa sobre todo o faturamento do ano, com juros e multa.</div>
+    <p>Por isso vale a pena acompanhar o faturamento acumulado mês a mês em vez de só conferir no fim do ano: dá tempo de se planejar (ou de migrar voluntariamente para ME) antes de cair na faixa de desenquadramento retroativo, que é bem mais custosa.</p>
+    <p class="muted">Simulação educativa baseada no limite oficial vigente em 2026. Confirme sempre a regra atual no Portal do Empreendedor ou com um contador antes de tomar decisões.</p>
+  </article>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  function formatarBRL(valor) { return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+
+  const LIMITE_MENSAL = 6750;
+
+  function calcular(){
+    const mesEl = document.getElementById('mei-mes');
+    const acumuladoEl = document.getElementById('mei-acumulado');
+    const mediaEl = document.getElementById('mei-media');
+    if (!mesEl || !acumuladoEl || !mediaEl) return;
+
+    const mesAbertura = parseInt(mesEl.value) || 1;
+    const acumulado = parseFloat(acumuladoEl.value) || 0;
+    const media = parseFloat(mediaEl.value) || 0;
+
+    const mesesAtivos = 12 - mesAbertura + 1;
+    const limiteProporcional = LIMITE_MENSAL * mesesAtivos;
+
+    const mesesJaPassados = media > 0 ? Math.min(mesesAtivos, Math.round(acumulado / media)) : 0;
+    const mesesRestantes = Math.max(0, mesesAtivos - mesesJaPassados);
+
+    const projecao = acumulado + (media * mesesRestantes);
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set('mei-limite', formatarBRL(limiteProporcional));
+    set('mei-acum-out', formatarBRL(acumulado));
+    set('mei-restantes', mesesRestantes + ' meses');
+    set('mei-projecao', formatarBRL(projecao));
+
+    const limite20 = limiteProporcional * 1.2;
+    const statusEl = document.getElementById('mei-status');
+    if (statusEl){
+      if (projecao <= limiteProporcional){
+        statusEl.className = 'status-box ok';
+        statusEl.textContent = '✓ Dentro do limite — projeção abaixo do teto proporcional deste ano.';
+      } else if (projecao <= limite20){
+        statusEl.className = 'status-box warn';
+        statusEl.textContent = `⚠ Alerta de transição — projeção acima do limite, mas dentro da faixa de até 20% (${formatarBRL(limite20)}). Você pagará DAS complementar e migrará para ME em janeiro.`;
+      } else {
+        statusEl.className = 'status-box danger';
+        statusEl.textContent = `✕ Risco de desenquadramento retroativo — projeção ultrapassa 20% do limite (${formatarBRL(limite20)}). Procure um contador para planejar a transição.`;
+      }
+    }
+  }
+
+  const inputs = document.querySelectorAll('#mei-mes, #mei-acumulado, #mei-media');
+  inputs.forEach(input => {
+    input.addEventListener('input', calcular);
+    input.addEventListener('change', calcular);
+  });
+
+  const btn = document.getElementById('mei-calc');
+  if (btn) btn.addEventListener('click', calcular);
+  
+  calcular();
+});
+</script>
+</body>
+</html>
