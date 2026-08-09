@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Salário Líquido CLT 2026 — Razão</title>
+<meta name="description" content="Calcule seu salário líquido CLT com as tabelas atualizadas de INSS e IRRF de 2026, incluindo dependentes, pensão alimentícia e o novo redutor do IR.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{ --paper:#EDF1E6; --paper-line:#C7D3BC; --card:#FBFAF6; --ink:#1E2A18; --ink-soft:#5B6B51; --brass:#A8792E; --brass-dark:#8A5F1F; --alert:#A6503A; --good:#3E6B4F; }
+*{box-sizing:border-box;}
+body{ margin:0; background:repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px), var(--paper); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; line-height:1.5; }
+.wrap{ max-width:920px; margin:0 auto; padding:0 24px 60px; }
+h1,h2{ font-family:'Fraunces',serif; font-weight:600; margin:0; }
+
+/* Estilização do Header e Navegação Sitenav */
+header{ padding:26px 0 18px; border-bottom:2px solid var(--ink); display:flex; flex-direction:column; gap:16px; }
+.brand{ display:flex; align-items:baseline; gap:12px; text-decoration:none; color:var(--ink); }
+.brand .mark{ font-family:'Fraunces',serif; font-weight:700; font-size:1.3rem; border:1.5px solid var(--ink); border-radius:3px; padding:1px 8px; }
+.brand .tag{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--ink-soft); letter-spacing:0.1em; text-transform:uppercase; }
+
+nav.sitenav { display:flex; gap:8px 12px; flex-wrap:wrap; align-items:center; }
+nav.sitenav a { font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-soft); text-decoration:none; padding:3px 6px; border-radius:3px; transition:background 0.2s, color 0.2s; }
+nav.sitenav a:hover { background:var(--paper-line); color:var(--ink); }
+nav.sitenav a.active { color:var(--brass-dark); font-weight:600; border-bottom:2px solid var(--brass); }
+
+.hero{ padding:36px 0 6px; }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:0.74rem; color:var(--brass-dark); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; }
+.hero h1{ font-size:clamp(1.6rem,4vw,2.2rem); max-width:680px; }
+.hero p{ color:var(--ink-soft); max-width:620px; margin-top:12px; }
+
+.grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:28px; }
+@media (max-width:700px){ .grid{ grid-template-columns:1fr; } }
+.card,.ledger{ background:var(--card); border:1px solid var(--paper-line); border-radius:6px; padding:24px; }
+.card h2,.ledger h2{ font-size:1.1rem; margin-bottom:14px; }
+label{ display:block; font-size:0.76rem; color:var(--ink-soft); margin:14px 0 5px; font-family:'IBM Plex Mono',monospace; }
+label:first-of-type{ margin-top:0; }
+input[type=number]{ width:100%; padding:10px 12px; font-family:'IBM Plex Mono',monospace; background:var(--paper); border:1.5px solid var(--paper-line); border-radius:4px; color:var(--ink); font-size:0.95rem; }
+input[type=number]:focus{ outline:none; border-color:var(--brass); }
+button.primary{ margin-top:18px; width:100%; padding:12px; border:none; border-radius:4px; background:var(--brass); color:var(--card); font-family:'IBM Plex Mono',monospace; font-size:0.85rem; cursor:pointer; }
+button.primary:hover{ background:var(--brass-dark); }
+
+.ledger-row{ display:flex; justify-content:space-between; gap:8px; padding:8px 0; border-bottom:1px dotted var(--paper-line); font-size:0.92rem; }
+.ledger-row .val{ font-family:'IBM Plex Mono',monospace; font-weight:600; }
+.ledger-row.total .val{ color:var(--good); font-size:1.05rem; }
+.ledger-row.cost .val{ color:var(--alert); }
+
+article{ max-width:700px; margin-top:40px; }
+article h2{ font-size:1.2rem; margin-top:28px; margin-bottom:10px; }
+article p{ margin:0 0 14px; }
+.table-wrap{ overflow-x:auto; margin:14px 0; }
+table{ width:100%; border-collapse:collapse; font-size:0.82rem; }
+th{ text-align:right; font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-soft); padding:6px 8px; border-bottom:1.5px solid var(--ink); }
+th:first-child,td:first-child{ text-align:left; }
+td{ text-align:right; padding:6px 8px; font-family:'IBM Plex Mono',monospace; border-bottom:1px solid var(--paper-line); }
+.muted{ color:var(--ink-soft); font-size:0.88rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a href="index.html" class="brand">
+      <span class="mark">R</span>
+      <span class="tag">Razão · ferramentas financeiras</span>
+    </a>
+    <nav class="sitenav">
+      <a href="index.html">Início</a>
+      <a href="juros-compostos.html">Juros compostos</a>
+      <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+      <a href="financiamento-trator.html">Financiamento Trator</a>
+      <a href="amortizacao-extra.html">Amortização Extra</a>
+      <a href="emprestimo-pessoal.html">Empréstimo</a>
+      <a href="independencia-financeira.html">Independência Financeira</a>
+      <a href="preco-medio.html">Preço Médio</a>
+      <a href="salario-liquido.html" class="active">Salário Líquido</a>
+      <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+      <a href="conversor-moedas.html">Conversor de Moedas</a>
+      <a href="cripto-imposto.html">Cripto Imposto</a>
+      <a href="faturamento-mei.html">Faturamento MEI</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Salário líquido CLT</h1>
+    <p>Calcule o desconto de INSS e IRRF sobre o salário bruto e veja o valor líquido, com as tabelas de 2026.</p>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Dados do salário</h2>
+      <label for="sl-bruto">Salário bruto (R$)</label>
+      <input type="number" id="sl-bruto" value="4500" min="0" step="50">
+      <label for="sl-dependentes">Número de dependentes</label>
+      <input type="number" id="sl-dependentes" value="0" min="0" step="1">
+      <label for="sl-pensao">Pensão alimentícia (R$)</label>
+      <input type="number" id="sl-pensao" value="0" min="0" step="50">
+      <label for="sl-outros">Outros descontos (R$)</label>
+      <input type="number" id="sl-outros" value="0" min="0" step="50">
+      <button class="primary" id="sl-calc">Calcular</button>
+    </div>
+    <div class="ledger">
+      <h2>Resultado</h2>
+      <div class="ledger-row cost"><span>Desconto INSS</span><span class="val" id="sl-inss">—</span></div>
+      <div class="ledger-row cost"><span>Desconto IRRF</span><span class="val" id="sl-irrf">—</span></div>
+      <div class="ledger-row cost"><span>Pensão + outros descontos</span><span class="val" id="sl-outrosval">—</span></div>
+      <div class="ledger-row total"><span>Salário líquido</span><span class="val" id="sl-liquido">—</span></div>
+      <div class="ledger-row"><span>Desconto total (% do bruto)</span><span class="val" id="sl-percentual">—</span></div>
+    </div>
+  </div>
+
+  <article>
+    <h2>Tabela do INSS 2026</h2>
+    <p>O desconto de INSS é progressivo por faixa — cada parte do salário é descontada na alíquota da faixa em que ela se encaixa, e a soma dessas parcelas é o desconto total.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Faixa salarial</th><th>Alíquota</th></tr></thead>
+        <tbody>
+          <tr><td>até R$1.621,00</td><td>7,5%</td></tr>
+          <tr><td>R$1.621,01 a R$2.902,84</td><td>9%</td></tr>
+          <tr><td>R$2.902,85 a R$4.354,27</td><td>12%</td></tr>
+          <tr><td>R$4.354,28 a R$8.475,55 (teto)</td><td>14%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted">Acima do teto (R$8.475,55), o desconto de INSS não aumenta mais — fica travado em R$988,09.</p>
+
+    <h2>Tabela do IRRF 2026</h2>
+    <p>O IRRF incide sobre a base de cálculo (salário bruto menos INSS, dependentes e pensão), também de forma progressiva:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Base de cálculo mensal</th><th>Alíquota</th></tr></thead>
+        <tbody>
+          <tr><td>até R$2.428,80</td><td>Isento</td></tr>
+          <tr><td>R$2.428,81 a R$2.826,65</td><td>7,5%</td></tr>
+          <tr><td>R$2.826,66 a R$3.751,05</td><td>15%</td></tr>
+          <tr><td>R$3.751,06 a R$4.664,68</td><td>22,5%</td></tr>
+          <tr><td>acima de R$4.664,68</td><td>27,5%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Desde a Lei 15.270/2025, existe um redutor adicional: salários brutos até R$5.000 ficam totalmente isentos de IRRF na prática, e entre R$5.000,01 e R$7.350,00 há uma redução parcial do imposto apurado pela tabela tradicional. Acima de R$7.350,00, a tabela tradicional se aplica sem redução extra. Cada dependente reduz R$189,59 da base de cálculo mensal.</p>
+
+    <h2>Como usar o resultado</h2>
+    <p>O percentual de desconto total ajuda a comparar propostas de salário de forma realista — duas vagas com o mesmo salário bruto podem gerar líquidos bem diferentes dependendo de quantos dependentes você declara e se há pensão alimentícia envolvida.</p>
+    <p class="muted">Simulação educativa; não substitui o holerite oficial da empresa, que pode incluir vale-transporte, benefícios e outras deduções específicas do contrato.</p>
+  </article>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  function formatarBRL(valor) { return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+
+  function calcularINSS(bruto){
+    const faixas = [
+      { ate: 1621.00, taxa: 0.075 },
+      { ate: 2902.84, taxa: 0.09 },
+      { ate: 4354.27, taxa: 0.12 },
+      { ate: 8475.55, taxa: 0.14 }
+    ];
+    let restante = Math.min(bruto, 8475.55);
+    let anterior = 0;
+    let total = 0;
+    for (const f of faixas){
+      if (restante <= anterior) break;
+      const larguraFaixa = f.ate - anterior;
+      const valorFaixa = Math.min(restante - anterior, larguraFaixa);
+      if (valorFaixa > 0) total += valorFaixa * f.taxa;
+      anterior = f.ate;
+    }
+    return Math.min(total, 988.09);
+  }
+
+  function calcularIRRFTabela(base){
+    if (base <= 2428.80) return 0;
+    if (base <= 2826.65) return base * 0.075 - 182.16;
+    if (base <= 3751.05) return base * 0.15 - 394.16;
+    if (base <= 4664.68) return base * 0.225 - 675.49;
+    return base * 0.275 - 908.73;
+  }
+
+  function calcularIRRF(brutoParaRedutor, base){
+    let irrf = Math.max(0, calcularIRRFTabela(base));
+    if (brutoParaRedutor <= 5000){
+      return 0;
+    } else if (brutoParaRedutor <= 7350){
+      const reducao = Math.max(0, 978.62 - brutoParaRedutor * 0.133143);
+      return Math.max(0, irrf - reducao);
+    }
+    return irrf;
+  }
+
+  function calcular(){
+    const brutoEl = document.getElementById('sl-bruto');
+    const depEl = document.getElementById('sl-dependentes');
+    const pensaoEl = document.getElementById('sl-pensao');
+    const outrosEl = document.getElementById('sl-outros');
+    if (!brutoEl || !depEl || !pensaoEl || !outrosEl) return;
+
+    const bruto = parseFloat(brutoEl.value) || 0;
+    const dependentes = Math.max(0, parseInt(depEl.value) || 0);
+    const pensao = parseFloat(pensaoEl.value) || 0;
+    const outros = parseFloat(outrosEl.value) || 0;
+
+    const inss = calcularINSS(bruto);
+    const deducaoDependentes = dependentes * 189.59;
+    const baseIRRF = Math.max(0, bruto - inss - deducaoDependentes - pensao);
+    const irrf = calcularIRRF(bruto, baseIRRF);
+
+    const totalOutros = pensao + outros;
+    const liquido = bruto - inss - irrf - totalOutros;
+    const percentual = bruto > 0 ? ((bruto - liquido) / bruto) * 100 : 0;
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set('sl-inss', formatarBRL(inss));
+    set('sl-irrf', formatarBRL(irrf));
+    set('sl-outrosval', formatarBRL(totalOutros));
+    set('sl-liquido', formatarBRL(liquido));
+    set('sl-percentual', percentual.toFixed(1).replace('.', ',') + '%');
+  }
+
+  const inputs = document.querySelectorAll('#sl-bruto, #sl-dependentes, #sl-pensao, #sl-outros');
+  inputs.forEach(input => input.addEventListener('input', calcular));
+
+  const btn = document.getElementById('sl-calc');
+  if (btn) btn.addEventListener('click', calcular);
+  
+  calcular();
+});
+</script>
+</body>
+</html>
