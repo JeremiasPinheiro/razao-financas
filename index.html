@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Razão - Ferramentas Financeiras</title>
-  <meta name="description" content="Calculadoras e ferramentas financeiras gratuitas: juros compostos, financiamento imobiliario, conversor de moedas e simulador agrícola.">
-  <link rel="stylesheet" href="style.css">
-  
-  <!-- Código do Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4283089731677395"
-       crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Razão — Calculadoras financeiras: juros, financiamento, câmbio, cripto e trator</title>
+<meta name="description" content="Calculadoras financeiras gratuitas e sem cadastro: juros compostos, financiamento imobiliário, salário líquido, empréstimos, investimentos e MEI.">
+<link rel="stylesheet" href="style.css">
+
+<!-- Código do Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4283089731677395" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -21,71 +20,197 @@
         <a href="index.html" class="current">Início</a>
         <a href="juros-compostos.html">Juros compostos</a>
         <a href="financiamento-imobiliario.html">Financiamento</a>
+        <a href="salario-liquido.html">Salário Líquido</a>
+        <a href="emprestimo-pessoal.html">Empréstimo</a>
         <a href="conversor-moedas.html">Câmbio</a>
-        <a href="cripto-imposto.html">Cripto (IR)</a>
-        <a href="financiamento-trator.html">Financiamento trator</a>
       </nav>
     </div>
   </header>
-  
-  <section class="page-hero">
-    <div class="eyebrow">Calculadora</div>
-    <h1>Calculadora de juros compostos</h1>
-    <p class="lede">Informe o capital inicial, o aporte mensal e a taxa de juros para ver como seu dinheiro cresce mês a mês, com juros sobre juros.</p>
-  </section>
 
-  <main class="calc">
-    <div class="grid">
-      <div class="card">
-        <h2>Dados do investimento</h2>
-        <div class="sub">Aportes mensais e juros compostos mês a mês.</div>
+  <main>
+    <section class="page-hero">
+      <div class="eyebrow">Doze ferramentas gratuitas, sem cadastro, sem letra miúda</div>
+      <h1>Suas contas de dinheiro, postas no papel.</h1>
+      <p class="lede">Antes de investir, financiar um imóvel, trocar moeda, calcular seu salário ou simular um empréstimo, vale a pena ver o número exato — não a estimativa de cabeça. Escolha uma calculadora abaixo.</p>
+    </section>
 
-        <label for="jc-capital">Capital inicial (R$)</label>
-        <input type="number" id="jc-capital" value="5000" min="0" step="100">
+    <div class="tool-grid">
 
-        <label for="jc-aporte">Aporte mensal (R$)</label>
-        <input type="number" id="jc-aporte" value="300" min="0" step="50">
+      <a class="tool-card" href="juros-compostos.html">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 17 L9 10 L13 14 L21 5"/>
+            <path d="M15 5 L21 5 L21 11"/>
+          </svg>
+        </div>
+        <div class="num">01</div>
+        <h3>Juros compostos</h3>
+        <p>Simule quanto um investimento rende com aportes mensais, mês a mês, com gráfico de crescimento.</p>
+        <div class="go">Calcular →</div>
+      </a>
 
-        <label for="jc-taxa">Taxa de juros (% ao mês)</label>
-        <input type="number" id="jc-taxa" value="0.8" min="0" step="0.01">
+      <a class="tool-card" href="financiamento-imobiliario.html">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 11 L12 4 L21 11"/>
+            <path d="M5 10 V20 H19 V10"/>
+            <path d="M10 20 V14 H14 V20"/>
+          </svg>
+        </div>
+        <div class="num">02</div>
+        <h3>Financiamento imobiliário</h3>
+        <p>Compare os sistemas SAC e Price e veja parcela inicial, parcela final e total de juros pagos.</p>
+        <div class="go">Simular →</div>
+      </a>
 
-        <label for="jc-tempo">Período (meses)</label>
-        <input type="number" id="jc-tempo" value="60" min="1" step="1">
+      <a class="tool-card" href="conversor-moedas.html">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 8 H17"/>
+            <path d="M13 4 L17 8 L13 12"/>
+            <path d="M20 16 H7"/>
+            <path d="M11 20 L7 16 L11 12"/>
+          </svg>
+        </div>
+        <div class="num">03</div>
+        <h3>Conversor de moedas</h3>
+        <p>Cotação em tempo real entre real, dólar, euro, libra, peso argentino e iene.</p>
+        <div class="go">Converter →</div>
+      </a>
 
-        <button class="btn-primary" id="jc-calc">Calcular</button>
-      </div>
+      <a class="tool-card" href="cripto-imposto.html">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="8.5"/>
+            <path d="M12 7 V17"/>
+            <path d="M9.5 9.3 C9.5 8 10.6 7.5 12 7.5 C13.5 7.5 14.5 8.2 14.5 9.3 C14.5 10.5 13.5 11 12 11.3 C10.4 11.6 9.3 12.2 9.3 13.5 C9.3 14.7 10.4 15.5 12 15.5 C13.4 15.5 14.5 15 14.5 13.7"/>
+          </svg>
+        </div>
+        <div class="num">04</div>
+        <h3>Imposto sobre ganho de capital em cripto</h3>
+        <p>Calcule se sua venda de criptomoedas está isenta e, se não, quanto de imposto pagar via DARF.</p>
+        <div class="go">Calcular →</div>
+      </a>
 
-      <div class="ledger">
-        <h2>Resultado</h2>
-        <div class="ledger-row"><span class="label">Total investido</span><span class="fill"></span><span class="val" id="jc-investido">—</span></div>
-        <div class="ledger-row"><span class="label">Total em juros</span><span class="fill"></span><span class="val" id="jc-juros">—</span></div>
-        <div class="ledger-row total"><span class="label">Montante final</span><span class="fill"></span><span class="val" id="jc-montante">—</span></div>
-        <canvas id="growthChart" width="800" height="200"></canvas>
-        <div class="hint">A linha <strong>cheia</strong> mostra o montante total acumulado; a linha <strong>pontilhada</strong> mostra apenas o que você depositou, sem os juros.</div>
-      </div>
+      <a class="tool-card" href="financiamento-trator.html">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="7" cy="18" r="2.6"/>
+            <circle cx="17" cy="18" r="2.2"/>
+            <path d="M4 18 H4.4"/>
+            <path d="M9.5 18 H14.8"/>
+            <path d="M6 15 L6 9 H13 L16 13.5 H19 V18"/>
+            <path d="M9 9 V5 H12"/>
+          </svg>
+        </div>
+        <div class="num">05</div>
+        <h3>Financiamento de trator agrícola</h3>
+        <p>Simule financiamento de máquina agrícola nas linhas de crédito rural, com sistema SAC ou Price.</p>
+        <div class="go">Simular →</div>
+      </a>
+
+      <a class="tool-card" href="emprestimo-pessoal.html">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="7" width="18" height="12" rx="2"/>
+            <path d="M3 11 H21"/>
+            <path d="M7 15 H10"/>
+          </svg>
+        </div>
+        <div class="num">06</div>
+        <h3>Empréstimo pessoal / consignado</h3>
+        <p>Simule a parcela pela Tabela Price, o custo total dos juros e o cronograma de amortização.</p>
+        <div class="go">Simular →</div>
+      </a>
+
+      <a class="tool-card" href="amortizacao-extra.html">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3 V15"/>
+            <path d="M7 10 L12 15 L17 10"/>
+            <path d="M5 19 H19"/>
+          </svg>
+        </div>
+        <div class="num">07</div>
+        <h3>Amortização extra / quitação antecipada</h3>
+        <p>Veja quanto tempo ou quanto de parcela você economiza com um aporte extra no financiamento.</p>
+        <div class="go">Simular →</div>
+      </a>
+
+      <a class="tool-card" href="salario-liquido.html">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 20 V10 L12 4 L20 10 V20"/>
+            <path d="M9 20 V14 H15 V20"/>
+          </svg>
+        </div>
+        <div class="num">08</div>
+        <h3>Salário líquido CLT</h3>
+        <p>Calcule o desconto de INSS e IRRF 2026 e veja o valor líquido do seu salário.</p>
+        <div class="go">Calcular →</div>
+      </a>
+
+      <a class="tool-card" href="tesouro-vs-poupanca.html">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="8" height="16" rx="1"/>
+            <rect x="13" y="9" width="8" height="11" rx="1"/>
+          </svg>
+        </div>
+        <div class="num">09</div>
+        <h3>Tesouro Selic / CDB x Poupança</h3>
+        <p>Compare o rendimento líquido, já descontando o imposto de renda regressivo.</p>
+        <div class="go">Comparar →</div>
+      </a>
+
+      <a class="tool-card" href="independencia-financeira.html">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="8.5"/>
+            <path d="M12 7.5 V12 L15.5 14.5"/>
+          </svg>
+        </div>
+        <div class="num">10</div>
+        <h3>Independência financeira</h3>
+        <p>Calcule o patrimônio necessário pela regra dos 4% e o aporte mensal até chegar lá.</p>
+        <div class="go">Calcular →</div>
+      </a>
+
+      <a class="tool-card" href="preco-medio.html">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 18 L9 11 L13 14 L20 6"/>
+            <path d="M4 6 H4.2"/>
+            <path d="M4 12 H4.2"/>
+            <path d="M4 18 H4.2"/>
+          </svg>
+        </div>
+        <div class="num">11</div>
+        <h3>Preço médio de ações e FIIs</h3>
+        <p>Some múltiplas compras e veja o preço médio ponderado de aquisição da sua posição.</p>
+        <div class="go">Calcular →</div>
+      </a>
+
+      <a class="tool-card" href="faturamento-mei.html">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2"/>
+            <path d="M8 9 H16"/>
+            <path d="M8 13 H13"/>
+          </svg>
+        </div>
+        <div class="num">12</div>
+        <h3>Limite de faturamento do MEI</h3>
+        <p>Veja se o seu MEI está dentro do limite anual de R$81.000 e o risco de desenquadramento.</p>
+        <div class="go">Calcular →</div>
+      </a>
+
     </div>
 
     <article class="copy">
-      <h2>O que são juros compostos</h2>
-      <p>Juros compostos são juros calculados sobre o capital inicial somado aos juros já acumulados em períodos anteriores — na prática, "juros sobre juros". É diferente do juro simples, em que o rendimento de cada período incide sempre sobre o valor inicial, sem nunca aumentar a base de cálculo. Por causa disso, um investimento em juros compostos tem uma curva de crescimento que começa devagar e acelera com o tempo, em vez de crescer em linha reta.</p>
-
-      <h2>A fórmula usada nesta calculadora</h2>
-      <p>Com aportes mensais, o cálculo é feito mês a mês: o saldo do mês anterior é multiplicado por (1 + taxa mensal), e depois o valor do aporte do mês é somado a esse resultado. Esse novo saldo passa a ser a base do cálculo do mês seguinte, e assim sucessivamente até o fim do período informado. É essencialmente a mesma lógica usada por corretoras, bancos e simuladores de previdência privada para projetar o crescimento de uma reserva financeira ou de um investimento recorrente ao longo do tempo.</p>
-
-      <h2>Como usar o resultado</h2>
-      <p>O <strong>total investido</strong> mostra quanto saiu do seu bolso — a soma do capital inicial com todos os aportes mensais, sem contar nenhum rendimento. O <strong>total em juros</strong> é a diferença entre o montante final e o que você de fato depositou: é o quanto o dinheiro rendeu sozinho, só por estar aplicado. Comparar essas duas colunas é útil para decidir entre investir um valor único hoje ou distribuir esse mesmo valor em aportes menores ao longo do tempo — o gráfico ajuda a visualizar em que ponto os juros passam a crescer mais rápido que os próprios aportes.</p>
-
-      <h2>Por que o prazo importa mais que a taxa</h2>
-      <p>Um erro comum é focar só em taxas de retorno mais altas, buscando o investimento "que rende mais". Na prática, o tempo de exposição ao juro composto costuma pesar mais no resultado final do que uma diferença pequena na taxa mensal — começar mais cedo, mesmo com aportes menores, geralmente supera começar mais tarde com aportes maiores, porque o efeito bola de neve tem mais tempo para agir. Use o campo de período para comparar diferentes horizontes de tempo e ver esse efeito na prática antes de decidir quando começar a investir.</p>
-
-      <p class="muted">Esta calculadora é uma ferramenta educativa de simulação e não constitui recomendação de investimento. Rendimentos reais dependem do produto financeiro escolhido, de taxas de administração, impostos e da variação do mercado.</p>
-
-      <dl class="faq">
-        <dt>A taxa deve ser informada ao mês ou ao ano?</dt>
-        <dd>Esta calculadora trabalha com taxa mensal. Se você tem uma taxa anual, ela precisa ser convertida para uma taxa mensal equivalente antes de preencher o campo.</dd>
-        <dt>O aporte mensal é obrigatório?</dt>
-        <dd>Não — deixe o campo em zero para simular um investimento de valor único, sem aportes recorrentes.</dd>
-      </dl>
+      <h2>Por que usar uma calculadora em vez de estimar de cabeça?</h2>
+      <p>Juros compostos, parcelas de financiamento, câmbio e imposto sobre ganho de capital têm uma coisa em comum: pequenas diferenças de taxa, prazo ou faixa de tributação mudam o resultado final muito mais do que parece à primeira vista. Fazer essa conta de cabeça, ou confiar numa regra de bolso, costuma levar a decisões piores do que simular o número real antes de investir, financiar ou declarar algo.</p>
+      <p class="muted">As calculadoras deste site rodam inteiramente no seu navegador — nenhum dado que você digita é enviado para nenhum servidor, exceto a cotação de câmbio, que é buscada de uma API pública para trazer o valor atualizado.</p>
     </article>
   </main>
 
@@ -103,121 +228,12 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-
-  // Atualiza o ano no rodapé
-  const footYearEl = document.getElementById('footYear');
-  if (footYearEl) {
-    footYearEl.textContent = new Date().getFullYear();
-  }
-
-  // Função para formatar moeda em Real (BRL)
-  function BRL(valor) {
-    return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  }
-
-  function calcJurosCompostos() {
-    const capitalInput = document.getElementById('jc-capital');
-    const aporteInput = document.getElementById('jc-aporte');
-    const taxaInput = document.getElementById('jc-taxa');
-    const tempoInput = document.getElementById('jc-tempo');
-
-    const capital = parseFloat(capitalInput ? capitalInput.value : 0) || 0;
-    const aporte = parseFloat(aporteInput ? aporteInput.value : 0) || 0;
-    const taxa = (parseFloat(taxaInput ? taxaInput.value : 0) || 0) / 100;
-    const meses = Math.max(1, parseInt(tempoInput ? tempoInput.value : 1) || 1);
-
-    let saldo = capital;
-    let investido = capital;
-    const series = [{ saldo, investido }];
-
-    for (let m = 1; m <= meses; m++) {
-      saldo = saldo * (1 + taxa) + aporte;
-      investido += aporte;
-      series.push({ saldo, investido });
+  document.addEventListener('DOMContentLoaded', () => {
+    const footYearEl = document.getElementById('footYear');
+    if (footYearEl) {
+      footYearEl.textContent = new Date().getFullYear();
     }
-
-    const juros = saldo - investido;
-
-    const elInvestido = document.getElementById('jc-investido');
-    const elJuros = document.getElementById('jc-juros');
-    const elMontante = document.getElementById('jc-montante');
-
-    if (elInvestido) elInvestido.textContent = BRL(investido);
-    if (elJuros) elJuros.textContent = BRL(juros);
-    if (elMontante) elMontante.textContent = BRL(saldo);
-
-    drawGrowthChart(series);
-  }
-
-  function drawGrowthChart(series) {
-    const canvas = document.getElementById('growthChart');
-    if (!canvas || !canvas.getContext) return;
-
-    const ctx = canvas.getContext('2d');
-    const W = canvas.width;
-    const H = canvas.height;
-    ctx.clearRect(0, 0, W, H);
-
-    const pad = { l: 56, r: 16, t: 14, b: 24 };
-    const maxVal = Math.max(...series.map(s => s.saldo), 1);
-    const n = series.length;
-
-    const x = i => pad.l + (i / Math.max(1, n - 1)) * (W - pad.l - pad.r);
-    const y = v => H - pad.b - (v / maxVal) * (H - pad.t - pad.b);
-
-    // Linhas de grade e valores no eixo Y
-    ctx.strokeStyle = '#C7D3BC';
-    ctx.lineWidth = 1;
-    ctx.font = '11px IBM Plex Mono, monospace';
-    ctx.fillStyle = '#5B6B51';
-
-    for (let g = 0; g <= 4; g++) {
-      const val = maxVal * (g / 4);
-      const yy = y(val);
-      ctx.beginPath();
-      ctx.moveTo(pad.l, yy);
-      ctx.lineTo(W - pad.r, yy);
-      ctx.stroke();
-      ctx.fillText('R$ ' + Math.round(val).toLocaleString('pt-BR'), 0, yy + 4);
-    }
-
-    // Linha do valor investido (Pontilhada)
-    ctx.setLineDash([3, 4]);
-    ctx.strokeStyle = '#5B6B51';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    series.forEach((s, i) => {
-      if (i === 0) ctx.moveTo(x(i), y(s.investido));
-      else ctx.lineTo(x(i), y(s.investido));
-    });
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // Linha do montante total (Sólida)
-    ctx.strokeStyle = '#0A8792E';
-    ctx.lineWidth = 2.5;
-    ctx.beginPath();
-    series.forEach((s, i) => {
-      if (i === 0) ctx.moveTo(x(i), y(s.saldo));
-      else ctx.lineTo(x(i), y(s.saldo));
-    });
-    ctx.stroke();
-  }
-
-  // Ouvinte para o botão calcular
-  const btnCalc = document.getElementById('jc-calc');
-  if (btnCalc) {
-    btnCalc.addEventListener('click', (e) => {
-      e.preventDefault();
-      calcJurosCompostos();
-    });
-  }
-
-  // Executa o cálculo inicial
-  calcJurosCompostos();
-});
+  });
 </script>
 </body>
 </html>
-
