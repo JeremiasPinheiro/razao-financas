@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Independência Financeira — Razão</title>
+<meta name="description" content="Calcule o patrimônio necessário para viver de renda com a regra dos 4% e quanto você precisa investir por mês para chegar lá.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{ --paper:#EDF1E6; --paper-line:#C7D3BC; --card:#FBFAF6; --ink:#1E2A18; --ink-soft:#5B6B51; --brass:#A8792E; --brass-dark:#8A5F1F; --alert:#A6503A; --good:#3E6B4F; }
+*{box-sizing:border-box;}
+body{ margin:0; background:repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px), var(--paper); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; line-height:1.5; }
+.wrap{ max-width:920px; margin:0 auto; padding:0 24px 60px; }
+h1,h2{ font-family:'Fraunces',serif; font-weight:600; margin:0; }
+
+/* Header e Navegação Sitenav */
+header{ padding:26px 0 18px; border-bottom:2px solid var(--ink); display:flex; flex-direction:column; gap:16px; }
+.brand{ display:flex; align-items:baseline; gap:12px; text-decoration:none; color:var(--ink); }
+.brand .mark{ font-family:'Fraunces',serif; font-weight:700; font-size:1.3rem; border:1.5px solid var(--ink); border-radius:3px; padding:1px 8px; }
+.brand .tag{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--ink-soft); letter-spacing:0.1em; text-transform:uppercase; }
+
+nav.sitenav { display:flex; gap:8px 12px; flex-wrap:wrap; align-items:center; }
+nav.sitenav a { font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-soft); text-decoration:none; padding:3px 6px; border-radius:3px; transition:background 0.2s, color 0.2s; }
+nav.sitenav a:hover { background:var(--paper-line); color:var(--ink); }
+nav.sitenav a.active { color:var(--brass-dark); font-weight:600; border-bottom:2px solid var(--brass); }
+
+.hero{ padding:36px 0 6px; }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:0.74rem; color:var(--brass-dark); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; }
+.hero h1{ font-size:clamp(1.6rem,4vw,2.2rem); max-width:680px; }
+.hero p{ color:var(--ink-soft); max-width:620px; margin-top:12px; }
+.grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:28px; }
+@media (max-width:700px){ .grid{ grid-template-columns:1fr; } }
+.card,.ledger{ background:var(--card); border:1px solid var(--paper-line); border-radius:6px; padding:24px; }
+.card h2,.ledger h2{ font-size:1.1rem; margin-bottom:14px; }
+label{ display:block; font-size:0.76rem; color:var(--ink-soft); margin:14px 0 5px; font-family:'IBM Plex Mono',monospace; }
+label:first-of-type{ margin-top:0; }
+input[type=number]{ width:100%; padding:10px 12px; font-family:'IBM Plex Mono',monospace; background:var(--paper); border:1.5px solid var(--paper-line); border-radius:4px; color:var(--ink); font-size:0.95rem; }
+input[type=number]:focus{ outline:none; border-color:var(--brass); }
+button.primary{ margin-top:18px; width:100%; padding:12px; border:none; border-radius:4px; background:var(--brass); color:var(--card); font-family:'IBM Plex Mono',monospace; font-size:0.85rem; cursor:pointer; }
+button.primary:hover{ background:var(--brass-dark); }
+.ledger-row{ display:flex; justify-content:space-between; gap:8px; padding:8px 0; border-bottom:1px dotted var(--paper-line); font-size:0.92rem; }
+.ledger-row .val{ font-family:'IBM Plex Mono',monospace; font-weight:600; }
+.ledger-row.total .val{ color:var(--good); font-size:1.05rem; }
+.hint{ font-size:0.8rem; color:var(--ink-soft); margin-top:14px; }
+article{ max-width:700px; margin-top:40px; }
+article h2{ font-size:1.2rem; margin-top:28px; margin-bottom:10px; }
+article p{ margin:0 0 14px; }
+.formula{ background:var(--card); border:1px solid var(--paper-line); border-left:3px solid var(--brass); border-radius:4px; padding:14px 18px; font-family:'IBM Plex Mono',monospace; font-size:0.86rem; margin:14px 0; }
+.muted{ color:var(--ink-soft); font-size:0.88rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a href="index.html" class="brand">
+      <span class="mark">R</span>
+      <span class="tag">Razão · ferramentas financeiras</span>
+    </a>
+    <nav class="sitenav">
+      <a href="index.html">Início</a>
+      <a href="juros-compostos.html">Juros compostos</a>
+      <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+      <a href="financiamento-trator.html">Financiamento Trator</a>
+      <a href="amortizacao-extra.html">Amortização Extra</a>
+      <a href="emprestimo-pessoal.html">Empréstimo</a>
+      <a href="independencia-financeira.html" class="active">Independência Financeira</a>
+      <a href="preco-medio.html">Preço Médio</a>
+      <a href="salario-liquido.html">Salário Líquido</a>
+      <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+      <a href="conversor-moedas.html">Conversor de Moedas</a>
+      <a href="cripto-imposto.html">Cripto Imposto</a>
+      <a href="faturamento-mei.html">Faturamento MEI</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Calculadora</div>
+    <h1>Independência financeira</h1>
+    <p>Descubra quanto patrimônio você precisa para viver de renda com a regra dos 4%, e quanto precisa investir por mês para chegar lá.</p>
+  </section>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Seus dados</h2>
+      <label for="if-renda">Renda mensal desejada (R$)</label>
+      <input type="number" id="if-renda" value="8000" min="0" step="100">
+      
+      <label for="if-idadeatual">Idade atual</label>
+      <input type="number" id="if-idadeatual" value="30" min="16" step="1">
+      
+      <label for="if-idadealvo">Idade desejada para se aposentar</label>
+      <input type="number" id="if-idadealvo" value="55" min="17" step="1">
+      
+      <label for="if-patrimonio">Patrimônio atual (R$)</label>
+      <input type="number" id="if-patrimonio" value="30000" min="0" step="1000">
+      
+      <label for="if-taxa">Rendimento real estimado (% a.a. acima da inflação)</label>
+      <input type="number" id="if-taxa" value="5" min="0" step="0.1">
+      
+      <button class="primary" id="if-calc">Calcular</button>
+    </div>
+
+    <div class="ledger">
+      <h2>Resultado</h2>
+      <div class="ledger-row total"><span>Patrimônio necessário</span><span class="val" id="if-alvo">—</span></div>
+      <div class="ledger-row"><span>Anos até a aposentadoria</span><span class="val" id="if-anos">—</span></div>
+      <div class="ledger-row"><span>Valor futuro do patrimônio atual</span><span class="val" id="if-futuroatual">—</span></div>
+      <div class="ledger-row total"><span>Aporte mensal necessário</span><span class="val" id="if-aporte">—</span></div>
+      <div class="hint" id="if-hint"></div>
+    </div>
+  </div>
+
+  <article>
+    <h2>A regra dos 4%</h2>
+    <p>A regra dos 4% vem de um estudo americano (Trinity Study) que analisou por quanto tempo uma carteira de investimentos sobrevive quando você retira uma fatia fixa dela todo ano, corrigida pela inflação. A conclusão prática: retirando cerca de 4% ao ano do patrimônio, ele tende a durar décadas sem se esgotar, porque o rendimento dos investimentos repõe boa parte do que foi retirado.</p>
+    <div class="formula">Patrimônio necessário = (Renda mensal desejada × 12) / 0,04<br>ou, de forma equivalente: Patrimônio necessário = Renda mensal desejada × 300</div>
+    <h2>Como o aporte mensal é calculated</h2>
+    <p>Primeiro, projetamos quanto seu patrimônio atual vai valer no futuro, aplicado à taxa de retorno real estimada, até a idade-alvo — isso já é uma parte do caminho percorrida sem nenhum aporte novo. A diferença entre o patrimônio necessário e esse valor futuro é o que falta acumular, e o aporte mensal é calculado para preencher exatamente essa diferença, com os próprios aportes também rendendo juros compostos ao longo do tempo.</p>
+    <div class="formula">Valor futuro do patrimônio atual = Patrimônio atual × (1 + taxa mensal)^meses<br>Aporte mensal = (Patrimônio necessário − Valor futuro do patrimônio atual) / [ ((1+taxa)ⁿ − 1) / taxa ]</div>
+    <h2>Por que usamos "rendimento real" e não a taxa nominal</h2>
+    <p>A taxa de rendimento pedida aqui é a taxa <strong>acima da inflação</strong> (rendimento real), não a taxa nominal de um investimento. Isso simplifica a simulação: o resultado já mostra o patrimônio necessário e o aporte mensal em valores de hoje, sem que você precise projetar a inflação separadamente. Uma taxa real de 4% a 6% ao ano é uma referência comum para carteiras diversificadas de longo prazo, mas o retorno real de qualquer investimento varia e não é garantido.</p>
+    <p class="muted">Simulação educativa que assume uma taxa de retorno constante e não considera impostos sobre os investimentos nem mudanças na renda desejada ao longo do tempo.</p>
+  </article>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  function formatarBRL(valor) { 
+    return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
+  }
+
+  function calcular(){
+    const rendaEl = document.getElementById('if-renda');
+    const idadeAtualEl = document.getElementById('if-idadeatual');
+    const idadeAlvoEl = document.getElementById('if-idadealvo');
+    const patrimonioEl = document.getElementById('if-patrimonio');
+    const taxaEl = document.getElementById('if-taxa');
+    if (!rendaEl || !idadeAtualEl || !idadeAlvoEl || !patrimonioEl || !taxaEl) return;
+
+    const renda = parseFloat(rendaEl.value) || 0;
+    const idadeAtual = parseFloat(idadeAtualEl.value) || 0;
+    const idadeAlvo = parseFloat(idadeAlvoEl.value) || 0;
+    const patrimonio = parseFloat(patrimonioEl.value) || 0;
+    const taxaAno = (parseFloat(taxaEl.value) || 0) / 100;
+    const taxaMes = Math.pow(1 + taxaAno, 1/12) - 1;
+
+    const anos = Math.max(0, idadeAlvo - idadeAtual);
+    const meses = Math.round(anos * 12);
+    const alvo = (renda * 12) / 0.04;
+
+    const futuroAtual = patrimonio * Math.pow(1 + taxaMes, meses);
+    const falta = Math.max(0, alvo - futuroAtual);
+
+    let aporte;
+    if (meses <= 0){
+      aporte = falta;
+    } else if (taxaMes === 0){
+      aporte = falta / meses;
+    } else {
+      const fatorAcumulacao = (Math.pow(1 + taxaMes, meses) - 1) / taxaMes;
+      aporte = falta / fatorAcumulacao;
+    }
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set('if-alvo', formatarBRL(alvo));
+    set('if-anos', anos.toFixed(0) + ' anos');
+    set('if-futuroatual', formatarBRL(futuroAtual));
+    set('if-aporte', formatarBRL(Math.max(0, aporte)));
+
+    const hintEl = document.getElementById('if-hint');
+    if (hintEl){
+      if (idadeAlvo <= idadeAtual) {
+        hintEl.innerHTML = 'A idade alvo de aposentadoria deve ser maior que a idade atual para a simulação de aportes futuros.';
+      } else if (futuroAtual >= alvo){
+        hintEl.innerHTML = 'Pelo patrimônio atual e pela taxa informada, você já está no caminho de atingir a meta só com o que tem investido — nenhum aporte adicional seria necessário nesse cenário.';
+      } else {
+        hintEl.innerHTML = `Faltam <strong>${formatarBRL(falta)}</strong> (em valor futuro) para atingir a meta, dado o que o patrimônio atual já vai render sozinho.`;
+      }
+    }
+  }
+
+  const btn = document.getElementById('if-calc');
+  if (btn) btn.addEventListener('click', calcular);
+  calcular();
+});
+</script>
+</body>
+</html>
