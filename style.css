@@ -45,6 +45,13 @@ nav.sitenav a{
 nav.sitenav a:hover{ color:var(--ink); }
 nav.sitenav a.current{ color:var(--ink); border-color:var(--paper-line); background:var(--card); }
 
+/* REGRA ADICIONADA: Efeito do link ativo (vermelho com traço embaixo) */
+nav.sitenav a.active {
+  color: #A6503A !important; /* Cor vermelha/destaque */
+  font-weight: 600 !important;
+  border-bottom: 2px solid #A6503A !important; /* Traço embaixo */
+}
+
 /* ---------- Hero & Artigos ---------- */
 .page-hero{ padding:40px 0 8px; }
 .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:0.74rem; color:var(--brass-dark); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px; }
