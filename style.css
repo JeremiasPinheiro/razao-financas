@@ -202,3 +202,43 @@ footer.sitefoot .footer-links a:hover{ color:var(--brass-dark); text-decoration:
 footer.sitefoot .footer-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; width:100%; }
 
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+
+/* ============================================================
+   ESTILO DOS BOTÕES DE FUNÇÃO / SELEÇÃO (ADICIONADO AO FINAL)
+   ============================================================ */
+.toggle, .modo-toggle {
+  display: flex !important;
+  gap: 10px !important;
+  margin: 12px 0 18px 0 !important;
+  width: 100% !important;
+}
+
+.toggle button, .modo-toggle button, .modo-btn {
+  flex: 1 !important;
+  padding: 10px 14px !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  color: var(--ink-soft) !important;
+  background-color: var(--paper) !important;
+  border: 1.5px solid var(--paper-line) !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease-in-out !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+
+.toggle button:hover, .modo-toggle button:hover, .modo-btn:hover {
+  color: var(--ink) !important;
+  background-color: var(--card) !important;
+  border-color: var(--brass) !important;
+  transform: translateY(-1px) !important;
+}
+
+.toggle button.on, .toggle button.active, .modo-toggle button.active, .modo-btn.active {
+  color: var(--card) !important;
+  background-color: var(--brass) !important;
+  border-color: var(--brass-dark) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 4px rgba(168, 121, 46, 0.25) !important;
+}
