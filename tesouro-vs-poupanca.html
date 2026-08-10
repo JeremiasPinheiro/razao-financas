@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Favicon inline para resolver o erro GET favicon.ico 404 no console -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>R</text></svg>">
+
 <title>Tesouro Selic ou CDB x Poupança — Comparador — Razão</title>
 <meta name="description" content="Compare o rendimento líquido da poupança com o Tesouro Selic ou um CDB, considerando o imposto de renda regressivo sobre investimentos.">
 <style>
@@ -102,7 +106,7 @@ article p{ margin:0 0 14px; }
       <button class="primary" id="tp-calc">Comparar</button>
     </div>
     <div class="card">
-      <h2>O que está sendo calculado</h2>
+      <h2>O que está sendo calculatedo</h2>
       <p style="font-size:0.88rem; color:var(--ink-soft); margin:0 0 10px;">A poupança usa a regra oficial: 0,5% ao mês quando a Selic está acima de 8,5% ao ano, ou 70% da Selic quando está em 8,5% ao ano ou menos.</p>
       <p style="font-size:0.88rem; color:var(--ink-soft); margin:0;">O Tesouro Selic/CDB usa 100% da taxa informada como rendimento bruto, com desconto de Imposto de Renda regressivo conforme o prazo.</p>
     </div>
@@ -120,7 +124,7 @@ article p{ margin:0 0 14px; }
     <div class="formula">Até 180 dias: 22,5%<br>De 181 a 360 dias: 20%<br>De 361 a 720 dias: 17,5%<br>Acima de 720 dias: 15%</div>
     <p>Por isso, mesmo com uma alíquota de imposto maior que zero, o Tesouro Selic e um CDB com boa taxa costumam superar a poupança quando a Selic está em patamares elevados — o rendimento bruto mais alto compensa o imposto descontado.</p>
     <h2>Quando a poupança pode competir</h2>
-    <p>Em cenários de Selic muito baixa (histórico recente: abaixo de 8,5% ao ano), a diferença entre os dois investimentos diminui, porque a fórmula da poupança passa a acompanhar parte da Selic, e o Tesouro Selic rende proporcionalmente menos em termos absolutos, ainda que sua vantagem relativa (por não ter imposto tão alto em prazos longos) se mantenha.</p>
+    <p>Em cenários de Selic muito baixa (histórico recente: abaixo de 8,5% ao ano), a diferença entre os dois investimentos diminui, porque a fórmula da poupança passa a acompanhar parte da Selic, e o Tesouro Selic rende proporcionalmente menos em termos absolutos, ainda que sua vantagem relativa (por não ter imposto tão alto em prazos longos) se mantendo.</p>
     <p class="muted">Simulação educativa com taxa constante durante todo o período. CDBs de bancos diferentes pagam percentuais diferentes do CDI — confirme a taxa exata antes de investir.</p>
   </article>
 </div>
