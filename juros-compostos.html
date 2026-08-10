@@ -6,7 +6,19 @@
   <title>Razão - Ferramentas Financeiras</title>
   <meta name="description" content="Calculadoras e ferramentas financeiras gratuitas: juros compostos, financiamento imobiliario, conversor de moedas e simulador agrícola.">
   <link rel="stylesheet" href="style.css">
-  
+
+  <style>
+    /* Força o efeito vermelho com traço embaixo no item ativo */
+    nav.sitenav a.active {
+      color: #A6503A !important;
+      font-weight: 600 !important;
+      border: none !important;
+      border-bottom: 2px solid #A6503A !important;
+      border-radius: 0 !important;
+      padding-bottom: 2px !important;
+    }
+  </style>
+
   <!-- Código do Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4283089731677395"
        crossorigin="anonymous"></script>
@@ -77,7 +89,7 @@
       <p>Juros compostos são juros calculados sobre o capital inicial somado aos juros já acumulados em períodos anteriores — na prática, "juros sobre juros". É diferente do juro simples, em que o rendimento de cada período incide sempre sobre o valor inicial, sem nunca aumentar a base de cálculo. Por causa disso, um investimento em juros compostos tem uma curva de crescimento que começa devagar e acelera com o tempo, em vez de crescer em linha reta.</p>
 
       <h2>A fórmula usada nesta calculadora</h2>
-      <p>Com aportes mensais, o cálculo é feito mês a mês: o saldo do mês anterior é multiplied por (1 + taxa mensal), e depois o valor do aporte do mês é somado a esse resultado. Esse novo saldo passa a ser a base do cálculo do mês seguinte, e assim sucessivamente até o fim do período informado. É essencialmente a mesma lógica usada por corretoras, bancos e simuladores de previdência privada para projetar o crescimento de uma reserva financeira ou de um investimento recorrente ao longo do tempo.</p>
+      <p>Com aportes mensais, o cálculo é feito mês a mês: o saldo do mês anterior é multiplicado por (1 + taxa mensal), e depois o valor do aporte do mês é somado a esse resultado. Esse novo saldo passa a ser a base do cálculo do mês seguinte, e assim sucessivamente até o fim do período informado. É essencialmente a mesma lógica usada por corretoras, bancos e simuladores de previdência privada para projetar o crescimento de uma reserva financeira ou de um investimento recorrente ao longo do tempo.</p>
 
       <h2>Como usar o resultado</h2>
       <p>O <strong>total investido</strong> mostra quanto saiu do seu bolso — a soma do capital inicial com todos os aportes mensais, sem contar nenhum rendimento. O <strong>total em juros</strong> é a diferença entre o montante final e o que você de fato depositou: é o quanto o dinheiro rendeu sozinho, só por estar aplicado. Comparar essas duas colunas é útil para decidir entre investir um valor único hoje ou distribuir esse mesmo valor em aportes menores ao longo do tempo — o gráfico ajuda a visualizar em que ponto os juros passam a crescer mais rápido que os próprios aportes.</p>
