@@ -8,18 +8,27 @@
   <link rel="stylesheet" href="style.css">
   
   <style>
-    /* Aplica a cor vermelha e o sublinhado via text-decoration, evitando conflitos de borda do CSS */
+    /* Estilo infalível para o efeito de texto vermelho com traço embaixo */
     nav.sitenav a.active {
       color: #A6503A !important;
       font-weight: 600 !important;
       background: transparent !important;
       border: none !important;
-      border-radius: 0 !important;
       box-shadow: none !important;
-      text-decoration: underline !important;
-      text-decoration-color: #A6503A !important;
-      text-decoration-thickness: 2px !important;
-      text-underline-offset: 6px !important;
+      position: relative !important;
+      display: inline-block !important;
+    }
+
+    /* Desenha o traço em baixo usando um pseudo-elemento ajustado ao texto */
+    nav.sitenav a.active::after {
+      content: '' !important;
+      position: absolute !important;
+      left: 0 !important;
+      bottom: 2px !important;
+      width: 100% !important;
+      height: 2px !important;
+      background-color: #A6503A !important;
+      border-radius: 1px !important;
     }
   </style>
 
