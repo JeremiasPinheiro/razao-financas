@@ -81,17 +81,70 @@ input[type=number], select{
 }
 input[type=number]:focus, select:focus{ border-color:var(--brass); }
 
-.toggle{ display:inline-flex; border:1.5px solid var(--paper-line); border-radius:4px; overflow:hidden; }
-.toggle button{ font-family:'IBM Plex Mono', monospace; font-size:0.76rem; padding:8px 12px; background:var(--paper); border:none; cursor:pointer; color:var(--ink-soft); }
-.toggle button.on{ background:var(--brass); color:var(--card); }
+/* ---------- Botões de Funções / Alternadores de Opções ---------- */
+.toggle, .btn-group, .funcoes-group {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 4px;
+  background: var(--paper);
+  border: 1.5px solid var(--paper-line);
+  border-radius: 6px;
+  margin-top: 10px;
+}
 
-/* SELETOR DE BOTÃO AMPLIADO PARA PEGAR TODAS AS VARIANTES */
-.btn-primary, button.primary, .card button, main button {
+.toggle button, 
+.btn-group button, 
+.funcoes-group button, 
+.btn-funcao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 8px 14px;
+  background: var(--card);
+  color: var(--ink-soft);
+  border: 1.5px solid var(--paper-line);
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+/* Efeito Hover (passar o mouse) em todas as opções */
+.toggle button:hover, 
+.btn-group button:hover, 
+.funcoes-group button:hover, 
+.btn-funcao:hover {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--brass);
+  transform: translateY(-1px);
+}
+
+/* Estado Ativo/Selecionado (Sintonizado com a paleta de cores do site) */
+.toggle button.on, 
+.toggle button.active, 
+.btn-group button.active, 
+.funcoes-group button.active, 
+.btn-funcao.active {
+  background: var(--brass);
+  color: var(--card);
+  border-color: var(--brass-dark);
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(168, 121, 46, 0.2);
+}
+
+/* SELETOR DE BOTÃO DE AÇÃO PRINCIPAL DA CALCULADORA */
+.btn-primary, button.primary, .card button.primary-action {
   margin-top:20px; width:100%; padding:12px; border:none; border-radius:4px;
   background:var(--brass); color:var(--card); font-family:'IBM Plex Mono', monospace;
   font-size:0.85rem; letter-spacing:0.04em; cursor:pointer; transition:background .15s;
 }
-.btn-primary:hover, button.primary:hover, .card button:hover, main button:hover {
+.btn-primary:hover, button.primary:hover, .card button.primary-action:hover {
   background:var(--brass-dark);
 }
 
