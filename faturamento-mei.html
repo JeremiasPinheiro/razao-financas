@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Simulador de Limite de Faturamento do MEI 2026 — Razão</title>
 <meta name="description" content="Simule se o faturamento do seu MEI vai ficar dentro do limite de R$81.000 em 2026, com cálculo proporcional pelo mês de abertura e alerta de desenquadramento.">
+
+<!-- Favicon inline em Data URI para eliminar o erro GET favicon.ico 404 -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>R</text></svg>">
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 :root{ --paper:#EDF1E6; --paper-line:#C7D3BC; --card:#FBFAF6; --ink:#1E2A18; --ink-soft:#5B6B51; --brass:#A8792E; --brass-dark:#8A5F1F; --alert:#A6503A; --good:#3E6B4F; --warn:#B08A2E; }
@@ -22,7 +26,26 @@ header{ padding:26px 0 18px; border-bottom:2px solid var(--ink); display:flex; f
 nav.sitenav { display:flex; gap:8px 12px; flex-wrap:wrap; align-items:center; }
 nav.sitenav a { font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-soft); text-decoration:none; padding:3px 6px; border-radius:3px; transition:background 0.2s, color 0.2s; }
 nav.sitenav a:hover { background:var(--paper-line); color:var(--ink); }
-nav.sitenav a.active { color:var(--brass-dark); font-weight:600; border-bottom:2px solid var(--brass); }
+
+/* Estilo do link ativo para evitar inconsistências de container */
+nav.sitenav a.active {
+  color: #A6503A !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  text-decoration: none !important;
+}
+
+.nav-active-item {
+  color: #A6503A !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid #A6503A !important;
+  padding-bottom: 2px !important;
+  display: inline-block !important;
+  line-height: 1.2 !important;
+}
 
 .hero{ padding:36px 0 6px; }
 .eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:0.74rem; color:var(--brass-dark); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; }
@@ -53,6 +76,9 @@ article p{ margin:0 0 14px; }
 .formula{ background:var(--card); border:1px solid var(--paper-line); border-left:3px solid var(--brass); border-radius:4px; padding:14px 18px; font-family:'IBM Plex Mono',monospace; font-size:0.86rem; margin:14px 0; }
 .muted{ color:var(--ink-soft); font-size:0.88rem; }
 </style>
+
+<!-- Código do Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4283089731677395" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
@@ -74,7 +100,7 @@ article p{ margin:0 0 14px; }
       <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
       <a href="conversor-moedas.html">Conversor de Moedas</a>
       <a href="cripto-imposto.html">Cripto Imposto</a>
-      <a href="faturamento-mei.html" class="active">Faturamento MEI</a>
+      <a href="faturamento-mei.html" class="active"><span class="nav-active-item">Faturamento MEI</span></a>
     </nav>
   </header>
 
