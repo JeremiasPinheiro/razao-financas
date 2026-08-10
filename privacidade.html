@@ -5,8 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Razão - Ferramentas Financeiras</title>
   <meta name="description" content="Calculadoras e ferramentas financeiras gratuitas: juros compostos, financiamento imobiliario, conversor de moedas e simulador agrícola.">
+  
+  <!-- Favicon inline em Data URI para resolver o erro GET favicon.ico 404 -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>R</text></svg>">
+
   <link rel="stylesheet" href="style.css">
   
+  <style>
+    /* Força a remoção de fundos, bordas de container ou sombras do link ativo */
+    nav.sitenav a.active,
+    .footer-links a.active {
+      color: #A6503A !important;
+      background: transparent !important;
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+      text-decoration: none !important;
+    }
+
+    /* Aplica o estilo diretamente na palavra com display isolado */
+    .nav-active-item {
+      color: #A6503A !important;
+      font-weight: 600 !important;
+      border-bottom: 2px solid #A6503A !important;
+      padding-bottom: 2px !important;
+      display: inline-block !important;
+      line-height: 1.2 !important;
+    }
+  </style>
+
   <!-- Código do Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4283089731677395"
        crossorigin="anonymous"></script>
@@ -66,7 +94,7 @@
   <footer class="sitefoot">
     <div class="footer-links">
       <a href="sobre.html">Quem Somos</a>
-      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="privacidade.html" class="active"><span class="nav-active-item">Política de Privacidade</span></a>
       <a href="termos.html">Termos de Uso</a>
     </div>
     <div class="footer-bottom">
@@ -76,6 +104,13 @@
   </footer>
 </div>
 
-<script>document.getElementById('footYear').textContent = new Date().getFullYear();</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const footYearEl = document.getElementById('footYear');
+  if (footYearEl) {
+    footYearEl.textContent = new Date().getFullYear();
+  }
+});
+</script>
 </body>
 </html>
