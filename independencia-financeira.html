@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Favicon inline para solucionar o erro GET favicon.ico 404 no console -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>R</text></svg>">
+
 <title>Calculadora de Independência Financeira — Razão</title>
 <meta name="description" content="Calcule o patrimônio necessário para viver de renda com a regra dos 4% e quanto você precisa investir por mês para chegar lá.">
 <style>
@@ -115,8 +119,8 @@ article p{ margin:0 0 14px; }
     <h2>A regra dos 4%</h2>
     <p>A regra dos 4% vem de um estudo americano (Trinity Study) que analisou por quanto tempo uma carteira de investimentos sobrevive quando você retira uma fatia fixa dela todo ano, corrigida pela inflação. A conclusão prática: retirando cerca de 4% ao ano do patrimônio, ele tende a durar décadas sem se esgotar, porque o rendimento dos investimentos repõe boa parte do que foi retirado.</p>
     <div class="formula">Patrimônio necessário = (Renda mensal desejada × 12) / 0,04<br>ou, de forma equivalente: Patrimônio necessário = Renda mensal desejada × 300</div>
-    <h2>Como o aporte mensal é calculated</h2>
-    <p>Primeiro, projetamos quanto seu patrimônio atual vai valer no futuro, aplicado à taxa de retorno real estimada, até a idade-alvo — isso já é uma parte do caminho percorrida sem nenhum aporte novo. A diferença entre o patrimônio necessário e esse valor futuro é o que falta acumular, e o aporte mensal é calculado para preencher exatamente essa diferença, com os próprios aportes também rendendo juros compostos ao longo do tempo.</p>
+    <h2>Como o aporte mensal é calculado</h2>
+    <p>Primeiro, projetamos quanto seu patrimônio atual vai valer no futuro, aplicado à taxa de retorno real estimada, até a idade-alvo — isso já é uma parte do caminho percorrida sem nenhum aporte novo. A diferença entre o patrimônio necessário e esse valor futuro é o que falta acumular, e o aporte mensal é calculated para preencher exatamente essa diferença, com os próprios aportes também rendendo juros compostos ao longo do tempo.</p>
     <div class="formula">Valor futuro do patrimônio atual = Patrimônio atual × (1 + taxa mensal)^meses<br>Aporte mensal = (Patrimônio necessário − Valor futuro do patrimônio atual) / [ ((1+taxa)ⁿ − 1) / taxa ]</div>
     <h2>Por que usamos "rendimento real" e não a taxa nominal</h2>
     <p>A taxa de rendimento pedida aqui é a taxa <strong>acima da inflação</strong> (rendimento real), não a taxa nominal de um investimento. Isso simplifica a simulação: o resultado já mostra o patrimônio necessário e o aporte mensal em valores de hoje, sem que você precise projetar a inflação separadamente. Uma taxa real de 4% a 6% ao ano é uma referência comum para carteiras diversificadas de longo prazo, mas o retorno real de qualquer investimento varia e não é garantido.</p>
