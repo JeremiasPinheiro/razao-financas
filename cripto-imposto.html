@@ -8,18 +8,25 @@
   <link rel="stylesheet" href="style.css">
   
   <style>
-    /* Força o elo ativo a exibir texto vermelho e underline nativo de texto */
+    /* Força a remoção de fundos, bordas de container ou sombras do link ativo */
     nav.sitenav a.active {
       color: #A6503A !important;
-      font-weight: 600 !important;
       background: transparent !important;
+      background-color: transparent !important;
       border: none !important;
       box-shadow: none !important;
       outline: none !important;
-      text-decoration: underline !important;
-      text-decoration-color: #A6503A !important;
-      text-decoration-thickness: 2px !important;
-      text-underline-offset: 4px !important;
+      text-decoration: none !important;
+    }
+
+    /* Aplica o estilo diretamente na palavra com display isolado */
+    .nav-active-item {
+      color: #A6503A !important;
+      font-weight: 600 !important;
+      border-bottom: 2px solid #A6503A !important;
+      padding-bottom: 2px !important;
+      display: inline-block !important;
+      line-height: 1.2 !important;
     }
   </style>
 
@@ -45,7 +52,7 @@
   <a href="salario-liquido.html">Salário Líquido</a>
   <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
   <a href="conversor-moedas.html">Conversor de Moedas</a>
-  <a href="cripto-imposto.html" class="active" style="color: #A6503A !important; text-decoration: underline !important; text-decoration-color: #A6503A !important; text-decoration-thickness: 2px !important; text-underline-offset: 4px !important; font-weight: 600 !important; background: transparent !important; border: none !important; box-shadow: none !important;">Cripto Imposto</a>
+  <a href="cripto-imposto.html" class="active"><span class="nav-active-item">Cripto Imposto</span></a>
   <a href="faturamento-mei.html">Faturamento MEI</a>
 </nav>
     </div>
