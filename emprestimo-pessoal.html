@@ -8,27 +8,23 @@
   <link rel="stylesheet" href="style.css">
   
   <style>
-    /* 1. Anula qualquer borda, linha, fundo ou pseudo-elemento vindo do style.css no link pai */
+    /* Reset rigoroso no elemento pai para eliminar qualquer borda ou traço vindo do style.css */
     nav.sitenav a.active,
-    nav.sitenav a.active::after,
-    nav.sitenav a.active::before {
+    nav.sitenav a.active::before,
+    nav.sitenav a.active::after {
       border: none !important;
       border-bottom: none !important;
       background: transparent !important;
       box-shadow: none !important;
       outline: none !important;
-      text-decoration: none !important;
       content: none !important;
-    }
-
-    /* 2. Aplica unicamente a cor e a linha única de 2px no texto */
-    .single-underline {
+      /* Aplica unicamente 1 traço através do underline de texto */
       color: #A6503A !important;
       font-weight: 600 !important;
-      border-bottom: 2px solid #A6503A !important;
-      padding-bottom: 2px !important;
-      display: inline-block !important;
-      line-height: 1.2 !important;
+      text-decoration: underline !important;
+      text-decoration-color: #A6503A !important;
+      text-decoration-thickness: 2px !important;
+      text-underline-offset: 4px !important;
     }
   </style>
 
@@ -54,7 +50,7 @@
   <a href="salario-liquido.html">Salário Líquido</a>
   <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
   <a href="conversor-moedas.html">Conversor de Moedas</a>
-  <a href="cripto-imposto.html" class="active"><span class="single-underline">Cripto Imposto</span></a>
+  <a href="cripto-imposto.html" class="active">Cripto Imposto</a>
   <a href="faturamento-mei.html">Faturamento MEI</a>
 </nav>
     </div>
