@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Razão - Ferramentas Financeiras</title>
   <meta name="description" content="Calculadoras e ferramentas financeiras gratuitas: juros compostos, financiamento imobiliario, conversor de moedas e simulador agrícola.">
+  
+  <!-- Favicon inline para resolver o erro GET favicon.ico 404 no console -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>R</text></svg>">
+
   <link rel="stylesheet" href="style.css">
   
   <style>
@@ -57,7 +61,7 @@
     <div class="grid">
       <div class="card">
         <h2>Conversor de moedas</h2>
-        <div class="sub">Cotação em tempo real via AwesomeAPI.</div>
+        <div class="sub">Cotação em tempo real via API Comercial.</div>
 
         <label for="cb-valor">Valor</label>
         <input type="number" id="cb-valor" value="100" min="0" step="1">
@@ -96,13 +100,13 @@
         <div class="ledger-row total"><span class="label">Valor convertido</span><span class="fill"></span><span class="val" id="cb-resultado">—</span></div>
         <div class="ledger-row"><span class="label">Taxa aplicada</span><span class="fill"></span><span class="val" id="cb-taxa">—</span></div>
         <div class="ledger-row"><span class="label">Atualizado em</span><span class="fill"></span><span class="val" id="cb-hora">—</span></div>
-        <div class="hint">A cotação vem da <strong>AwesomeAPI</strong> (gratuita, sem chave de acesso). Se a internet estiver bloqueada ou a API fora do ar, o conversor avisa em vez de mostrar um número errado.</div>
+        <div class="hint">A cotação vem de uma <strong>API pública comercial</strong> (gratuita, sem chave de acesso). Se a internet estiver bloqueada ou a API fora do ar, o conversor avisa em vez de mostrar um número errado.</div>
       </div>
     </div>
 
     <article class="copy">
       <h2>De onde vem a cotação</h2>
-      <p>Este conversor busca a cotação comercial de compra (bid) diretamente de uma API pública brasileira no momento em que a página é carregada. Todas as moedas são convertidas usando o real como referência intermediária: primeiro o valor é convertido para reais usando a cotação da moeda de origem, depois esse valor em reais é convertido para a moeda de destino. Isso significa que a taxa exibida é a taxa comercial de mercado no momento exato da consulta — o mesmo tipo de referência usada por bancos e corretoras para negociações entre instituições, não a taxa de balcão de uma casa de câmbio ou de um cartão de crédito internacional.</p>
+      <p>Este conversor busca a cotação comercial diretamente de uma API pública no momento em que a página é carregada. Todas as moedas são convertidas usando o dólar/real como referência intermediária. Isso significa que a taxa exibida é a taxa comercial de mercado no momento exato da consulta — o mesmo tipo de referência usada por bancos e corretoras para negociações entre instituições, não a taxa de balcão de uma casa de câmbio ou de um cartão de crédito internacional.</p>
 
       <h2>Por que essa cotação é diferente da que você vê no cartão ou na casa de câmbio</h2>
       <p>A cotação comercial é o ponto de partida, mas nunca é o valor final que você paga numa operação real. Bancos, corretoras de câmbio e operadoras de cartão de crédito aplicam um <strong>spread</strong> — uma margem sobre a cotação comercial — além de impostos como o <strong>IOF</strong>, que no Brasil incide sobre operações de câmbio e compras internacionais. É por isso que o valor que aparece na fatura do cartão depois de uma compra no exterior costuma ser mais alto do que uma simples conversão pela cotação do dia.</p>
@@ -117,7 +121,7 @@
         <dt>Por que o conversor às vezes mostra uma mensagem de erro?</dt>
         <dd>Isso acontece quando a página não consegue se conectar à API de cotações — por exemplo, sem conexão com a internet no momento, ou a API temporariamente fora do ar. Nesses casos, o conversor avisa em vez de calcular com um valor desatualizado ou inventado.</dd>
         <dt>A cotação é atualizada automaticamente?</dt>
-        <dd>Ela é buscada uma vez ao abrir a página. Para atualizar, recarregue a página no navegador.</dd>
+        <dd>Ela é buscada ao abrir a página e atualizada periodicamente em segundo plano.</dd>
       </dl>
     </article>
   </main>
@@ -146,12 +150,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Valores comerciais de reserva (fallback)
   let cotacoesComerciais = {
-    'USD': 1.00,
-    'EUR': 1.08,
-    'GBP': 1.28,
-    'ARS': 0.0010,
-    'JPY': 0.0067,
-    'BRL': 0.18
+    'USD': 5.50,
+    'EUR': 6.00,
+    'GBP': 7.00,
+    'ARS': 0.0058,
+    'JPY': 0.037,
+    'BRL': 1.00
   };
 
   async function carregarcotacoes() {
