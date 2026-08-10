@@ -49,42 +49,41 @@ label:first-of-type{ margin-top:0; }
 input[type=number],select{ width:100%; padding:10px 12px; font-family:'IBM Plex Mono',monospace; background:var(--paper); border:1.5px solid var(--paper-line); border-radius:4px; color:var(--ink); font-size:0.95rem; }
 input[type=number]:focus,select:focus{ outline:none; border-color:var(--brass); }
 
-/* ---------- NOVA ESTRUTURA DOS BOTÕES DE FUNÇÕES / OPÇÕES ---------- */
-.modo-toggle {
+/* ---------- ESTILIZAÇÃO DO TOGGLE / BOTÕES DE FUNÇÕES ---------- */
+.toggle {
   display: flex !important;
-  gap: 10px !important;
-  margin: 8px 0 16px !important;
-  width: 100% !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  margin: 12px 0 !important;
 }
 
-.modo-btn {
+.toggle button {
   flex: 1 !important;
-  display: inline-block !important;
   font-family: 'IBM Plex Mono', monospace !important;
-  font-size: 0.8rem !important;
+  font-size: 0.78rem !important;
   font-weight: 500 !important;
-  padding: 10px 12px !important;
-  text-align: center !important;
-  background-color: var(--paper) !important;
+  padding: 10px 14px !important;
+  background: var(--card) !important;
   color: var(--ink-soft) !important;
   border: 1.5px solid var(--paper-line) !important;
   border-radius: 4px !important;
   cursor: pointer !important;
-  transition: all 0.2s ease-in-out !important;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03) !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04) !important;
 }
 
-/* Efeito ao passar o mouse */
-.modo-btn:hover {
-  background-color: var(--card) !important;
+/* Efeito Hover */
+.toggle button:hover {
+  background: var(--paper) !important;
   color: var(--ink) !important;
   border-color: var(--brass) !important;
   transform: translateY(-1px) !important;
 }
 
-/* Estado Ativo/Marcado (Selecionado) */
-.modo-btn.active {
-  background-color: var(--brass) !important;
+/* Estado Ativo (.on) */
+.toggle button.on {
+  background: var(--brass) !important;
   color: var(--card) !important;
   border-color: var(--brass-dark) !important;
   font-weight: 600 !important;
@@ -150,9 +149,9 @@ article p{ margin:0 0 14px; }
       <input type="number" id="ae-extra" value="20000" min="0" step="500">
       
       <label>O que fazer com o aporte</label>
-      <div class="modo-toggle" id="ae-modo">
-        <button type="button" class="modo-btn active" data-val="PRAZO">Reduzir prazo</button>
-        <button type="button" class="modo-btn" data-val="PARCELA">Reduzir parcela</button>
+      <div class="toggle" id="ae-modo">
+        <button type="button" class="on" data-val="PRAZO">Reduzir prazo</button>
+        <button type="button" data-val="PARCELA">Reduzir parcela</button>
       </div>
       
       <button class="primary" id="ae-calc">Simular</button>
@@ -186,10 +185,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   let modo = 'PRAZO';
-  document.querySelectorAll('#ae-modo .modo-btn').forEach(btn => {
+  
+  // Evento dos botões .toggle
+  document.querySelectorAll('#ae-modo button').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('#ae-modo .modo-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      document.querySelectorAll('#ae-modo button').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
       modo = btn.dataset.val;
       calcular();
     });
