@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css">
   
   <style>
-    /* Remove pseudo-elementos globais que possam gerar linhas extras */
+    /* Remove pseudo-elementos globais (::after / ::before) que possam criar traços duplos */
     nav.sitenav a.active::before,
     nav.sitenav a.active::after {
       display: none !important;
@@ -32,7 +32,7 @@
   <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
   <a href="financiamento-trator.html">Financiamento Trator</a>
   <a href="amortizacao-extra.html">Amortização Extra</a>
-  <a href="emprestimo-pessoal.html" class="active" style="color: #A6503A !important; font-weight: 600 !important; background: transparent !important; border: none !important; box-shadow: none !important; text-decoration: none !important;"><span style="border-bottom: 2px solid #A6503A !important; padding-bottom: 2px !important; display: inline-block !important;">Empréstimo</span></a>
+  <a href="emprestimo-pessoal.html" class="active" style="color: #A6503A !important; font-weight: 600 !important; text-decoration: none !important; background: transparent !important; box-shadow: 0 2px 0 0 #A6503A !important; padding-bottom: 4px !important; display: inline-block !important;">Empréstimo</a>
   <a href="independencia-financeira.html">Independência Financeira</a>
   <a href="preco-medio.html">Preço Médio</a>
   <a href="salario-liquido.html">Salário Líquido</a>
