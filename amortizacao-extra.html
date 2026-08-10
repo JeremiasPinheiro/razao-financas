@@ -49,41 +49,42 @@ label:first-of-type{ margin-top:0; }
 input[type=number],select{ width:100%; padding:10px 12px; font-family:'IBM Plex Mono',monospace; background:var(--paper); border:1.5px solid var(--paper-line); border-radius:4px; color:var(--ink); font-size:0.95rem; }
 input[type=number]:focus,select:focus{ outline:none; border-color:var(--brass); }
 
-/* ---------- ESTILIZAÇÃO DO TOGGLE / BOTÕES DE FUNÇÕES ---------- */
+/* ---------- ESTILIZAÇÃO COMPLETA DA CLASSE TOGGLE (BOTÕES) ---------- */
 .toggle {
   display: flex !important;
-  gap: 8px !important;
-  flex-wrap: wrap !important;
-  margin: 12px 0 !important;
+  gap: 10px !important;
+  margin: 10px 0 18px !important;
+  width: 100% !important;
 }
 
 .toggle button {
   flex: 1 !important;
+  display: inline-block !important;
   font-family: 'IBM Plex Mono', monospace !important;
-  font-size: 0.78rem !important;
+  font-size: 0.8rem !important;
   font-weight: 500 !important;
   padding: 10px 14px !important;
-  background: var(--card) !important;
+  text-align: center !important;
+  background-color: var(--paper) !important;
   color: var(--ink-soft) !important;
   border: 1.5px solid var(--paper-line) !important;
   border-radius: 4px !important;
   cursor: pointer !important;
-  text-decoration: none !important;
-  transition: all 0.2s ease !important;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04) !important;
+  transition: all 0.2s ease-in-out !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03) !important;
 }
 
-/* Efeito Hover */
+/* Efeito Hover (passar o mouse) */
 .toggle button:hover {
-  background: var(--paper) !important;
+  background-color: var(--card) !important;
   color: var(--ink) !important;
   border-color: var(--brass) !important;
   transform: translateY(-1px) !important;
 }
 
-/* Estado Ativo (.on) */
+/* Botão Selecionado (.on) */
 .toggle button.on {
-  background: var(--brass) !important;
+  background-color: var(--brass) !important;
   color: var(--card) !important;
   border-color: var(--brass-dark) !important;
   font-weight: 600 !important;
@@ -130,7 +131,7 @@ article p{ margin:0 0 14px; }
   <section class="hero">
     <div class="eyebrow">Calculadora</div>
     <h1>Amortização extra e quitação antecipada</h1>
-    <p>Veja o efeito real de um aporte extra num financiamento: quanto tempo você tira do contrato, ou quanto sua parcela cai — e quanto isso poupa em juros.</p>
+    <p>Veja o efeito real de um aporte extra num financiamento: quanto tempo você economiza ou quanto sua parcela cai — e quanto isso poupa em juros.</p>
   </section>
 
   <div class="grid">
@@ -148,6 +149,7 @@ article p{ margin:0 0 14px; }
       <label for="ae-extra">Valor do aporte extra (R$)</label>
       <input type="number" id="ae-extra" value="20000" min="0" step="500">
       
+      <!-- ESTRUTURA COM A CLASSE TOGGLE E OS BOTÕES DE OPÇÃO -->
       <label>O que fazer com o aporte</label>
       <div class="toggle" id="ae-modo">
         <button type="button" class="on" data-val="PRAZO">Reduzir prazo</button>
@@ -185,8 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   let modo = 'PRAZO';
-  
-  // Evento dos botões .toggle
+
+  // Lógica de alternância dos botões dentro de .toggle
   document.querySelectorAll('#ae-modo button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('#ae-modo button').forEach(b => b.classList.remove('on'));
