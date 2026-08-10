@@ -8,13 +8,14 @@
   <link rel="stylesheet" href="style.css">
   
   <style>
-    /* Estilo para garantir a cor vermelha e a barra inferior caso a tag inline necessite de reforço */
+    /* Força o link ativo a tirar fundos e bordas globais do style.css */
     nav.sitenav a.active {
       color: #A6503A !important;
       font-weight: 600 !important;
       background: transparent !important;
       border: none !important;
       box-shadow: none !important;
+      outline: none !important;
     }
   </style>
 
@@ -39,7 +40,7 @@
   <a href="preco-medio.html">Preço Médio</a>
   <a href="salario-liquido.html">Salário Líquido</a>
   <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
-  <a href="conversor-moedas.html" class="active" style="color: #A6503A !important; font-weight: 600 !important; background: transparent !important; border: none !important; box-shadow: none !important; display: inline-block !important;"><span style="border-bottom: 2px solid #A6503A !important; padding-bottom: 2px !important;">Conversor de Moedas</span></a>
+  <a href="conversor-moedas.html" class="active"><span style="color: #A6503A !important; border-bottom: 2px solid #A6503A !important; padding-bottom: 3px !important; display: inline-block !important;">Conversor de Moedas</span></a>
   <a href="cripto-imposto.html">Cripto Imposto</a>
   <a href="faturamento-mei.html">Faturamento MEI</a>
 </nav>
