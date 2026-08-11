@@ -52,6 +52,42 @@ article h2{ font-size:1.2rem; margin-top:28px; margin-bottom:10px; }
 article p{ margin:0 0 14px; }
 .formula{ background:var(--card); border:1px solid var(--paper-line); border-left:3px solid var(--brass); border-radius:4px; padding:14px 18px; font-family:'IBM Plex Mono',monospace; font-size:0.86rem; margin:14px 0; }
 .muted{ color:var(--ink-soft); font-size:0.88rem; }
+
+/* ---------- RODAPÉ / FOOTER ---------- */
+footer.sitefoot {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 2px solid var(--ink);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 </style>
 </head>
 <body>
@@ -119,17 +155,35 @@ article p{ margin:0 0 14px; }
     <h2>A regra dos 4%</h2>
     <p>A regra dos 4% vem de um estudo americano (Trinity Study) que analisou por quanto tempo uma carteira de investimentos sobrevive quando você retira uma fatia fixa dela todo ano, corrigida pela inflação. A conclusão prática: retirando cerca de 4% ao ano do patrimônio, ele tende a durar décadas sem se esgotar, porque o rendimento dos investimentos repõe boa parte do que foi retirado.</p>
     <div class="formula">Patrimônio necessário = (Renda mensal desejada × 12) / 0,04<br>ou, de forma equivalente: Patrimônio necessário = Renda mensal desejada × 300</div>
-    <h2>Como o aporte mensal é calculado</h2>
-    <p>Primeiro, projetamos quanto seu patrimônio atual vai valer no futuro, aplicado à taxa de retorno real estimada, até a idade-alvo — isso já é uma parte do caminho percorrida sem nenhum aporte novo. A diferença entre o patrimônio necessário e esse valor futuro é o que falta acumular, e o aporte mensal é calculated para preencher exatamente essa diferença, com os próprios aportes também rendendo juros compostos ao longo do tempo.</p>
+    <h2>Como o aporte mensal é calculated</h2>
+    <p>Primeiro, projetamos quanto seu patrimônio atual vai valer no futuro, aplicado à taxa de retorno real estimada, até a idade-alvo — isso já é uma parte do caminho percorrida sem nenhum aporte novo. A diferença entre o patrimônio necessário e esse valor futuro é o que falta acumular, e o aporte mensal é calculado para preencher exatamente essa diferença, com os próprios aportes também rendendo juros compostos ao longo do tempo.</p>
     <div class="formula">Valor futuro do patrimônio atual = Patrimônio atual × (1 + taxa mensal)^meses<br>Aporte mensal = (Patrimônio necessário − Valor futuro do patrimônio atual) / [ ((1+taxa)ⁿ − 1) / taxa ]</div>
     <h2>Por que usamos "rendimento real" e não a taxa nominal</h2>
     <p>A taxa de rendimento pedida aqui é a taxa <strong>acima da inflação</strong> (rendimento real), não a taxa nominal de um investimento. Isso simplifica a simulação: o resultado já mostra o patrimônio necessário e o aporte mensal em valores de hoje, sem que você precise projetar a inflação separadamente. Uma taxa real de 4% a 6% ao ano é uma referência comum para carteiras diversificadas de longo prazo, mas o retorno real de qualquer investimento varia e não é garantido.</p>
     <p class="muted">Simulação educativa que assume uma taxa de retorno constante e não considera impostos sobre os investimentos nem mudanças na renda desejada ao longo do tempo.</p>
   </article>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  // Atualiza o ano no rodapé
+  const footYearEl = document.getElementById('footYear');
+  if (footYearEl) {
+    footYearEl.textContent = new Date().getFullYear();
+  }
+
   function formatarBRL(valor) { 
     return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
   }
