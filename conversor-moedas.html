@@ -151,14 +151,14 @@ document.addEventListener('DOMContentLoaded', () => {
     footYearEl.textContent = new Date().getFullYear();
   }
 
-  // Valores comerciais de reserva (fallback)
-  let cotacoesComerciais = {
-    'USD': 5.50,
-    'EUR': 6.00,
-    'GBP': 7.00,
-    'ARS': 0.0058,
-    'JPY': 0.037,
-    'BRL': 1.00
+  // Objeto de cotações relativas ao USD (Dólar como base 1.00)
+  let ratesFromUSD = {
+    'USD': 1.0,
+    'BRL': 5.50,
+    'EUR': 0.92,
+    'GBP': 0.78,
+    'ARS': 940.0,
+    'JPY': 155.0
   };
 
   async function carregarcotacoes() {
@@ -173,19 +173,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const data = await resp.json();
 
-      if (data && data.rates && data.rates.BRL) {
-        const taxaUSD_BRL = data.rates.BRL; // Valor do USD em BRL
-
-        // Mapeamento das taxas comerciais relativas ao BRL
-        cotacoesComerciais['USD'] = taxaUSD_BRL;
-        cotacoesComerciais['EUR'] = taxaUSD_BRL / (data.rates.EUR || 1);
-        cotacoesComerciais['GBP'] = taxaUSD_BRL / (data.rates.GBP || 1);
-        cotacoesComerciais['ARS'] = taxaUSD_BRL / (data.rates.ARS || 1);
-        cotacoesComerciais['JPY'] = taxaUSD_BRL / (data.rates.JPY || 1);
-        cotacoesComerciais['BRL'] = 1.00;
+      if (data && data.rates) {
+        // Armazena as taxas diretas retornadas pela API para cada moeda em relação ao USD
+        ratesFromUSD['USD'] = 1.0;
+        ratesFromUSD['BRL'] = data.rates.BRL || ratesFromUSD['BRL'];
+        ratesFromUSD['EUR'] = data.rates.EUR || ratesFromUSD['EUR'];
+        ratesFromUSD['GBP'] = data.rates.GBP || ratesFromUSD['GBP'];
+        ratesFromUSD['ARS'] = data.rates.ARS || ratesFromUSD['ARS'];
+        ratesFromUSD['JPY'] = data.rates.JPY || ratesFromUSD['JPY'];
 
         if (statusEl) {
-          statusEl.textContent = 'Dólar e moedas comerciais atualizados em tempo real (' + new Date().toLocaleTimeString('pt-BR') + ')';
+          statusEl.textContent = 'Cotações de todas as moedas atualizadas em tempo real (' + new Date().toLocaleTimeString('pt-BR') + ')';
           statusEl.classList.remove('err');
         }
       } else {
@@ -209,16 +207,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const de = deInput ? deInput.value : 'USD';
     const para = paraInput ? paraInput.value : 'BRL';
 
-    const taxaDe = cotacoesComerciais[de] || 1;
-    const taxaPara = cotacoesComerciais[para] || 1;
+    const rateDe = ratesFromUSD[de] || 1.0;
+    const ratePara = ratesFromUSD[para] || 1.0;
 
-    // Converte de entrada para BRL e depois para moeda de destino
-    const emBRL = valor * taxaDe;
-    const resultado = emBRL / taxaPara;
-    const taxaDireta = taxaDe / taxaPara;
+    // Fórmula exata: converte o valor original para USD e depois para a moeda de destino
+    const valorEmUSD = valor / rateDe;
+    const resultado = valorEmUSD * ratePara;
+    const taxaDireta = ratePara / rateDe;
 
     const resultadoFormatado = resultado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const taxaFormatada = taxaDireta.toLocaleString('pt-BR', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+    
+    // Ajusta as casas decimais da taxa caso a moeda tenha valor unitário muito baixo (ex: ARS, JPY)
+    const casasDecimaisTaxa = taxaDireta < 0.01 ? 6 : 4;
+    const taxaFormatada = taxaDireta.toLocaleString('pt-BR', { minimumFractionDigits: casasDecimaisTaxa, maximumFractionDigits: casasDecimaisTaxa });
 
     const elResultado = document.getElementById('cb-resultado');
     const elTaxa = document.getElementById('cb-taxa');
@@ -229,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elHora) elHora.textContent = new Date().toLocaleTimeString('pt-BR');
   }
 
-  // Evento do botão Calcular
+  // Evento do botão Converter
   const btnCalc = document.getElementById('cb-calc');
   if (btnCalc) {
     btnCalc.addEventListener('click', async (e) => {
@@ -239,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Atualização ao alterar campos
+  // Atualização em tempo real ao mudar campos de seleção ou valor
   ['cb-valor', 'cb-de', 'cb-para'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
@@ -248,9 +249,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Inicialização e atualização periódica (30s)
+  // Carrega cotações ao abrir a página e atualiza os valores calculados na tela
   carregarcotacoes().then(() => {
     converterMoeda();
+    // Atualização automática em segundo plano a cada 30 segundos
     setInterval(async () => {
       await carregarcotacoes();
       converterMoeda();
