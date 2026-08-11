@@ -28,6 +28,36 @@
       display: none !important;
       content: none !important;
     }
+
+    /* Estilos da seção explicativa de artigo */
+    article.content {
+      max-width: 700px;
+      margin-top: 40px;
+    }
+    article.content h2 {
+      font-size: 1.2rem;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      font-family: 'Fraunces', serif;
+    }
+    article.content p {
+      margin: 0 0 14px;
+      line-height: 1.6;
+    }
+    .formula {
+      background: var(--card, #FBFAF6);
+      border: 1px solid var(--paper-line, #C7D3BC);
+      border-left: 3px solid var(--brass, #A8792E);
+      border-radius: 4px;
+      padding: 14px 18px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.86rem;
+      margin: 14px 0;
+    }
+    .muted {
+      color: var(--ink-soft, #5B6B51);
+      font-size: 0.88rem;
+    }
   </style>
 
   <!-- Código do Google AdSense -->
@@ -91,6 +121,35 @@
       </div>
     </div>
   </main>
+
+  <article class="content">
+    <h2>Como funciona a calculadora de empréstimo pessoal</h2>
+    <p>Esta calculadora utiliza o sistema de amortização francês, popularmente conhecido como <strong>Tabela Price</strong>. Nesse sistema, todas as parcelas possuem um valor fixo ao longo de todo o período do contrato, o que facilita o planejamento financeiro do tomador do crédito.</p>
+
+    <h2>A fórmula de cálculo da parcela (PMT)</h2>
+    <p>O cálculo do valor da prestação mensal fixa é realizado utilizando a seguinte relação matemática:</p>
+    <div class="formula">
+      PMT = PV × [ i × (1 + i)^n ] ÷ [ (1 + i)^n - 1 ]
+    </div>
+    <p>Onde:</p>
+    <ul>
+      <li><strong>PMT</strong> = Valor da parcela mensal;</li>
+      <li><strong>PV</strong> = Valor total do empréstimo (Present Value);</li>
+      <li><strong>i</strong> = Taxa de juros mensal (em decimal, dividida por 100);</li>
+      <li><strong>n</strong> = Número total de parcelas (prazo em meses).</li>
+    </ul>
+
+    <h2>Entendendo os resultados</h2>
+    <p>A cada parcela paga, uma parte do valor é destinada ao pagamento dos juros do período e a outra parte é utilizada para reduzir o saldo devedor principal (amortização). No início do contrato, a proporção de juros dentro da parcela é maior e diminui gradualmente com o passar dos meses.</p>
+    <div class="formula">
+      Total Pago = PMT × n<br>
+      Total de Juros = Total Pago - PV
+    </div>
+
+    <h2>Importância do Custo Efetivo Total (CET)</h2>
+    <p>Lembre-se de que o valor final cobrado pelas instituições financeiras pode incluir impostos (como o IOF) e taxas administrativas. Por isso, sempre consulte o <strong>CET (Custo Efetivo Total)</strong> informado no contrato para entender o custo real da operação.</p>
+    <p class="muted">Esta simulação tem caráter exclusivamente educativo. As condições definitivas dependem da análise de crédito da instituição financeira.</p>
+  </article>
 
   <footer class="sitefoot">
     <div class="footer-links">
