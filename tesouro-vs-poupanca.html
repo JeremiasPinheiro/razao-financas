@@ -60,6 +60,42 @@ article h2{ font-size:1.2rem; margin-top:28px; margin-bottom:10px; }
 article p{ margin:0 0 14px; }
 .formula{ background:var(--card); border:1px solid var(--paper-line); border-left:3px solid var(--brass); border-radius:4px; padding:14px 18px; font-family:'IBM Plex Mono',monospace; font-size:0.86rem; margin:14px 0; }
 .muted{ color:var(--ink-soft); font-size:0.88rem; }
+
+/* ---------- RODAPÉ / FOOTER ---------- */
+footer.sitefoot {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 2px solid var(--ink);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 </style>
 </head>
 <body>
@@ -106,7 +142,7 @@ article p{ margin:0 0 14px; }
       <button class="primary" id="tp-calc">Comparar</button>
     </div>
     <div class="card">
-      <h2>O que está sendo calculatedo</h2>
+      <h2>O que está sendo calculado</h2>
       <p style="font-size:0.88rem; color:var(--ink-soft); margin:0 0 10px;">A poupança usa a regra oficial: 0,5% ao mês quando a Selic está acima de 8,5% ao ano, ou 70% da Selic quando está em 8,5% ao ano ou menos.</p>
       <p style="font-size:0.88rem; color:var(--ink-soft); margin:0;">O Tesouro Selic/CDB usa 100% da taxa informada como rendimento bruto, com desconto de Imposto de Renda regressivo conforme o prazo.</p>
     </div>
@@ -127,10 +163,28 @@ article p{ margin:0 0 14px; }
     <p>Em cenários de Selic muito baixa (histórico recente: abaixo de 8,5% ao ano), a diferença entre os dois investimentos diminui, porque a fórmula da poupança passa a acompanhar parte da Selic, e o Tesouro Selic rende proporcionalmente menos em termos absolutos, ainda que sua vantagem relativa (por não ter imposto tão alto em prazos longos) se mantendo.</p>
     <p class="muted">Simulação educativa com taxa constante durante todo o período. CDBs de bancos diferentes pagam percentuais diferentes do CDI — confirme a taxa exata antes de investir.</p>
   </article>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  // Atualiza o ano dinamicamente no rodapé
+  const footYearEl = document.getElementById('footYear');
+  if (footYearEl) {
+    footYearEl.textContent = new Date().getFullYear();
+  }
+
   function formatarBRL(valor) { return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
 
   function aliquotaIR(dias){
