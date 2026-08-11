@@ -106,6 +106,42 @@ article h2{ font-size:1.2rem; margin-top:28px; margin-bottom:10px; }
 article p{ margin:0 0 14px; }
 .formula{ background:var(--card); border:1px solid var(--paper-line); border-left:3px solid var(--brass); border-radius:4px; padding:14px 18px; font-family:'IBM Plex Mono',monospace; font-size:0.88rem; margin:14px 0; }
 .muted{ color:var(--ink-soft); font-size:0.88rem; }
+
+/* ---------- RODAPÉ / FOOTER ---------- */
+footer.sitefoot {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 2px solid var(--ink);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 </style>
 </head>
 <body>
@@ -182,10 +218,28 @@ article p{ margin:0 0 14px; }
     <p>Uma regra prática: compare a taxa de juros do seu financiamento com o retorno líquido que você conseguiria investindo esse mesmo dinheiro. Se o financiamento cobra mais juros do que você conseguiria ganhar investindo com segurança semelhante, amortizar tende a valer mais a pena — é como conseguir esse retorno garantido, sem risco, na forma de juros que você deixa de pagar.</p>
     <p class="muted">Simulação educativa com taxa de juros constante ao longo de todo o prazo restante. Contratos reais podem ter taxas pós-fixadas ou correção monetária que alteram esse resultado.</p>
   </article>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  // Atualiza o ano no rodapé
+  const footYearEl = document.getElementById('footYear');
+  if (footYearEl) {
+    footYearEl.textContent = new Date().getFullYear();
+  }
+
   function formatarBRL(valor) { 
     return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
   }
