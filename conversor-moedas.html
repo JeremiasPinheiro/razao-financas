@@ -151,46 +151,46 @@ document.addEventListener('DOMContentLoaded', () => {
     footYearEl.textContent = new Date().getFullYear();
   }
 
-  // Objeto de cotações relativas ao USD (Dólar como base 1.00)
-  let ratesFromUSD = {
-    'USD': 1.0,
-    'BRL': 5.50,
-    'EUR': 0.92,
-    'GBP': 0.78,
-    'ARS': 940.0,
-    'JPY': 155.0
+  // Tabela interna com valores de cada moeda em Reais (BRL)
+  // BRL = 1.0 (base de comparação direta)
+  let cotacoesEmBRL = {
+    'BRL': 1.0,
+    'USD': 5.50,
+    'EUR': 6.00,
+    'GBP': 7.00,
+    'ARS': 0.0058,
+    'JPY': 0.037
   };
 
   async function carregarcotacoes() {
     const statusEl = document.getElementById('cb-status');
     try {
-      const timestamp = new Date().getTime();
-      const resp = await fetch('https://open.er-api.com/v6/latest/USD?nocache=' + timestamp, {
-        cache: 'no-store'
-      });
+      // Busca a cotação comercial em tempo real das 5 moedas diretamente em BRL via AwesomeAPI
+      const url = 'https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL';
+      const resp = await fetch(url, { cache: 'no-store' });
 
-      if (!resp.ok) throw new Error('Erro na conexão com a API comercial');
+      if (!resp.ok) throw new Error('Erro na conexão com a API de Cotações');
 
       const data = await resp.json();
 
-      if (data && data.rates) {
-        // Armazena as taxas diretas retornadas pela API para cada moeda em relação ao USD
-        ratesFromUSD['USD'] = 1.0;
-        ratesFromUSD['BRL'] = data.rates.BRL || ratesFromUSD['BRL'];
-        ratesFromUSD['EUR'] = data.rates.EUR || ratesFromUSD['EUR'];
-        ratesFromUSD['GBP'] = data.rates.GBP || ratesFromUSD['GBP'];
-        ratesFromUSD['ARS'] = data.rates.ARS || ratesFromUSD['ARS'];
-        ratesFromUSD['JPY'] = data.rates.JPY || ratesFromUSD['JPY'];
+      // Mapeia o preço de compra comercial (bid) de cada moeda em Reais
+      if (data && data.USDBRL) {
+        cotacoesEmBRL['BRL'] = 1.0;
+        cotacoesEmBRL['USD'] = parseFloat(data.USDBRL.bid);
+        cotacoesEmBRL['EUR'] = parseFloat(data.EURBRL.bid);
+        cotacoesEmBRL['GBP'] = parseFloat(data.GBPBRL.bid);
+        cotacoesEmBRL['ARS'] = parseFloat(data.ARSBRL.bid);
+        cotacoesEmBRL['JPY'] = parseFloat(data.JPYBRL.bid);
 
         if (statusEl) {
-          statusEl.textContent = 'Cotações de todas as moedas atualizadas em tempo real (' + new Date().toLocaleTimeString('pt-BR') + ')';
+          statusEl.textContent = 'Cotações comerciais de todas as moedas atualizadas em tempo real (' + new Date().toLocaleTimeString('pt-BR') + ')';
           statusEl.classList.remove('err');
         }
       } else {
-        throw new Error('Dados inválidos retornados');
+        throw new Error('Retorno inválido da API');
       }
     } catch (e) {
-      console.warn('Falha na API comercial. Usando dados de reserva.', e);
+      console.warn('Falha na API comercial. Mantendo cotações de segurança.', e);
       if (statusEl) {
         statusEl.textContent = 'Servidor de cotações temporariamente fora. Exibindo estimativa comercial.';
         statusEl.classList.add('err');
@@ -207,17 +207,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const de = deInput ? deInput.value : 'USD';
     const para = paraInput ? paraInput.value : 'BRL';
 
-    const rateDe = ratesFromUSD[de] || 1.0;
-    const ratePara = ratesFromUSD[para] || 1.0;
+    // Obtém o valor em Reais da moeda de origem e da moeda de destino
+    const valorDeEmBRL = cotacoesEmBRL[de] || 1.0;
+    const valorParaEmBRL = cotacoesEmBRL[para] || 1.0;
 
-    // Fórmula exata: converte o valor original para USD e depois para a moeda de destino
-    const valorEmUSD = valor / rateDe;
-    const resultado = valorEmUSD * ratePara;
-    const taxaDireta = ratePara / rateDe;
+    // Converte primeiro para Real (BRL) e depois para a moeda final
+    const totalEmBRL = valor * valorDeEmBRL;
+    const resultado = totalEmBRL / valorParaEmBRL;
+    
+    // Taxa de conversão direta (ex: 1 USD = X EUR)
+    const taxaDireta = valorDeEmBRL / valorParaEmBRL;
 
     const resultadoFormatado = resultado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     
-    // Ajusta as casas decimais da taxa caso a moeda tenha valor unitário muito baixo (ex: ARS, JPY)
+    // Formatação de precisão para moedas com fração pequena
     const casasDecimaisTaxa = taxaDireta < 0.01 ? 6 : 4;
     const taxaFormatada = taxaDireta.toLocaleString('pt-BR', { minimumFractionDigits: casasDecimaisTaxa, maximumFractionDigits: casasDecimaisTaxa });
 
@@ -240,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Atualização em tempo real ao mudar campos de seleção ou valor
+  // Eventos de mudança nos campos
   ['cb-valor', 'cb-de', 'cb-para'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
@@ -249,14 +252,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Carrega cotações ao abrir a página e atualiza os valores calculados na tela
+  // Inicialização e atualização contínua em tempo real (a cada 15 segundos)
   carregarcotacoes().then(() => {
     converterMoeda();
-    // Atualização automática em segundo plano a cada 30 segundos
     setInterval(async () => {
       await carregarcotacoes();
       converterMoeda();
-    }, 30000);
+    }, 15000);
   });
 });
 </script>
