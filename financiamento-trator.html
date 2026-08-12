@@ -7,8 +7,8 @@
   <!-- Favicon para eliminar o erro 404 no console -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>R</text></svg>">
 
-  <title>Razão - Ferramentas Financeiras</title>
-  <meta name="description" content="Calculadoras e ferramentas financeiras gratuitas: juros compostos, financiamento imobiliario, conversor de moedas e simulador agrícola.">
+  <title>Simulador de Financiamento de Trator | Calcule Juros e Parcelas</title>
+  <meta name="description" content="Simule o financiamento de tratores e máquinas agrícolas. Calcule o valor das parcelas, juros e custo total da operação de forma simples e gratuita.">
   
   <!-- Tag Canonical para correção de indexação no Google Search Console -->
   <link rel="canonical" href="https://razaofinancas.com.br/financiamento-trator.html">
@@ -172,30 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
-  // Atualização automática da taxa de juros conforme a linha selecionada
-  const trLinha = document.getElementById('tr-linha');
-  if (trLinha) {
-    trLinha.addEventListener('change', (e) => {
-      const v = e.target.value;
-      const trTaxa = document.getElementById('tr-taxa');
-      if (trTaxa && v !== 'custom') {
-        trTaxa.value = v;
-      }
-    });
-  }
-
   let sistemaAtual = 'SAC';
-
-  // Gerencia a troca de botões (SAC / Price) e recalcula automaticamente
-  document.querySelectorAll('#tr-sistema button').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      document.querySelectorAll('#tr-sistema button').forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      sistemaAtual = btn.dataset.val || btn.textContent.trim().toUpperCase();
-      calcTrator();
-    });
-  });
 
   function calcTrator() {
     const valorTratorInput = document.getElementById('tr-valor');
@@ -295,6 +272,45 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
+
+  // Atualização automática da taxa de juros e recálculo imediato ao alterar a linha de crédito
+  const trLinha = document.getElementById('tr-linha');
+  if (trLinha) {
+    trLinha.addEventListener('change', (e) => {
+      const v = e.target.value;
+      const trTaxa = document.getElementById('tr-taxa');
+      if (trTaxa && v !== 'custom') {
+        trTaxa.value = v;
+      }
+      calcTrator(); // Recalcula automaticamente após alterar a linha
+    });
+  }
+
+  // Adiciona recálculo automático ao alterar a taxa digitada manualmente
+  const trTaxaInput = document.getElementById('tr-taxa');
+  if (trTaxaInput) {
+    trTaxaInput.addEventListener('input', () => {
+      if (trLinha) trLinha.value = 'custom';
+      calcTrator();
+    });
+  }
+
+  // Recálculo automático nos campos de entrada
+  ['tr-valor', 'tr-entrada', 'tr-prazo'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', calcTrator);
+  });
+
+  // Gerencia a troca de botões (SAC / Price) e recalcula automaticamente
+  document.querySelectorAll('#tr-sistema button').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('#tr-sistema button').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      sistemaAtual = btn.dataset.val || btn.textContent.trim().toUpperCase();
+      calcTrator();
+    });
+  });
 
   // Ouvinte para o botão calcular
   const btnCalc = document.getElementById('tr-calc');
