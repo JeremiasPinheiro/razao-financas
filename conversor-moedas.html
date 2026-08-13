@@ -57,14 +57,14 @@
   <section class="page-hero">
     <div class="eyebrow">Calculadora</div>
     <h1>Conversor de moedas</h1>
-    <p class="lede">Converta valores entre real, dólar, euro, libra, peso argentino e iene com a cotação de compra comercial mais recente disponível.</p>
+    <p class="lede">Converta valores entre real, dólar, euro, libra, peso argentino e iene com a cotação de compra comercial em tempo real.</p>
   </section>
 
   <main class="calc">
     <div class="grid">
       <div class="card">
         <h2>Conversor de moedas</h2>
-        <div class="sub">Cotação de compra em tempo real via API Comercial.</div>
+        <div class="sub">Cotação de compra comercial atualizada via API pública.</div>
 
         <label for="cb-valor">Valor</label>
         <input type="number" id="cb-valor" value="100" min="0" step="1">
@@ -103,28 +103,22 @@
         <div class="ledger-row total"><span class="label">Valor convertido</span><span class="fill"></span><span class="val" id="cb-resultado">—</span></div>
         <div class="ledger-row"><span class="label">Taxa aplicada</span><span class="fill"></span><span class="val" id="cb-taxa">—</span></div>
         <div class="ledger-row"><span class="label">Atualizado em</span><span class="fill"></span><span class="val" id="cb-hora">—</span></div>
-        <div class="hint">A cotação vem de uma <strong>API pública comercial</strong> (gratuita, sem chave de acesso). Se a internet estiver bloqueada ou a API fora do ar, o conversor avisa em vez de mostrar um número errado.</div>
+        <div class="hint">A cotação vem de uma <strong>API pública comercial</strong>. Se a internet estiver indisponível, o conversor sinaliza para evitar cálculos incorretos.</div>
       </div>
     </div>
 
     <article class="copy">
       <h2>De onde vem a cotação</h2>
-      <p>Este conversor busca a cotação de compra comercial diretamente de uma API pública no momento em que a página é carregada. Todas as moedas são convertidas usando o dólar/real como referência intermediária. Isso significa que a taxa exibida é a taxa de compra de mercado no momento exato da consulta — o mesmo tipo de referência usada por bancos e corretoras para negociações entre instituições, não a taxa de balcão de uma casa de câmbio ou de um cartão de crédito internacional.</p>
+      <p>Este conversor busca a cotação comercial de compra diretamente de uma API pública no momento em que a página é carregada. Todas as moedas utilizam a referência do real brasileiro para permitir a conversão cruzada direta.</p>
 
       <h2>Por que essa cotação é diferente da que você vê no cartão ou na casa de câmbio</h2>
-      <p>A cotação comercial é o ponto de partida, mas nunca é o valor final que você paga numa operação real. Bancos, corretoras de câmbio e operadoras de cartão de crédito aplicam um <strong>spread</strong> — uma margem sobre a cotação comercial — além de impostos como o <strong>IOF</strong>, que no Brasil incide sobre operações de câmbio e compras internacionais. É por isso que o valor que aparece na fatura do cartão depois de uma compra no exterior costuma ser mais alto do que uma simples conversão pela cotação do dia.</p>
-
-      <h2>Quando usar essa cotação</h2>
-      <p>É útil para ter uma referência rápida antes de uma compra internacional, uma viagem, ou para acompanhar a variação cambial de um investimento no exterior — por exemplo, entender se o real está se valorizando ou desvalorizando frente ao dólar em um determinado período. Também ajuda a ter uma primeira noção de quanto custaria converter um valor específico, antes de fechar câmbio de fato com um banco ou corretora.</p>
-
-      <h2>O que essa cotação não substitui</h2>
-      <p>Para uma operação de câmbio real — comprar moeda em espécie, fazer uma remessa internacional ou usar um cartão pré-pago em outra moeda — o valor final vai incluir spread da instituição financeira, IOF e, em alguns casos, taxas fixas de operação, nenhum dos quais aparece nesta simulação. Trate o resultado como uma referência de mercado, não como uma cotação de fechamento de câmbio.</p>
+      <p>A cotação comercial é o ponto de partida de mercado, mas não inclui o <strong>spread</strong> comercial nem taxas operacionais e tributos como o <strong>IOF</strong> aplicados por instituições financeiras no momento do fechamento do câmbio.</p>
 
       <dl class="faq">
         <dt>Por que o conversor às vezes mostra uma mensagem de erro?</dt>
-        <dd>Isso acontece quando a página não consegue se conectar à API de cotações — por exemplo, sem conexão com a internet no momento, ou a API temporariamente fora do ar. Nesses casos, o conversor avisa em vez de calcular com um valor desatualizado ou inventado.</dd>
+        <dd>Isso acontece se houver instabilidade na conexão com a internet ou se a API pública estiver temporariamente fora do ar.</dd>
         <dt>A cotação é atualizada automaticamente?</dt>
-        <dd>Ela é buscada ao abrir a página e atualizada periodicamente em segundo plano.</dd>
+        <dd>Sim, ela é recarregada ao abrir a página e atualizada em segundo plano periodicamente.</dd>
       </dl>
     </article>
   </main>
@@ -151,48 +145,47 @@ document.addEventListener('DOMContentLoaded', () => {
     footYearEl.textContent = new Date().getFullYear();
   }
 
-  // Tabela interna com valores de cada moeda em Reais (BRL)
-  // BRL = 1.0 (base de comparação direta)
+  // Objeto centralizador de taxas (Base: 1 BRL)
   let cotacoesEmBRL = {
     'BRL': 1.0,
-    'USD': 5.50,
-    'EUR': 6.00,
-    'GBP': 7.00,
-    'ARS': 0.0058,
-    'JPY': 0.037
+    'USD': 5.00,
+    'EUR': 5.50,
+    'GBP': 6.50,
+    'ARS': 0.005,
+    'JPY': 0.035
   };
 
   async function carregarcotacoes() {
     const statusEl = document.getElementById('cb-status');
     try {
-      // Busca a cotação comercial em tempo real das 5 moedas diretamente em BRL via AwesomeAPI
+      // Busca as cotações comerciais das moedas em BRL
       const url = 'https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL';
       const resp = await fetch(url, { cache: 'no-store' });
 
-      if (!resp.ok) throw new Error('Erro na conexão com a API de Cotações');
+      if (!resp.ok) throw new Error('Falha ao conectar com o servidor de cotações');
 
       const data = await resp.json();
 
-      // Mapeia o preço de compra de mercado (ask) de cada moeda em Reais
+      // Mapeamento explícito das taxas de compra (bid) retornado pela API
       if (data && data.USDBRL) {
         cotacoesEmBRL['BRL'] = 1.0;
-        cotacoesEmBRL['USD'] = parseFloat(data.USDBRL.ask);
-        cotacoesEmBRL['EUR'] = parseFloat(data.EURBRL.ask);
-        cotacoesEmBRL['GBP'] = parseFloat(data.GBPBRL.ask);
-        cotacoesEmBRL['ARS'] = parseFloat(data.ARSBRL.ask);
-        cotacoesEmBRL['JPY'] = parseFloat(data.JPYBRL.ask);
+        cotacoesEmBRL['USD'] = parseFloat(data.USDBRL.bid);
+        cotacoesEmBRL['EUR'] = parseFloat(data.EURBRL.bid);
+        cotacoesEmBRL['GBP'] = parseFloat(data.GBPBRL.bid);
+        cotacoesEmBRL['ARS'] = parseFloat(data.ARSBRL.bid);
+        cotacoesEmBRL['JPY'] = parseFloat(data.JPYBRL.bid);
 
         if (statusEl) {
-          statusEl.textContent = 'Cotações de compra em tempo real atualizadas (' + new Date().toLocaleTimeString('pt-BR') + ')';
+          statusEl.textContent = 'Cotações de compra atualizadas (' + new Date().toLocaleTimeString('pt-BR') + ')';
           statusEl.classList.remove('err');
         }
       } else {
-        throw new Error('Retorno inválido da API');
+        throw new Error('Formato de dados retornado é inválido');
       }
     } catch (e) {
-      console.warn('Falha na API comercial. Mantendo cotações de segurança.', e);
+      console.warn('Erro ao atualizar cotações comerciais. Mantendo base de contingência.', e);
       if (statusEl) {
-        statusEl.textContent = 'Servidor de cotações temporariamente fora. Exibindo estimativa comercial.';
+        statusEl.textContent = 'Não foi possível atualizar em tempo real. Exibindo estimativa comercial.';
         statusEl.classList.add('err');
       }
     }
@@ -207,20 +200,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const de = deInput ? deInput.value : 'USD';
     const para = paraInput ? paraInput.value : 'BRL';
 
-    // Obtém o valor em Reais da moeda de origem e da moeda de destino
+    // Obtém o valor em BRL de cada moeda cadastrada
     const valorDeEmBRL = cotacoesEmBRL[de] || 1.0;
     const valorParaEmBRL = cotacoesEmBRL[para] || 1.0;
 
-    // Converte primeiro para Real (BRL) e depois para a moeda final
+    // Cálculo da conversão: converte para BRL e depois para a moeda de destino
     const totalEmBRL = valor * valorDeEmBRL;
     const resultado = totalEmBRL / valorParaEmBRL;
     
-    // Taxa de conversão direta (ex: 1 USD = X EUR)
+    // Calcula a razão direta da taxa de câmbio
     const taxaDireta = valorDeEmBRL / valorParaEmBRL;
 
     const resultadoFormatado = resultado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     
-    // Formatação de precisão para moedas com fração pequena
+    // Define precisão de casas decimais para moedas de menor valor unitário (ex: ARS/JPY)
     const casasDecimaisTaxa = taxaDireta < 0.01 ? 6 : 4;
     const taxaFormatada = taxaDireta.toLocaleString('pt-BR', { minimumFractionDigits: casasDecimaisTaxa, maximumFractionDigits: casasDecimaisTaxa });
 
@@ -233,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elHora) elHora.textContent = new Date().toLocaleTimeString('pt-BR');
   }
 
-  // Evento do botão Converter
+  // Escuta o clique no botão de conversão
   const btnCalc = document.getElementById('cb-calc');
   if (btnCalc) {
     btnCalc.addEventListener('click', async (e) => {
@@ -243,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Eventos de mudança nos campos
+  // Atualização em tempo real nas mudanças de entrada
   ['cb-valor', 'cb-de', 'cb-para'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
@@ -252,13 +245,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Inicialização e atualização contínua em tempo real (a cada 15 segundos)
+  // Execução inicial e atualização em intervalo contínuo (a cada 30 segundos)
   carregarcotacoes().then(() => {
     converterMoeda();
     setInterval(async () => {
       await carregarcotacoes();
       converterMoeda();
-    }, 15000);
+    }, 30000);
   });
 });
 </script>
