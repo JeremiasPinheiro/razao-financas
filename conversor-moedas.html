@@ -57,14 +57,14 @@
   <section class="page-hero">
     <div class="eyebrow">Calculadora</div>
     <h1>Conversor de moedas</h1>
-    <p class="lede">Converta valores entre real, dólar, euro, libra, peso argentino e iene com a cotação comercial mais recente disponível.</p>
+    <p class="lede">Converta valores entre real, dólar, euro, libra, peso argentino e iene com a cotação de compra comercial mais recente disponível.</p>
   </section>
 
   <main class="calc">
     <div class="grid">
       <div class="card">
         <h2>Conversor de moedas</h2>
-        <div class="sub">Cotação em tempo real via API Comercial.</div>
+        <div class="sub">Cotação de compra em tempo real via API Comercial.</div>
 
         <label for="cb-valor">Valor</label>
         <input type="number" id="cb-valor" value="100" min="0" step="1">
@@ -109,7 +109,7 @@
 
     <article class="copy">
       <h2>De onde vem a cotação</h2>
-      <p>Este conversor busca a cotação comercial diretamente de uma API pública no momento em que a página é carregada. Todas as moedas são convertidas usando o dólar/real como referência intermediária. Isso significa que a taxa exibida é a taxa comercial de mercado no momento exato da consulta — o mesmo tipo de referência usada por bancos e corretoras para negociações entre instituições, não a taxa de balcão de uma casa de câmbio ou de um cartão de crédito internacional.</p>
+      <p>Este conversor busca a cotação de compra comercial diretamente de uma API pública no momento em que a página é carregada. Todas as moedas são convertidas usando o dólar/real como referência intermediária. Isso significa que a taxa exibida é a taxa de compra de mercado no momento exato da consulta — o mesmo tipo de referência usada por bancos e corretoras para negociações entre instituições, não a taxa de balcão de uma casa de câmbio ou de um cartão de crédito internacional.</p>
 
       <h2>Por que essa cotação é diferente da que você vê no cartão ou na casa de câmbio</h2>
       <p>A cotação comercial é o ponto de partida, mas nunca é o valor final que você paga numa operação real. Bancos, corretoras de câmbio e operadoras de cartão de crédito aplicam um <strong>spread</strong> — uma margem sobre a cotação comercial — além de impostos como o <strong>IOF</strong>, que no Brasil incide sobre operações de câmbio e compras internacionais. É por isso que o valor que aparece na fatura do cartão depois de uma compra no exterior costuma ser mais alto do que uma simples conversão pela cotação do dia.</p>
@@ -173,17 +173,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const data = await resp.json();
 
-      // Mapeia o preço de compra comercial (bid) de cada moeda em Reais
+      // Mapeia o preço de compra de mercado (ask) de cada moeda em Reais
       if (data && data.USDBRL) {
         cotacoesEmBRL['BRL'] = 1.0;
-        cotacoesEmBRL['USD'] = parseFloat(data.USDBRL.bid);
-        cotacoesEmBRL['EUR'] = parseFloat(data.EURBRL.bid);
-        cotacoesEmBRL['GBP'] = parseFloat(data.GBPBRL.bid);
-        cotacoesEmBRL['ARS'] = parseFloat(data.ARSBRL.bid);
-        cotacoesEmBRL['JPY'] = parseFloat(data.JPYBRL.bid);
+        cotacoesEmBRL['USD'] = parseFloat(data.USDBRL.ask);
+        cotacoesEmBRL['EUR'] = parseFloat(data.EURBRL.ask);
+        cotacoesEmBRL['GBP'] = parseFloat(data.GBPBRL.ask);
+        cotacoesEmBRL['ARS'] = parseFloat(data.ARSBRL.ask);
+        cotacoesEmBRL['JPY'] = parseFloat(data.JPYBRL.ask);
 
         if (statusEl) {
-          statusEl.textContent = 'Cotações comerciais de todas as moedas atualizadas em tempo real (' + new Date().toLocaleTimeString('pt-BR') + ')';
+          statusEl.textContent = 'Cotações de compra em tempo real atualizadas (' + new Date().toLocaleTimeString('pt-BR') + ')';
           statusEl.classList.remove('err');
         }
       } else {
