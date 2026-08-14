@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Custeio Agrícola e Financiamento Rural — Razão</title>
+<meta name="description" content="Simule financiamentos e custeio agrícola para safra, insumos e maquinários. Compare os sistemas SAC e Price com taxa anual e carência.">
+
+<!-- Tag Canonical -->
+<link rel="canonical" href="https://razaofinancas.com.br/custeio-agricola.html">
+
+<!-- Carregamento Limpo e Atualizado do Google Fonts (Sem erros 404) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Favicon SVG inline -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>R</text></svg>">
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+/* Destaque do link ativo no menu */
+nav.sitenav a.active,
+nav.sitenav a[href="custeio-agricola.html"].active {
+  color: #A6503A !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid #A6503A !important;
+  padding-bottom: 2px !important;
+}
+</style>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4283089731677395" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+        <a href="financiamento-trator.html">Financiamento Trator</a>
+        <a href="custeio-agricola.html" class="active">Custeio Agrícola</a>
+        <a href="amortizacao-extra.html">Amortização Extra</a>
+        <a href="emprestimo-pessoal.html">Empréstimo</a>
+        <a href="independencia-financeira.html">Independência Financeira</a>
+        <a href="preco-medio.html">Preço Médio</a>
+        <a href="salario-liquido.html">Salário Líquido</a>
+        <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+        <a href="conversor-moedas.html">Conversor de Moedas</a>
+        <a href="cripto-imposto.html">Cripto Imposto</a>
+        <a href="faturamento-mei.html">Faturamento MEI</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="calc">
+    <section class="page-hero">
+      <div class="eyebrow">Agronegócio</div>
+      <h1>Simulador de Custeio Agrícola</h1>
+      <p class="lede">Planeje o financiamento para insumos, preparo de solo, colheita e maquinário com prazos flexíveis e carência.</p>
+    </section>
+
+    <div class="grid">
+      <!-- Formulário de Entrada -->
+      <div class="card">
+        <h2>Dados da Simulação</h2>
+        <p class="sub">Informe os valores e prazos do seu crédito rural</p>
+
+        <label for="valor">Valor do Crédito (R$)</label>
+        <input type="number" id="valor" value="250000" step="1000" min="1000">
+
+        <div class="row-inline">
+          <div>
+            <label for="taxaAnual">Taxa de Juros (% a.a.)</label>
+            <input type="number" id="taxaAnual" value="8.5" step="0.1" min="0">
+          </div>
+          <div>
+            <label for="prazoAnos">Prazo (Anos)</label>
+            <input type="number" id="prazoAnos" value="5" step="1" min="1" max="30">
+          </div>
+        </div>
+
+        <div class="row-inline">
+          <div>
+            <label for="carenciaMeses">Carência (Meses)</label>
+            <input type="number" id="carenciaMeses" value="6" step="1" min="0" max="24">
+          </div>
+          <div>
+            <label for="sistema">Sistema de Amortização</label>
+            <select id="sistema">
+              <option value="SAC">SAC (Parcelas Decrescentes)</option>
+              <option value="PRICE">Price (Parcelas Fixas)</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="button" id="btnCalcular" class="btn-primary">Calcular Custeio</button>
+      </div>
+
+      <!-- Resumo do Resultado -->
+      <div class="ledger">
+        <h2>Resumo da Simulação</h2>
+        
+        <div class="ledger-row">
+          <span class="label">Valor Solicitado</span>
+          <span class="fill"></span>
+          <span class="val" id="resValor">-</span>
+        </div>
+
+        <div class="ledger-row">
+          <span class="label">Primeira Parcela</span>
+          <span class="fill"></span>
+          <span class="val" id="resPrimeira">-</span>
+        </div>
+
+        <div class="ledger-row">
+          <span class="label">Última Parcela</span>
+          <span class="fill"></span>
+          <span class="val" id="resUltima">-</span>
+        </div>
+
+        <div class="ledger-row cost">
+          <span class="label">Total de Juros</span>
+          <span class="fill"></span>
+          <span class="val" id="resJuros">-</span>
+        </div>
+
+        <div class="ledger-row total">
+          <span class="label">Custo Total Pago</span>
+          <span class="fill"></span>
+          <span class="val" id="resTotal">-</span>
+        </div>
+
+        <p class="hint"><strong>Nota:</strong> Durante o período de carência, os juros são acumulados sobre o saldo devedor.</p>
+      </div>
+    </div>
+
+    <!-- Tabela Detalhada de Amortização -->
+    <article class="copy" style="max-width: 100%; margin-top: 30px;">
+      <h2>Detalhamento das Parcelas</h2>
+      <div class="table-wrap">
+        <table class="mini" id="tabelaAmortizacao">
+          <thead>
+            <tr>
+              <th>Mês</th>
+              <th>Prestação</th>
+              <th>Juros</th>
+              <th>Amortização</th>
+              <th>Saldo Devedor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Preenchido via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<!-- Lógica de Cálculo em JS Puro -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Atualiza o ano do rodapé
+  const footYearEl = document.getElementById('footYear');
+  if (footYearEl) {
+    footYearEl.textContent = new Date().getFullYear();
+  }
+
+  const btnCalcular = document.getElementById('btnCalcular');
+  btnCalcular.addEventListener('click', calcularCusteio);
+
+  // Executa o primeiro cálculo automático ao carregar
+  calcularCusteio();
+});
+
+function fmtR$(val) {
+  return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function calcularCusteio() {
+  const valorInput = parseFloat(document.getElementById('valor').value) || 0;
+  const taxaAnual = parseFloat(document.getElementById('taxaAnual').value) || 0;
+  const prazoAnos = parseInt(document.getElementById('prazoAnos').value) || 0;
+  const carencia = parseInt(document.getElementById('carenciaMeses').value) || 0;
+  const sistema = document.getElementById('sistema').value;
+
+  if (valorInput <= 0 || prazoAnos <= 0) return;
+
+  const totalMeses = prazoAnos * 12;
+  const taxaMensal = Math.pow(1 + (taxaAnual / 100), 1 / 12) - 1;
+
+  let saldoDevedor = valorInput;
+  let totalJuros = 0;
+  let tabelaHTML = '';
+  let primeiraParcela = 0;
+  let ultimaParcela = 0;
+
+  const mesesAmortizacao = totalMeses - carencia;
+
+  // Fase 1: Período de Carência (Apenas juros incidem e acumulam)
+  for (let m = 1; m <= carencia; m++) {
+    const jurosMes = saldoDevedor * taxaMensal;
+    totalJuros += jurosMes;
+    saldoDevedor += jurosMes; // Juros capitalizados na carência
+
+    tabelaHTML += `
+      <tr>
+        <td>${m}º (Carência)</td>
+        <td>${fmtR$(0)}</td>
+        <td>${fmtR$(jurosMes)}</td>
+        <td>${fmtR$(0)}</td>
+        <td>${fmtR$(saldoDevedor)}</td>
+      </tr>
+    `;
+  }
+
+  // Fase 2: Amortização
+  if (sistema === 'SAC') {
+    const amortizacaoMensal = saldoDevedor / mesesAmortizacao;
+
+    for (let m = 1; m <= mesesAmortizacao; m++) {
+      const mesAtual = carencia + m;
+      const jurosMes = saldoDevedor * taxaMensal;
+      const prestacao = amortizacaoMensal + jurosMes;
+      saldoDevedor -= amortizacaoMensal;
+      if (saldoDevedor < 0) saldoDevedor = 0;
+
+      totalJuros += jurosMes;
+
+      if (m === 1) primeiraParcela = prestacao;
+      if (m === mesesAmortizacao) ultimaParcela = prestacao;
+
+      tabelaHTML += `
+        <tr>
+          <td>${mesAtual}º</td>
+          <td>${fmtR$(prestacao)}</td>
+          <td>${fmtR$(jurosMes)}</td>
+          <td>${fmtR$(amortizacaoMensal)}</td>
+          <td>${fmtR$(saldoDevedor)}</td>
+        </tr>
+      `;
+    }
+  } else {
+    // Sistema PRICE
+    const pmt = saldoDevedor * (taxaMensal * Math.pow(1 + taxaMensal, mesesAmortizacao)) / (Math.pow(1 + taxaMensal, mesesAmortizacao) - 1);
+    primeiraParcela = pmt;
+    ultimaParcela = pmt;
+
+    for (let m = 1; m <= mesesAmortizacao; m++) {
+      const mesAtual = carencia + m;
+      const jurosMes = saldoDevedor * taxaMensal;
+      const amortizacao = pmt - jurosMes;
+      saldoDevedor -= amortizacao;
+      if (saldoDevedor < 0) saldoDevedor = 0;
+
+      totalJuros += jurosMes;
+
+      tabelaHTML += `
+        <tr>
+          <td>${mesAtual}º</td>
+          <td>${fmtR$(pmt)}</td>
+          <td>${fmtR$(jurosMes)}</td>
+          <td>${fmtR$(amortizacao)}</td>
+          <td>${fmtR$(saldoDevedor)}</td>
+        </tr>
+      `;
+    }
+  }
+
+  // Atualiza Resumo no HTML
+  document.getElementById('resValor').textContent = fmtR$(valorInput);
+  document.getElementById('resPrimeira').textContent = fmtR$(primeiraParcela);
+  document.getElementById('resUltima').textContent = fmtR$(ultimaParcela);
+  document.getElementById('resJuros').textContent = fmtR$(totalJuros);
+  document.getElementById('resTotal').textContent = fmtR$(valorInput + totalJuros);
+
+  // Injeta Tabela
+  document.querySelector('#tabelaAmortizacao tbody').innerHTML = tabelaHTML;
+}
+</script>
+</body>
+</html>
