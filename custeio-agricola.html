@@ -1,345 +1,273 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulador de Custeio Agrícola e Financiamento Rural — Razão</title>
-<meta name="description" content="Simule o financiamento e custeio agrícola para safra, insumos e preparo do solo. Entenda o Manual de Crédito Rural (MCR), fórmulas SAC e Price com período de carência.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Crédito Rural</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<!-- Tag Canonical -->
-<link rel="canonical" href="https://razaofinancas.com.br/custeio-agricola.html">
+        body {
+            background-color: #f4f6f0;
+            color: #2c3e50;
+            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
 
-<!-- Carregamento Limpo das Fontes do Google -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+        h2, h3 {
+            color: #1b4332;
+        }
 
-<!-- Favicon SVG inline -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>R</text></svg>">
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 24px;
+            border: 1px solid #d8f3dc;
+        }
 
-<link rel="stylesheet" href="style.css">
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
 
-<style>
-/* Destaque do link ativo no menu */
-nav.sitenav a.active,
-nav.sitenav a[href="custeio-agricola.html"].active {
-  color: #A6503A !important;
-  font-weight: 600 !important;
-  border-bottom: 2px solid #A6503A !important;
-  padding-bottom: 2px !important;
-}
-</style>
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
 
-<!-- Google AdSense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4283089731677395" crossorigin="anonymous"></script>
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #b7e4c7;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #40916c;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #d8f3dc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        th {
+            background-color: #2d6a4f;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        th:nth-child(1), td:nth-child(1) {
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #e8f5e9;
+        }
+
+        .empty-msg {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+    </style>
 </head>
 <body>
 
-<div class="wrap">
-  <header class="site-header">
-    <div class="top">
-      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
-      <nav class="sitenav">
-        <a href="index.html">Início</a>
-        <a href="juros-compostos.html">Juros compostos</a>
-        <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
-        <a href="financiamento-trator.html">Financiamento Trator</a>
-        <a href="custeio-agricola.html" class="active">Custeio Agrícola</a>
-        <a href="amortizacao-extra.html">Amortização Extra</a>
-        <a href="emprestimo-pessoal.html">Empréstimo</a>
-        <a href="independencia-financeira.html">Independência Financeira</a>
-        <a href="preco-medio.html">Preço Médio</a>
-        <a href="salario-liquido.html">Salário Líquido</a>
-        <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
-        <a href="conversor-moedas.html">Conversor de Moedas</a>
-        <a href="cripto-imposto.html">Cripto Imposto</a>
-        <a href="faturamento-mei.html">Faturamento MEI</a>
-      </nav>
-    </div>
-  </header>
+    <div class="card">
+        <h2>Simulador de Crédito Rural</h2>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="valorEmprestimo">Valor do Empréstimo (R$)</label>
+                <input type="number" id="valorEmprestimo" value="100000" step="1000" min="100">
+            </div>
 
-  <main class="calc">
-    <section class="page-hero">
-      <div class="eyebrow">Agronegócio & Crédito Rural</div>
-      <h1>Simulador de Custeio Agrícola</h1>
-      <p class="lede">Planeje o financiamento para aquisição de insumos, sementes, fertilizantes, tratos culturais e colheita sob as diretrizes do Manual de Crédito Rural (MCR).</p>
-    </section>
+            <div class="form-group">
+                <label for="taxaJuros">Taxa de Juros Ao Ano (%)</label>
+                <input type="number" id="taxaJuros" value="10" step="0.1" min="0">
+            </div>
 
-    <div class="grid">
-      <!-- Formulário de Entrada -->
-      <div class="card">
-        <h2>Dados da Simulação</h2>
-        <p class="sub">Informe os valores e condições negociados com a instituição financeira</p>
+            <div class="form-group">
+                <label for="prazoMeses">Prazo Total (Meses)</label>
+                <input type="number" id="prazoMeses" value="36" min="1">
+            </div>
 
-        <label for="valor">Valor do Crédito / Operação (R$)</label>
-        <input type="number" id="valor" value="250000" step="1000" min="1000">
+            <div class="form-group">
+                <label for="carenciaMeses">Carência (Meses)</label>
+                <input type="number" id="carenciaMeses" value="6" min="0">
+            </div>
 
-        <div class="row-inline">
-          <div>
-            <label for="taxaAnual">Taxa de Juros (% a.a.)</label>
-            <input type="number" id="taxaAnual" value="8.0" step="0.1" min="0">
-          </div>
-          <div>
-            <label for="prazoAnos">Prazo Total (Anos)</label>
-            <input type="number" id="prazoAnos" value="3" step="1" min="1" max="10">
-          </div>
+            <div class="form-group">
+                <label for="sistemaAmortizacao">Sistema de Amortização</label>
+                <select id="sistemaAmortizacao">
+                    <option value="SAC">SAC (Amortização Constante)</option>
+                    <option value="PRICE">PRICE (Prestação Constante)</option>
+                </select>
+            </div>
         </div>
-
-        <div class="row-inline">
-          <div>
-            <label for="carenciaMeses">Carência (Meses)</label>
-            <input type="number" id="carenciaMeses" value="6" step="1" min="0" max="24">
-          </div>
-          <div>
-            <label for="sistema">Sistema de Amortização</label>
-            <select id="sistema">
-              <option value="SAC">SAC (Parcelas Decrescentes)</option>
-              <option value="PRICE">Price (Parcelas Fixas)</option>
-            </select>
-          </div>
-        </div>
-
-        <button type="button" id="btnCalcular" class="btn-primary">Calcular Custeio</button>
-      </div>
-
-      <!-- Resumo do Resultado -->
-      <div class="ledger">
-        <h2>Resumo do Financiamento</h2>
-        
-        <div class="ledger-row">
-          <span class="label">Valor Solicitado</span>
-          <span class="fill"></span>
-          <span class="val" id="resValor">-</span>
-        </div>
-
-        <div class="ledger-row">
-          <span class="label">Primeira Parcela (pós-carência)</span>
-          <span class="fill"></span>
-          <span class="val" id="resPrimeira">-</span>
-        </div>
-
-        <div class="ledger-row">
-          <span class="label">Última Parcela</span>
-          <span class="fill"></span>
-          <span class="val" id="resUltima">-</span>
-        </div>
-
-        <div class="ledger-row cost">
-          <span class="label">Total de Juros Pagos</span>
-          <span class="fill"></span>
-          <span class="val" id="resJuros">-</span>
-        </div>
-
-        <div class="ledger-row total">
-          <span class="label">Custo Total da Operação</span>
-          <span class="fill"></span>
-          <span class="val" id="resTotal">-</span>
-        </div>
-
-        <p class="hint"><strong>Regra MCR:</strong> Durante a carência agrícola, os juros contratuais são acumulados sobre o saldo devedor até o início das amortizações.</p>
-      </div>
     </div>
 
-    <!-- Tabela Detalhada de Amortização -->
-    <article class="copy" style="max-width: 100%; margin-top: 30px;">
-      <h2>Evolução das Parcelas do Crédito Rural</h2>
-      <div class="table-wrap">
-        <table class="mini" id="tabelaAmortizacao">
-          <thead>
-            <tr>
-              <th>Mês</th>
-              <th>Prestação</th>
-              <th>Juros</th>
-              <th>Amortização</th>
-              <th>Saldo Devedor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Preenchido via JS -->
-          </tbody>
+    <h3>Evolução das Parcelas do Crédito Rural</h3>
+    <div class="table-container">
+        <table id="tabelaEvolucao">
+            <thead>
+                <tr>
+                    <th>Mês</th>
+                    <th>Prestação</th>
+                    <th>Juros</th>
+                    <th>Amortização</th>
+                    <th>Saldo Devedor</th>
+                </tr>
+            </thead>
+            <tbody id="corpoTabela">
+                <!-- Preenchido via JavaScript -->
+            </tbody>
         </table>
-      </div>
-    </article>
-
-    <!-- GUIA EXPLICATIVO, LEGISLAÇÃO E FÓRMULAS MATEMÁTICAS -->
-    <article class="copy" style="max-width: 100%; margin-top: 40px; border-top: 2px solid var(--ink); padding-top: 30px;">
-      <h2>Como Funciona o Custeio Agrícola no Brasil?</h2>
-      <p>O <strong>Custeio Agrícola</strong> é uma modalidade de crédito rural regulamentada pelo Banco Central do Brasil através do <strong>Manual de Crédito Rural (MCR)</strong>. Destina-se a cobrir despesas normais dos ciclos produtivos, como a compra de sementes, fertilizantes, defensivos agrícolas, combustível, colheita e preparo do solo.</p>
-
-      <h3>1. Diretrizes Legais do Crédito Rural (MCR)</h3>
-      <p>As operações de crédito rural no Sistema Financeiro Nacional (SFN) observam regras específicas do MCR de acordo com o enquadramento do produtor:</p>
-      <ul>
-        <li><strong>Pronaf (Programa Nacional de Fortalecimento da Agricultura Familiar):</strong> Atende pequenos produtores com taxas subsidiadas pelo governo federal (geralmente entre 0,5% a.a. e 6% a.a.).</li>
-        <li><strong>Pronamp (Programa Nacional de Apoio ao Médio Produtor Rural):</strong> Voltado a médios produtores com limites de renda bruta anual e taxas pré-fixadas competitivas.</li>
-        <li><strong>Demais Produtores (Demais Recursos Controlados / Livre):</strong> Taxas contratadas conforme vigência do Plano Safra e políticas comerciais das instituições financeiras autorizadas.</li>
-      </ul>
-
-      <h3>2. Período de Carência e Prazos</h3>
-      <p>De acordo com o MCR, o prazo de reembolso do custeio agrícola é fixado com base no ciclo produtivo da cultura (podendo variar geralmente de 1 a 3 anos em culturas semi-permanentes/permanentes ou alinhado à época da colheita em culturas anuais). Durante a <strong>carência</strong>, não há amortização do principal, mas incidem juros sobre o saldo devedor.</p>
-
-      <h3>3. Fórmulas Matemáticas Utilizadas na Simulação</h3>
-      <p>A taxa de juros informada ao ano ($i_a$) é convertida para taxa equivalente mensal ($i_m$) por juros compostos:</p>
-
-      $$\mathbf{i_m = (1 + i_a)^{\frac{1}{12}} - 1}$$
-
-      <h4>A. Carência (Capitalização de Juros)</h4>
-      <p>Durante os $c$ meses de carência, o saldo devedor ($SD$) é atualizado mês a mês sem pagamento do principal:</p>
-
-      $$\mathbf{SD_{k} = SD_{k-1} \times (1 + i_m)}$$
-
-      <h4>B. Sistema SAC (Sistema de Amortização Constante)</h4>
-      <p>A quota de amortização ($A$) é fixa em todos os meses restantes ($n = \text{total de meses} - c$):</p>
-
-      $$\mathbf{A = \frac{SD_{inicial}}{n}}$$
-
-      <p>A prestação ($P_k$) do mês $k$ é a soma da amortização com os juros do período:</p>
-
-      $$\mathbf{P_k = A + (SD_{k-1} \times i_m)}$$
-
-      <h4>C. Sistema Price (Tabela Price / Juros Compostos)</h4>
-      <p>A prestação ($P$) é constante ao longo do período de amortização pós-carência:</p>
-
-      $$\mathbf{P = SD_{inicial} \times \left[ \frac{i_m \times (1 + i_m)^n}{(1 + i_m)^n - 1} \right]}$$
-
-      <p>Onde a parcela de juros do mês é $J_k = SD_{k-1} \times i_m$ e a amortização é $A_k = P - J_k$.</p>
-    </article>
-  </main>
-
-  <footer class="sitefoot">
-    <div class="footer-links">
-      <a href="sobre.html">Quem Somos</a>
-      <a href="privacidade.html">Política de Privacidade</a>
-      <a href="termos.html">Termos de Uso</a>
     </div>
-    <div class="footer-bottom">
-      <span>Razão — feito com HTML, CSS e JS puro.</span>
-      <span id="footYear"></span>
-    </div>
-  </footer>
-</div>
 
-<!-- Renderização MathJax para Fórmulas Matemáticas -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        // Função para formatar valores numéricos para Real (R$)
+        function formatarMoeda(valor) {
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
 
-<!-- Lógica de Cálculo em JS Puro -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const footYearEl = document.getElementById('footYear');
-  if (footYearEl) {
-    footYearEl.textContent = new Date().getFullYear();
-  }
+        function calcularSimulacao() {
+            // Leitura e parse dos dados dos inputs
+            const valorEmprestimo = parseFloat(document.getElementById('valorEmprestimo').value) || 0;
+            const taxaAnual = parseFloat(document.getElementById('taxaJuros').value) || 0;
+            const prazo = parseInt(document.getElementById('prazoMeses').value) || 0;
+            const carencia = parseInt(document.getElementById('carenciaMeses').value) || 0;
+            const sistema = document.getElementById('sistemaAmortizacao').value;
 
-  const btnCalcular = document.getElementById('btnCalcular');
-  btnCalcular.addEventListener('click', calcularCusteio);
+            const corpoTabela = document.getElementById('corpoTabela');
+            corpoTabela.innerHTML = '';
 
-  calcularCusteio();
-});
+            // Validações básicas para evitar tabelas incorretas ou infinitas
+            if (valorEmprestimo <= 0 || prazo <= 0 || carencia >= prazo) {
+                corpoTabela.innerHTML = `<tr><td colspan="5" class="empty-msg">Insira valores válidos (Prazo deve ser maior que a Carência).</td></tr>`;
+                return;
+            }
 
-function fmtR$(val) {
-  return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-}
+            // Conversão de taxa anual para taxa mensal simples/efetiva
+            const taxaMensal = (taxaAnual / 100) / 12;
+            const prazoAmortizacao = prazo - carencia;
 
-function calcularCusteio() {
-  const valorInput = parseFloat(document.getElementById('valor').value) || 0;
-  const taxaAnual = parseFloat(document.getElementById('taxaAnual').value) || 0;
-  const prazoAnos = parseInt(document.getElementById('prazoAnos').value) || 0;
-  const carencia = parseInt(document.getElementById('carenciaMeses').value) || 0;
-  const sistema = document.getElementById('sistema').value;
+            let saldoDevedor = valorEmprestimo;
 
-  if (valorInput <= 0 || prazoAnos <= 0) return;
+            // 1. Fase de Carência (juros são acumulados ou pagos no período)
+            for (let mes = 1; mes <= carencia; mes++) {
+                const jurosMes = saldoDevedor * taxaMensal;
+                // Na carência padrão, o juro é incorporado ao saldo devedor (capitalização)
+                saldoDevedor += jurosMes;
 
-  const totalMeses = prazoAnos * 12;
-  const taxaMensal = Math.pow(1 + (taxaAnual / 100), 1 / 12) - 1;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${mes}° (Carência)</td>
+                    <td>${formatarMoeda(0)}</td>
+                    <td>${formatarMoeda(jurosMes)}</td>
+                    <td>${formatarMoeda(0)}</td>
+                    <td>${formatarMoeda(saldoDevedor)}</td>
+                `;
+                corpoTabela.appendChild(tr);
+            }
 
-  let saldoDevedor = valorInput;
-  let totalJuros = 0;
-  let tabelaHTML = '';
-  let primeiraParcela = 0;
-  let ultimaParcela = 0;
+            // Saldo base para início dos pagamentos pós-carência
+            const saldoAposCarencia = saldoDevedor;
 
-  const mesesAmortizacao = Math.max(1, totalMeses - carencia);
+            // Cálculo das parcelas após carência (SAC ou PRICE)
+            if (sistema === 'SAC') {
+                const amortizacaoConstante = saldoAposCarencia / prazoAmortizacao;
 
-  // Fase 1: Período de Carência
-  for (let m = 1; m <= carencia; m++) {
-    const jurosMes = saldoDevedor * taxaMensal;
-    totalJuros += jurosMes;
-    saldoDevedor += jurosMes;
+                for (let i = 1; i <= prazoAmortizacao; i++) {
+                    const mesAtual = carencia + i;
+                    const jurosMes = saldoDevedor * taxaMensal;
+                    const prestacao = amortizacaoConstante + jurosMes;
+                    
+                    saldoDevedor -= amortizacaoConstante;
+                    if (saldoDevedor < 0.01) saldoDevedor = 0; // Correção de arredondamento
 
-    tabelaHTML += `
-      <tr>
-        <td>${m}º (Carência)</td>
-        <td>${fmtR$(0)}</td>
-        <td>${fmtR$(jurosMes)}</td>
-        <td>${fmtR$(0)}</td>
-        <td>${fmtR$(saldoDevedor)}</td>
-      </tr>
-    `;
-  }
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${mesAtual}°</td>
+                        <td>${formatarMoeda(prestacao)}</td>
+                        <td>${formatarMoeda(jurosMes)}</td>
+                        <td>${formatarMoeda(amortizacaoConstante)}</td>
+                        <td>${formatarMoeda(saldoDevedor)}</td>
+                    `;
+                    corpoTabela.appendChild(tr);
+                }
+            } else if (sistema === 'PRICE') {
+                // Fórmula do PMT para Tabela Price: PMT = PV * [i * (1+i)^n] / [(1+i)^n - 1]
+                let prestacaoConstante = 0;
+                if (taxaMensal > 0) {
+                    prestacaoConstante = saldoAposCarencia * (taxaMensal * Math.pow(1 + taxaMensal, prazoAmortizacao)) / (Math.pow(1 + taxaMensal, prazoAmortizacao) - 1);
+                } else {
+                    prestacaoConstante = saldoAposCarencia / prazoAmortizacao;
+                }
 
-  // Fase 2: Amortização
-  if (sistema === 'SAC') {
-    const amortizacaoMensal = saldoDevedor / mesesAmortizacao;
+                for (let i = 1; i <= prazoAmortizacao; i++) {
+                    const mesAtual = carencia + i;
+                    const jurosMes = saldoDevedor * taxaMensal;
+                    const amortizacao = prestacaoConstante - jurosMes;
 
-    for (let m = 1; m <= mesesAmortizacao; m++) {
-      const mesAtual = carencia + m;
-      const jurosMes = saldoDevedor * taxaMensal;
-      const prestacao = amortizacaoMensal + jurosMes;
-      saldoDevedor -= amortizacaoMensal;
-      if (saldoDevedor < 0) saldoDevedor = 0;
+                    saldoDevedor -= amortizacao;
+                    if (saldoDevedor < 0.01) saldoDevedor = 0; // Correção de arredondamento
 
-      totalJuros += jurosMes;
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${mesAtual}°</td>
+                        <td>${formatarMoeda(prestacaoConstante)}</td>
+                        <td>${formatarMoeda(jurosMes)}</td>
+                        <td>${formatarMoeda(amortizacao)}</td>
+                        <td>${formatarMoeda(saldoDevedor)}</td>
+                    `;
+                    corpoTabela.appendChild(tr);
+                }
+            }
+        }
 
-      if (m === 1) primeiraParcela = prestacao;
-      if (m === mesesAmortizacao) ultimaParcela = prestacao;
+        // Vincular ouvintes de eventos (Event Listeners) para recálculo em tempo real
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('input', calcularSimulacao);
+            input.addEventListener('change', calcularSimulacao);
+        });
 
-      tabelaHTML += `
-        <tr>
-          <td>${mesAtual}º</td>
-          <td>${fmtR$(prestacao)}</td>
-          <td>${fmtR$(jurosMes)}</td>
-          <td>${fmtR$(amortizacaoMensal)}</td>
-          <td>${fmtR$(saldoDevedor)}</td>
-        </tr>
-      `;
-    }
-  } else {
-    // Sistema PRICE
-    const pmt = saldoDevedor * (taxaMensal * Math.pow(1 + taxaMensal, mesesAmortizacao)) / (Math.pow(1 + taxaMensal, mesesAmortizacao) - 1);
-    primeiraParcela = pmt;
-    ultimaParcela = pmt;
-
-    for (let m = 1; m <= mesesAmortizacao; m++) {
-      const mesAtual = carencia + m;
-      const jurosMes = saldoDevedor * taxaMensal;
-      const amortizacao = pmt - jurosMes;
-      saldoDevedor -= amortizacao;
-      if (saldoDevedor < 0) saldoDevedor = 0;
-
-      totalJuros += jurosMes;
-
-      tabelaHTML += `
-        <tr>
-          <td>${mesAtual}º</td>
-          <td>${fmtR$(pmt)}</td>
-          <td>${fmtR$(jurosMes)}</td>
-          <td>${fmtR$(amortizacao)}</td>
-          <td>${fmtR$(saldoDevedor)}</td>
-        </tr>
-      `;
-    }
-  }
-
-  // Atualiza Resumo no HTML
-  document.getElementById('resValor').textContent = fmtR$(valorInput);
-  document.getElementById('resPrimeira').textContent = fmtR$(primeiraParcela);
-  document.getElementById('resUltima').textContent = fmtR$(ultimaParcela);
-  document.getElementById('resJuros').textContent = fmtR$(totalJuros);
-  document.getElementById('resTotal').textContent = fmtR$(valorInput + totalJuros);
-
-  // Injeta Tabela
-  document.querySelector('#tabelaAmortizacao tbody').innerHTML = tabelaHTML;
-}
-</script>
+        // Executar no carregamento inicial da página
+        document.addEventListener('DOMContentLoaded', calcularSimulacao);
+    </script>
 </body>
 </html>
