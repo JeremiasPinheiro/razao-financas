@@ -102,7 +102,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
         <button type="button" id="btnCalcular" class="btn-primary">Calcular Custeio</button>
       </div>
 
-      <!-- Resumo do Resultado (Estilo Ledger do Razão) -->
+      <!-- Resumo do Resultado -->
       <div class="ledger">
         <h2>Resumo do Financiamento</h2>
         
@@ -218,8 +218,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   </footer>
 </div>
 
-<!-- Renderização MathJax para Fórmulas Matemáticas -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<!-- Renderização MathJax sem a dependência do polyfill.io -->
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <!-- Lógica de Cálculo em JS Puro com Atualização Automática em Tempo Real -->
@@ -258,7 +257,6 @@ function calcularCusteio() {
   if (valorInput <= 0 || prazoAnos <= 0) return;
 
   const totalMeses = prazoAnos * 12;
-  // Taxa mensal proporcional para crédito rural
   const taxaMensal = (taxaAnual / 100) / 12;
 
   let saldoDevedor = valorInput;
@@ -269,7 +267,7 @@ function calcularCusteio() {
 
   const mesesAmortizacao = Math.max(1, totalMeses - carencia);
 
-  // Fase 1: Período de Carência (Apenas juros sobre o saldo devedor)
+  // Fase 1: Período de Carência
   for (let m = 1; m <= carencia; m++) {
     const jurosMes = saldoDevedor * taxaMensal;
     totalJuros += jurosMes;
@@ -347,14 +345,14 @@ function calcularCusteio() {
     }
   }
 
-  // Atualiza os valores do resumo lateral
+  // Atualiza os valores do resumo
   document.getElementById('resValor').textContent = fmtR$(valorInput);
   document.getElementById('resPrimeira').textContent = fmtR$(primeiraParcela);
   document.getElementById('resUltima').textContent = fmtR$(ultimaParcela);
   document.getElementById('resJuros').textContent = fmtR$(totalJuros);
   document.getElementById('resTotal').textContent = fmtR$(valorInput + totalJuros);
 
-  // Injeta a tabela atualizada
+  // Injeta a tabela
   document.querySelector('#tabelaAmortizacao tbody').innerHTML = tabelaHTML;
 }
 </script>
