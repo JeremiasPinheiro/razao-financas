@@ -40,6 +40,33 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   color: #1b4332;
   border-radius: 0 6px 6px 0;
 }
+
+/* Ajustes da tabela embutida na coluna da direita */
+.ledger-table-wrap {
+  margin-top: 20px;
+  overflow-x: auto;
+  max-height: 380px;
+  overflow-y: auto;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  padding-top: 10px;
+}
+
+.ledger-table-wrap table {
+  width: 100%;
+  font-size: 0.85rem;
+  border-collapse: collapse;
+}
+
+.ledger-table-wrap th, 
+.ledger-table-wrap td {
+  padding: 6px 4px;
+  text-align: right;
+}
+
+.ledger-table-wrap th:first-child, 
+.ledger-table-wrap td:first-child {
+  text-align: left;
+}
 </style>
 
 <!-- Google AdSense -->
@@ -114,7 +141,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
         <button type="button" id="btnCalcular" class="btn-primary">Calcular Custeio</button>
       </div>
 
-      <!-- Resumo do Resultado -->
+      <!-- Resumo do Resultado e Tabela Embutida -->
       <div class="ledger">
         <h2>Resumo do Financiamento</h2>
         
@@ -125,53 +152,50 @@ nav.sitenav a[href="custeio-agricola.html"].active {
         </div>
 
         <div class="ledger-row">
-          <span class="label">Primeira Parcela (pós-carência)</span>
+          <span class="label">1ª parcela</span>
           <span class="fill"></span>
           <span class="val" id="resPrimeira">-</span>
         </div>
 
         <div class="ledger-row">
-          <span class="label">Última Parcela</span>
+          <span class="label">Última parcela</span>
           <span class="fill"></span>
           <span class="val" id="resUltima">-</span>
         </div>
 
         <div class="ledger-row cost">
-          <span class="label">Total de Juros Pagos</span>
+          <span class="label">Total pago em juros</span>
           <span class="fill"></span>
           <span class="val" id="resJuros">-</span>
         </div>
 
         <div class="ledger-row total">
-          <span class="label">Custo Total da Operação</span>
+          <span class="label">Total pago (financiado)</span>
           <span class="fill"></span>
           <span class="val" id="resTotal">-</span>
         </div>
 
-        <p class="hint"><strong>Regra MCR:</strong> Durante a carência agrícola, os juros contratuais são acumulados sobre o saldo devedor até o início das amortizações.</p>
+        <!-- Tabela Integrada no Card Direito -->
+        <div class="ledger-table-wrap">
+          <table id="tabelaAmortizacao">
+            <thead>
+              <tr>
+                <th>Ano</th>
+                <th>Amortização</th>
+                <th>Juros</th>
+                <th>Parcela anual</th>
+                <th>Saldo devedor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Preenchido dinamicamente via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <p class="hint" style="margin-top: 15px;">Parcelas mostradas em base <strong>anual</strong>, como costuma ser cobrado em crédito rural vinculado à colheita.</p>
       </div>
     </div>
-
-    <!-- Tabela Detalhada de Amortização -->
-    <article class="copy" style="max-width: 100%; margin-top: 30px;">
-      <h2>Evolução das Parcelas do Crédito Rural</h2>
-      <div class="table-wrap">
-        <table class="mini" id="tabelaAmortizacao">
-          <thead>
-            <tr>
-              <th>Mês</th>
-              <th>Prestação</th>
-              <th>Juros</th>
-              <th>Amortização</th>
-              <th>Saldo Devedor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Preenchido via JS -->
-          </tbody>
-        </table>
-      </div>
-    </article>
 
     <!-- GUIA EXPLICATIVO, LEGISLAÇÃO E FÓRMULAS MATEMÁTICAS -->
     <article class="copy" style="max-width: 100%; margin-top: 40px; border-top: 2px solid var(--ink); padding-top: 30px;">
@@ -233,7 +257,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   </footer>
 </div>
 
-<!-- Lógica de Cálculo em JS Puro -->
+<!-- Lógica de Cálculo em JS Puro com Visualização Anual Compacta -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const footYearEl = document.getElementById('footYear');
@@ -244,14 +268,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCalcular = document.getElementById('btnCalcular');
   btnCalcular.addEventListener('click', calcularCusteio);
 
-  // Garante a atualização instantânea ao alterar qualquer campo
+  // Atualização em tempo real ao alterar qualquer campo
   const inputs = document.querySelectorAll('.card input, .card select');
   inputs.forEach(input => {
     input.addEventListener('input', calcularCusteio);
     input.addEventListener('change', calcularCusteio);
   });
 
-  // Executa a simulação inicial
+  // Executa o cálculo inicial
   calcularCusteio();
 });
 
@@ -263,63 +287,71 @@ function calcularCusteio() {
   const valorInput = parseFloat(document.getElementById('valor').value) || 0;
   const taxaAnual = parseFloat(document.getElementById('taxaAnual').value) || 0;
   const prazoAnos = parseInt(document.getElementById('prazoAnos').value) || 0;
-  const carencia = parseInt(document.getElementById('carenciaMeses').value) || 0;
+  const carenciaMeses = parseInt(document.getElementById('carenciaMeses').value) || 0;
   const sistema = document.getElementById('sistema').value;
 
   if (valorInput <= 0 || prazoAnos <= 0) return;
 
   const totalMeses = prazoAnos * 12;
-  const taxaMensal = (taxaAnual / 100) / 12;
+  // Conversão de taxa anual (% a.a.) para taxa equivalente mensal
+  const iAnual = taxaAnual / 100;
+  const taxaMensal = Math.pow(1 + iAnual, 1 / 12) - 1;
 
   let saldoDevedor = valorInput;
   let totalJuros = 0;
-  let tabelaHTML = '';
-  let primeiraParcela = 0;
-  let ultimaParcela = 0;
 
-  const mesesAmortizacao = Math.max(1, totalMeses - carencia);
-
-  // Fase 1: Período de Carência
-  for (let m = 1; m <= carencia; m++) {
+  // Fase 1: Período de Carência (Acúmulo no saldo devedor)
+  for (let m = 1; m <= carenciaMeses; m++) {
     const jurosMes = saldoDevedor * taxaMensal;
     totalJuros += jurosMes;
     saldoDevedor += jurosMes;
-
-    tabelaHTML += `
-      <tr>
-        <td>${m}º (Carência)</td>
-        <td>${fmtR$(0)}</td>
-        <td>${fmtR$(jurosMes)}</td>
-        <td>${fmtR$(0)}</td>
-        <td>${fmtR$(saldoDevedor)}</td>
-      </tr>
-    `;
   }
 
-  // Fase 2: Amortização pós-carência
   const saldoAposCarencia = saldoDevedor;
+  const mesesAmortizacao = Math.max(1, totalMeses - carenciaMeses);
+  const anosAmortizacao = Math.ceil(mesesAmortizacao / 12);
+
+  let primeiraParcela = 0;
+  let ultimaParcela = 0;
+  let tabelaHTML = '';
 
   if (sistema === 'SAC') {
     const amortizacaoMensal = saldoAposCarencia / mesesAmortizacao;
 
-    for (let m = 1; m <= mesesAmortizacao; m++) {
-      const mesAtual = carencia + m;
-      const jurosMes = saldoDevedor * taxaMensal;
-      const prestacao = amortizacaoMensal + jurosMes;
-      saldoDevedor -= amortizacaoMensal;
-      if (saldoDevedor < 0.01) saldoDevedor = 0;
+    for (let ano = 1; ano <= prazoAnos; ano++) {
+      let jurosAno = 0;
+      let amortizacaoAno = 0;
 
-      totalJuros += jurosMes;
+      for (let m = 1; m <= 12; m++) {
+        const mesAtual = (ano - 1) * 12 + m;
+        if (mesAtual > totalMeses) break;
 
-      if (m === 1) primeiraParcela = prestacao;
-      if (m === mesesAmortizacao) ultimaParcela = prestacao;
+        if (mesAtual <= carenciaMeses) {
+          // Mês em carência já calculado no resumo inicial
+          continue;
+        }
+
+        const jurosMes = saldoDevedor * taxaMensal;
+        jurosAno += jurosMes;
+        amortizacaoAno += amortizacaoMensal;
+        totalJuros += jurosMes;
+        saldoDevedor -= amortizacaoMensal;
+
+        if (saldoDevedor < 0.01) saldoDevedor = 0;
+
+        const prestacaoMes = amortizacaoMensal + jurosMes;
+        if (primeiraParcela === 0) primeiraParcela = prestacaoMes;
+        ultimaParcela = prestacaoMes;
+      }
+
+      const parcelaAnual = amortizacaoAno + jurosAno;
 
       tabelaHTML += `
         <tr>
-          <td>${mesAtual}º</td>
-          <td>${fmtR$(prestacao)}</td>
-          <td>${fmtR$(jurosMes)}</td>
-          <td>${fmtR$(amortizacaoMensal)}</td>
+          <td>${ano}º Ano</td>
+          <td>${fmtR$(amortizacaoAno)}</td>
+          <td>${fmtR$(jurosAno)}</td>
+          <td>${fmtR$(parcelaAnual)}</td>
           <td>${fmtR$(saldoDevedor)}</td>
         </tr>
       `;
@@ -336,35 +368,51 @@ function calcularCusteio() {
     primeiraParcela = pmt;
     ultimaParcela = pmt;
 
-    for (let m = 1; m <= mesesAmortizacao; m++) {
-      const mesAtual = carencia + m;
-      const jurosMes = saldoDevedor * taxaMensal;
-      const amortizacao = pmt - jurosMes;
-      saldoDevedor -= amortizacao;
-      if (saldoDevedor < 0.01) saldoDevedor = 0;
+    for (let ano = 1; ano <= prazoAnos; ano++) {
+      let jurosAno = 0;
+      let amortizacaoAno = 0;
 
-      totalJuros += jurosMes;
+      for (let m = 1; m <= 12; m++) {
+        const mesAtual = (ano - 1) * 12 + m;
+        if (mesAtual > totalMeses) break;
+
+        if (mesAtual <= carenciaMeses) {
+          continue;
+        }
+
+        const jurosMes = saldoDevedor * taxaMensal;
+        const amortizacaoMes = pmt - jurosMes;
+
+        jurosAno += jurosMes;
+        amortizacaoAno += amortizacaoMes;
+        totalJuros += jurosMes;
+        saldoDevedor -= amortizacaoMes;
+
+        if (saldoDevedor < 0.01) saldoDevedor = 0;
+      }
+
+      const parcelaAnual = amortizacaoAno + jurosAno;
 
       tabelaHTML += `
         <tr>
-          <td>${mesAtual}º</td>
-          <td>${fmtR$(pmt)}</td>
-          <td>${fmtR$(jurosMes)}</td>
-          <td>${fmtR$(amortizacao)}</td>
+          <td>${ano}º Ano</td>
+          <td>${fmtR$(amortizacaoAno)}</td>
+          <td>${fmtR$(jurosAno)}</td>
+          <td>${fmtR$(parcelaAnual)}</td>
           <td>${fmtR$(saldoDevedor)}</td>
         </tr>
       `;
     }
   }
 
-  // Atualiza os valores do resumo
+  // Atualiza a interface com valores formatados
   document.getElementById('resValor').textContent = fmtR$(valorInput);
   document.getElementById('resPrimeira').textContent = fmtR$(primeiraParcela);
   document.getElementById('resUltima').textContent = fmtR$(ultimaParcela);
   document.getElementById('resJuros').textContent = fmtR$(totalJuros);
   document.getElementById('resTotal').textContent = fmtR$(valorInput + totalJuros);
 
-  // Injeta a tabela
+  // Renderiza a tabela dentro do painel lateral
   document.querySelector('#tabelaAmortizacao tbody').innerHTML = tabelaHTML;
 }
 </script>
