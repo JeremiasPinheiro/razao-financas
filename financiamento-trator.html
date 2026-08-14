@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="style.css">
   
   <style>
-    /* Estilo infalível para o efeito de texto vermelho com traço embaixo */
+    /* Estilo para o link ativo do menu */
     nav.sitenav a.active {
       color: #A6503A !important;
       font-weight: 600 !important;
@@ -27,7 +27,6 @@
       display: inline-block !important;
     }
 
-    /* Desenha o traço em baixo usando um pseudo-elemento ajustado ao texto */
     nav.sitenav a.active::after {
       content: '' !important;
       position: absolute !important;
@@ -37,6 +36,50 @@
       height: 2px !important;
       background-color: #A6503A !important;
       border-radius: 1px !important;
+    }
+
+    /* FIXAÇÃO E RESPONSIVIDADE DA TABELA E CARD DE RESULTADO */
+    .ledger {
+      max-width: 100%;
+      overflow: hidden; /* Evita que o card estique */
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto; /* Adiciona barra de rolagem interna se os valores forem gigantes */
+      -webkit-overflow-scrolling: touch;
+      margin-top: 14px;
+    }
+
+    table.mini {
+      width: 100%;
+      min-width: 520px; /* Garante que a tabela tenha um tamanho mínimo adequado */
+      table-layout: fixed; /* Força colunas com larguras proporcionais fixas */
+      border-collapse: collapse;
+    }
+
+    table.mini th, 
+    table.mini td {
+      word-break: break-word; /* Quebra valores gigantes se necessário */
+      white-space: normal;
+      padding: 8px 4px;
+    }
+
+    /* Ajuste de largura das colunas */
+    table.mini th:nth-child(1),
+    table.mini td:nth-child(1) {
+      width: 14%;
+    }
+
+    table.mini th:nth-child(2),
+    table.mini td:nth-child(2),
+    table.mini th:nth-child(3),
+    table.mini td:nth-child(3),
+    table.mini th:nth-child(4),
+    table.mini td:nth-child(4),
+    table.mini th:nth-child(5),
+    table.mini td:nth-child(5) {
+      width: 21.5%;
     }
   </style>
 
@@ -50,21 +93,21 @@
   <header class="site-header">
     <div class="top">
       <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
-<nav class="sitenav">
-  <a href="index.html">Início</a>
-  <a href="juros-compostos.html">Juros compostos</a>
-  <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
-  <a href="financiamento-trator.html" class="active">Financiamento Trator</a>
-  <a href="amortizacao-extra.html">Amortização Extra</a>
-  <a href="emprestimo-pessoal.html">Empréstimo</a>
-  <a href="independencia-financeira.html">Independência Financeira</a>
-  <a href="preco-medio.html">Preço Médio</a>
-  <a href="salario-liquido.html">Salário Líquido</a>
-  <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
-  <a href="conversor-moedas.html">Conversor de Moedas</a>
-  <a href="cripto-imposto.html">Cripto Imposto</a>
-  <a href="faturamento-mei.html">Faturamento MEI</a>
-</nav>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+        <a href="financiamento-trator.html" class="active">Financiamento Trator</a>
+        <a href="amortizacao-extra.html">Amortização Extra</a>
+        <a href="emprestimo-pessoal.html">Empréstimo</a>
+        <a href="independencia-financeira.html">Independência Financeira</a>
+        <a href="preco-medio.html">Preço Médio</a>
+        <a href="salario-liquido.html">Salário Líquido</a>
+        <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+        <a href="conversor-moedas.html">Conversor de Moedas</a>
+        <a href="cripto-imposto.html">Cripto Imposto</a>
+        <a href="faturamento-mei.html">Faturamento MEI</a>
+      </nav>
     </div>
   </header>
 
@@ -161,13 +204,11 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Atualiza o ano no rodapé
   const footYearEl = document.getElementById('footYear');
   if (footYearEl) {
     footYearEl.textContent = new Date().getFullYear();
   }
 
-  // Função auxiliar para formatar moeda em Real (BRL)
   function formatarBRL(valor) {
     return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
@@ -192,7 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let ultima = 0;
 
     if (sistemaAtual === 'SAC') {
-      // Sistema SAC (Parcelas Decrescentes)
       const amortConst = financiado / anos;
       let saldo = financiado;
 
@@ -214,7 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     } else {
-      // Tabela Price (Parcelas Fixas)
       let parcela = 0;
       if (taxaAno === 0) {
         parcela = financiado / anos;
@@ -243,7 +282,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Exibição dos totais na tela
     const elFinanciado = document.getElementById('tr-financiado');
     const elPrimeira = document.getElementById('tr-primeira');
     const elUltima = document.getElementById('tr-ultima');
@@ -256,7 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elJurosPagos) elJurosPagos.textContent = formatarBRL(totalJuros);
     if (elTotalPago) elTotalPago.textContent = formatarBRL(financiado + totalJuros);
 
-    // Preenchimento da tabela de parcelas anuais
     const tbody = document.querySelector('#tr-tabela tbody');
     if (tbody) {
       tbody.innerHTML = '';
@@ -273,7 +310,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Atualização automática da taxa de juros e recálculo imediato ao alterar a linha de crédito
   const trLinha = document.getElementById('tr-linha');
   if (trLinha) {
     trLinha.addEventListener('change', (e) => {
@@ -282,11 +318,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (trTaxa && v !== 'custom') {
         trTaxa.value = v;
       }
-      calcTrator(); // Recalcula automaticamente após alterar a linha
+      calcTrator();
     });
   }
 
-  // Adiciona recálculo automático ao alterar a taxa digitada manualmente
   const trTaxaInput = document.getElementById('tr-taxa');
   if (trTaxaInput) {
     trTaxaInput.addEventListener('input', () => {
@@ -295,13 +330,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Recálculo automático nos campos de entrada
   ['tr-valor', 'tr-entrada', 'tr-prazo'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', calcTrator);
   });
 
-  // Gerencia a troca de botões (SAC / Price) e recalcula automaticamente
   document.querySelectorAll('#tr-sistema button').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -312,7 +345,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Ouvinte para o botão calcular
   const btnCalc = document.getElementById('tr-calc');
   if (btnCalc) {
     btnCalc.addEventListener('click', (e) => {
@@ -321,7 +353,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Cálculo inicial na abertura da página
   calcTrator();
 });
 </script>
