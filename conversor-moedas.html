@@ -24,6 +24,30 @@
       box-shadow: none !important;
       outline: none !important;
     }
+
+    /* Estilos para o Seletor Tipo de Cotação (Compra/Venda) */
+    .tipo-cotacao-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .btn-tipo-cotacao {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      color: #333;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: 600;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+    .btn-tipo-cotacao.active {
+      background-color: #A6503A;
+      color: #ffffff;
+      border-color: #A6503A;
+    }
   </style>
 
   <!-- Código do Google AdSense -->
@@ -57,14 +81,20 @@
   <section class="page-hero">
     <div class="eyebrow">Calculadora</div>
     <h1>Conversor de moedas</h1>
-    <p class="lede">Converta valores entre real, dólar, euro, libra, peso argentino e iene com a cotação de venda comercial em tempo real.</p>
+    <p class="lede">Converta valores entre real, dólar, euro, libra, peso argentino e iene alternando entre cotação de compra e venda em tempo real.</p>
   </section>
 
   <main class="calc">
     <div class="grid">
       <div class="card">
         <h2>Conversor de moedas</h2>
-        <div class="sub">Cotação de venda comercial atualizada via API pública.</div>
+        <div class="sub">Selecione a operação para aplicar a cotação comercial atualizada.</div>
+
+        <label>Tipo de Operação</label>
+        <div class="tipo-cotacao-group">
+          <button type="button" class="btn-tipo-cotacao active" data-tipo="bid" id="btn-compra">Compra</button>
+          <button type="button" class="btn-tipo-cotacao" data-tipo="ask" id="btn-venda">Venda</button>
+        </div>
 
         <label for="cb-valor">Valor</label>
         <input type="number" id="cb-valor" value="1" min="0" step="any">
@@ -74,9 +104,9 @@
             <label for="cb-de">De</label>
             <select id="cb-de">
               <option value="BRL">BRL — Real</option>
-              <option value="USD">USD — Dólar americano</option>
+              <option value="USD" selected>USD — Dólar americano</option>
               <option value="EUR">EUR — Euro</option>
-              <option value="GBP" selected>GBP — Libra esterlina</option>
+              <option value="GBP">GBP — Libra esterlina</option>
               <option value="ARS">ARS — Peso argentino</option>
               <option value="JPY">JPY — Iene</option>
             </select>
@@ -101,18 +131,19 @@
       <div class="ledger">
         <h2>Resultado</h2>
         <div class="ledger-row total"><span class="label">Valor convertido</span><span class="fill"></span><span class="val" id="cb-resultado">—</span></div>
-        <div class="ledger-row"><span class="label">Taxa aplicada (Venda)</span><span class="fill"></span><span class="val" id="cb-taxa">—</span></div>
+        <div class="ledger-row"><span class="label">Taxa aplicada</span><span class="fill"></span><span class="val" id="cb-taxa">—</span></div>
         <div class="ledger-row"><span class="label">Atualizado em</span><span class="fill"></span><span class="val" id="cb-hora">—</span></div>
-        <div class="hint">A cotação reflete a <strong>taxa de venda da API pública comercial</strong> em tempo real.</div>
+        <div class="hint">A cotação reflete a **API pública comercial** em tempo real para a operação de <strong id="hint-tipo">Compra</strong>.</div>
       </div>
     </div>
 
     <article class="copy">
       <h2>De onde vem a cotação</h2>
-      <p>Este conversor busca a cotação comercial de venda diretamente de uma API pública em tempo real. Todas as moedas utilizam a referência do real brasileiro para permitir a conversão cruzada direta.</p>
+      <p>Este conversor busca a cotação comercial de compra e venda diretamente de uma API pública em tempo real. Todas as moedas utilizam a referência do real brasileiro para permitir a conversão cruzada direta.</p>
 
-      <h2>Por que essa cotação é diferente da que você vê no cartão ou na casa de câmbio</h2>
-      <p>A cotação comercial é o ponto de partida de mercado, mas não inclui o <strong>spread</strong> comercial nem taxas operacionais e tributos como o <strong>IOF</strong> aplicados por instituições financeiras no momento do fechamento do câmbio.</p>
+      <h2>Entenda a diferença entre taxa de Compra e Venda</h2>
+      <p><strong>Taxa de Compra (Bid):</strong> É o valor que o mercado paga ao comprar a moeda estrangeira.<br>
+      <strong>Taxa de Venda (Ask):</strong> É o preço cobrado pelo mercado ao vender a moeda para o consumidor.</p>
 
       <dl class="faq">
         <dt>Por que o conversor às vezes mostra uma mensagem de erro?</dt>
@@ -145,46 +176,49 @@ document.addEventListener('DOMContentLoaded', () => {
     footYearEl.textContent = new Date().getFullYear();
   }
 
-  // Tabela interna de taxas de venda (Base: 1 BRL)
+  // Define o tipo de taxa selecionado padrão ('bid' = Compra, 'ask' = Venda)
+  let tipoCotacaoAtual = 'bid';
+
+  // Tabelas internas para armazenar Compra e Venda separadamente
   let cotacoesEmBRL = {
-    'BRL': 1.0,
-    'USD': 5.185,
-    'EUR': 5.979,
-    'GBP': 6.999,
-    'ARS': 0.005,
-    'JPY': 0.035
+    bid: { 'BRL': 1.0, 'USD': 5.18, 'EUR': 5.97, 'GBP': 6.99, 'ARS': 0.005, 'JPY': 0.035 },
+    ask: { 'BRL': 1.0, 'USD': 5.18, 'EUR': 5.97, 'GBP': 6.99, 'ARS': 0.005, 'JPY': 0.035 }
   };
 
   async function carregarcotacoes() {
     const statusEl = document.getElementById('cb-status');
     try {
-      // Adiciona timestamp para evitar qualquer tipo de cache do navegador ou servidor intermediário
       const timestamp = new Date().getTime();
       const url = `https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL?t=${timestamp}`;
       
       const resp = await fetch(url, { 
         cache: 'no-store',
-        headers: {
-          'Pragma': 'no-cache',
-          'Cache-Control': 'no-cache'
-        }
+        headers: { 'Pragma': 'no-cache', 'Cache-Control': 'no-cache' }
       });
 
       if (!resp.ok) throw new Error('Falha ao conectar com o servidor de cotações');
 
       const data = await resp.json();
 
-      // Mapeia rigorosamente as taxas de venda ('ask') em ponto flutuante
       if (data && data.USDBRL) {
-        cotacoesEmBRL['BRL'] = 1.0;
-        if (data.USDBRL.ask) cotacoesEmBRL['USD'] = parseFloat(data.USDBRL.ask);
-        if (data.EURBRL.ask) cotacoesEmBRL['EUR'] = parseFloat(data.EURBRL.ask);
-        if (data.GBPBRL.ask) cotacoesEmBRL['GBP'] = parseFloat(data.GBPBRL.ask);
-        if (data.ARSBRL.ask) cotacoesEmBRL['ARS'] = parseFloat(data.ARSBRL.ask);
-        if (data.JPYBRL.ask) cotacoesEmBRL['JPY'] = parseFloat(data.JPYBRL.ask);
+        // Armazena as taxas de COMPRA (bid)
+        cotacoesEmBRL.bid['BRL'] = 1.0;
+        cotacoesEmBRL.bid['USD'] = parseFloat(data.USDBRL.bid);
+        cotacoesEmBRL.bid['EUR'] = parseFloat(data.EURBRL.bid);
+        cotacoesEmBRL.bid['GBP'] = parseFloat(data.GBPBRL.bid);
+        cotacoesEmBRL.bid['ARS'] = parseFloat(data.ARSBRL.bid);
+        cotacoesEmBRL.bid['JPY'] = parseFloat(data.JPYBRL.bid);
+
+        // Armazena as taxas de VENDA (ask)
+        cotacoesEmBRL.ask['BRL'] = 1.0;
+        cotacoesEmBRL.ask['USD'] = parseFloat(data.USDBRL.ask);
+        cotacoesEmBRL.ask['EUR'] = parseFloat(data.EURBRL.ask);
+        cotacoesEmBRL.ask['GBP'] = parseFloat(data.GBPBRL.ask);
+        cotacoesEmBRL.ask['ARS'] = parseFloat(data.ARSBRL.ask);
+        cotacoesEmBRL.ask['JPY'] = parseFloat(data.JPYBRL.ask);
 
         if (statusEl) {
-          statusEl.textContent = 'Cotações de venda atualizadas (' + new Date().toLocaleTimeString('pt-BR') + ')';
+          statusEl.textContent = 'Cotações atualizadas em tempo real (' + new Date().toLocaleTimeString('pt-BR') + ')';
           statusEl.classList.remove('err');
         }
       }
@@ -203,31 +237,57 @@ document.addEventListener('DOMContentLoaded', () => {
     const paraInput = document.getElementById('cb-para');
 
     const valor = parseFloat(valorInput ? valorInput.value : 0) || 0;
-    const de = deInput ? deInput.value : 'GBP';
+    const de = deInput ? deInput.value : 'USD';
     const para = paraInput ? paraInput.value : 'BRL';
 
-    const valorDeEmBRL = cotacoesEmBRL[de] || 1.0;
-    const valorParaEmBRL = cotacoesEmBRL[para] || 1.0;
+    // Seleciona a tabela correspondente (bid ou ask)
+    const taxasAtuais = cotacoesEmBRL[tipoCotacaoAtual];
+
+    const valorDeEmBRL = taxasAtuais[de] || 1.0;
+    const valorParaEmBRL = taxasAtuais[para] || 1.0;
 
     // Cálculo da conversão cruzada
     const totalEmBRL = valor * valorDeEmBRL;
     const resultado = totalEmBRL / valorParaEmBRL;
     
-    // Taxa de venda direta entre as moedas
+    // Taxa direta aplicada
     const taxaDireta = valorDeEmBRL / valorParaEmBRL;
 
     const resultadoFormatado = resultado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    
     const casasDecimaisTaxa = taxaDireta < 0.01 ? 6 : 4;
     const taxaFormatada = taxaDireta.toLocaleString('pt-BR', { minimumFractionDigits: casasDecimaisTaxa, maximumFractionDigits: casasDecimaisTaxa });
 
     const elResultado = document.getElementById('cb-resultado');
     const elTaxa = document.getElementById('cb-taxa');
     const elHora = document.getElementById('cb-hora');
+    const elHintTipo = document.getElementById('hint-tipo');
+
+    const rotuloOperacao = tipoCotacaoAtual === 'bid' ? 'Compra' : 'Venda';
 
     if (elResultado) elResultado.textContent = `${para} ${resultadoFormatado}`;
-    if (elTaxa) elTaxa.textContent = `1 ${de} = ${taxaFormatada} ${para}`;
+    if (elTaxa) elTaxa.textContent = `1 ${de} = ${taxaFormatada} ${para} (${rotuloOperacao})`;
     if (elHora) elHora.textContent = new Date().toLocaleTimeString('pt-BR');
+    if (elHintTipo) elHintTipo.textContent = rotuloOperacao;
+  }
+
+  // Alternância dos botões Compra / Venda
+  const btnCompra = document.getElementById('btn-compra');
+  const btnVenda = document.getElementById('btn-venda');
+
+  if (btnCompra && btnVenda) {
+    btnCompra.addEventListener('click', () => {
+      tipoCotacaoAtual = 'bid';
+      btnCompra.classList.add('active');
+      btnVenda.classList.remove('active');
+      converterMoeda();
+    });
+
+    btnVenda.addEventListener('click', () => {
+      tipoCotacaoAtual = 'ask';
+      btnVenda.classList.add('active');
+      btnCompra.classList.remove('active');
+      converterMoeda();
+    });
   }
 
   // Evento no botão converter
@@ -240,13 +300,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Atualização em tempo real nas mudanças dos inputs
+  // Listener para os campos de entrada e seleção
   ['cb-valor', 'cb-de', 'cb-para'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
-      el.addEventListener('input', () => {
-        converterMoeda();
-      });
+      el.addEventListener('input', converterMoeda);
       el.addEventListener('change', async () => {
         await carregarcotacoes();
         converterMoeda();
