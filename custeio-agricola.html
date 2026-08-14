@@ -29,21 +29,21 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   padding-bottom: 2px !important;
 }
 
-/* Estilo limpo e nativo para as fórmulas sem depender de CDNs externas */
+/* Estilo para caixas de fórmulas matemáticas sem CDNs externas */
 .formula-box {
   background-color: #f4f6f0;
   border-left: 4px solid #1b4332;
   padding: 12px 16px;
   margin: 14px 0;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: #1b4332;
   border-radius: 0 6px 6px 0;
 }
 
-/* Ajustes da tabela embutida na coluna da direita */
+/* Ajustes rígidos para a tabela lateral não estourar nem mudar de largura */
 .ledger-table-wrap {
-  margin-top: 20px;
+  margin-top: 15px;
   overflow-x: auto;
   max-height: 380px;
   overflow-y: auto;
@@ -53,19 +53,46 @@ nav.sitenav a[href="custeio-agricola.html"].active {
 
 .ledger-table-wrap table {
   width: 100%;
-  font-size: 0.85rem;
+  table-layout: fixed; /* Mantém as colunas estáticas independente do tamanho do texto */
   border-collapse: collapse;
 }
 
 .ledger-table-wrap th, 
 .ledger-table-wrap td {
-  padding: 6px 4px;
+  padding: 6px 2px;
   text-align: right;
+  font-size: 0.78rem;
+  font-family: 'IBM Plex Mono', monospace;
+  white-space: nowrap; /* Impede a quebra indesejada de linha em números grandes */
 }
 
 .ledger-table-wrap th:first-child, 
 .ledger-table-wrap td:first-child {
   text-align: left;
+  width: 50px; /* Largura fixa para a coluna "Ano" */
+}
+
+/* Botões do Sistema de Amortização */
+.sistema-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.sistema-toggle button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background: #f8f8f8;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.sistema-toggle button.active {
+  background: #a8722a;
+  color: #fff;
+  border-color: #a8722a;
 }
 </style>
 
@@ -141,7 +168,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
         <button type="button" id="btnCalcular" class="btn-primary">Calcular Custeio</button>
       </div>
 
-      <!-- Resumo do Resultado e Tabela Embutida -->
+      <!-- Resumo do Resultado e Tabela Integrada -->
       <div class="ledger">
         <h2>Resumo do Financiamento</h2>
         
@@ -175,7 +202,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
           <span class="val" id="resTotal">-</span>
         </div>
 
-        <!-- Tabela Integrada no Card Direito -->
+        <!-- Tabela Integrada no Container Lateral com Layout Fixo -->
         <div class="ledger-table-wrap">
           <table id="tabelaAmortizacao">
             <thead>
@@ -188,7 +215,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
               </tr>
             </thead>
             <tbody>
-              <!-- Preenchido dinamicamente via JS -->
+              <!-- Conteúdo injetado via JS -->
             </tbody>
           </table>
         </div>
@@ -197,7 +224,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
       </div>
     </div>
 
-    <!-- GUIA EXPLICATIVO, LEGISLAÇÃO E FÓRMULAS MATEMÁTICAS -->
+    <!-- GUIA EXPLICATIVO E FÓRMULAS -->
     <article class="copy" style="max-width: 100%; margin-top: 40px; border-top: 2px solid var(--ink); padding-top: 30px;">
       <h2>Como Funciona o Custeio Agrícola no Brasil?</h2>
       <p>O <strong>Custeio Agrícola</strong> é uma modalidade de crédito rural regulamentada pelo Banco Central do Brasil através do <strong>Manual de Crédito Rural (MCR)</strong>. Destina-se a cobrir despesas normais dos ciclos produtivos, como a compra de sementes, fertilizantes, defensivos agrícolas, combustível, colheita e preparo do solo.</p>
@@ -205,9 +232,9 @@ nav.sitenav a[href="custeio-agricola.html"].active {
       <h3>1. Diretrizes Legais do Crédito Rural (MCR)</h3>
       <p>As operações de crédito rural no Sistema Financeiro Nacional (SFN) observam regras específicas do MCR de acordo com o enquadramento do produtor:</p>
       <ul>
-        <li><strong>Pronaf (Programa Nacional de Fortalecimento da Agricultura Familiar):</strong> Atende pequenos produtores com taxas subsidiadas pelo governo federal (geralmente entre 0,5% a.a. e 6% a.a.).</li>
+        <li><strong>Pronaf (Programa Nacional de Fortalecimento da Agricultura Familiar):</strong> Atende pequenos produtores com taxas subsidiadas pelo governo federal.</li>
         <li><strong>Pronamp (Programa Nacional de Apoio ao Médio Produtor Rural):</strong> Voltado a médios produtores com limites de renda bruta anual e taxas pré-fixadas competitivas.</li>
-        <li><strong>Demais Produtores (Demais Recursos Controlados / Livre):</strong> Taxas contratadas conforme vigência do Plano Safra e políticas comerciais das instituições financeiras autorizadas.</li>
+        <li><strong>Demais Produtores:</strong> Taxas contratadas conforme vigência do Plano Safra e políticas comerciais das instituições financeiras.</li>
       </ul>
 
       <h3>2. Período de Carência e Prazos</h3>
@@ -235,7 +262,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
         Prestação (P<sub>k</sub>) = A + (SD<sub>k-1</sub> × i<sub>m</sub>)
       </div>
 
-      <h4>C. Sistema Price (Tabela Price / Juros Compostos)</h4>
+      <h4>C. Sistema Price (Tabela Price)</h4>
       <p>A prestação (P) é constante ao longo do período de amortização pós-carência:</p>
 
       <div class="formula-box">
@@ -257,7 +284,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   </footer>
 </div>
 
-<!-- Lógica de Cálculo em JS Puro com Visualização Anual Compacta -->
+<!-- Lógica de Cálculo em JS Puro com Atualização em Tempo Real -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const footYearEl = document.getElementById('footYear');
@@ -268,14 +295,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCalcular = document.getElementById('btnCalcular');
   btnCalcular.addEventListener('click', calcularCusteio);
 
-  // Atualização em tempo real ao alterar qualquer campo
+  // Ouve eventos nos campos de entrada para simulação instantânea
   const inputs = document.querySelectorAll('.card input, .card select');
   inputs.forEach(input => {
     input.addEventListener('input', calcularCusteio);
     input.addEventListener('change', calcularCusteio);
   });
 
-  // Executa o cálculo inicial
+  // Cálculo inicial na carga da página
   calcularCusteio();
 });
 
@@ -293,14 +320,13 @@ function calcularCusteio() {
   if (valorInput <= 0 || prazoAnos <= 0) return;
 
   const totalMeses = prazoAnos * 12;
-  // Conversão de taxa anual (% a.a.) para taxa equivalente mensal
   const iAnual = taxaAnual / 100;
   const taxaMensal = Math.pow(1 + iAnual, 1 / 12) - 1;
 
   let saldoDevedor = valorInput;
   let totalJuros = 0;
 
-  // Fase 1: Período de Carência (Acúmulo no saldo devedor)
+  // Carência
   for (let m = 1; m <= carenciaMeses; m++) {
     const jurosMes = saldoDevedor * taxaMensal;
     totalJuros += jurosMes;
@@ -309,7 +335,6 @@ function calcularCusteio() {
 
   const saldoAposCarencia = saldoDevedor;
   const mesesAmortizacao = Math.max(1, totalMeses - carenciaMeses);
-  const anosAmortizacao = Math.ceil(mesesAmortizacao / 12);
 
   let primeiraParcela = 0;
   let ultimaParcela = 0;
@@ -326,10 +351,7 @@ function calcularCusteio() {
         const mesAtual = (ano - 1) * 12 + m;
         if (mesAtual > totalMeses) break;
 
-        if (mesAtual <= carenciaMeses) {
-          // Mês em carência já calculado no resumo inicial
-          continue;
-        }
+        if (mesAtual <= carenciaMeses) continue;
 
         const jurosMes = saldoDevedor * taxaMensal;
         jurosAno += jurosMes;
@@ -376,9 +398,7 @@ function calcularCusteio() {
         const mesAtual = (ano - 1) * 12 + m;
         if (mesAtual > totalMeses) break;
 
-        if (mesAtual <= carenciaMeses) {
-          continue;
-        }
+        if (mesAtual <= carenciaMeses) continue;
 
         const jurosMes = saldoDevedor * taxaMensal;
         const amortizacaoMes = pmt - jurosMes;
@@ -405,14 +425,14 @@ function calcularCusteio() {
     }
   }
 
-  // Atualiza a interface com valores formatados
+  // Preenche os rótulos do painel lateral
   document.getElementById('resValor').textContent = fmtR$(valorInput);
   document.getElementById('resPrimeira').textContent = fmtR$(primeiraParcela);
   document.getElementById('resUltima').textContent = fmtR$(ultimaParcela);
   document.getElementById('resJuros').textContent = fmtR$(totalJuros);
   document.getElementById('resTotal').textContent = fmtR$(valorInput + totalJuros);
 
-  // Renderiza a tabela dentro do painel lateral
+  // Injeta o corpo da tabela
   document.querySelector('#tabelaAmortizacao tbody').innerHTML = tabelaHTML;
 }
 </script>
