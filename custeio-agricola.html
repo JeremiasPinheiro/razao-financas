@@ -9,7 +9,7 @@
 <!-- Tag Canonical -->
 <link rel="canonical" href="https://razaofinancas.com.br/custeio-agricola.html">
 
-<!-- Carregamento de Fontes do Google (Fraunces + IBM Plex) -->
+<!-- Carregamento de Fontes do Google -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -20,7 +20,26 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
-/* Destaque do link ativo no menu original do Razão */
+/* 1. ESTRUTURA FIXA DOS CARDS (Garante que o lado esquerdo nunca encurte) */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 850px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card, .ledger {
+  min-width: 0; /* Impede estouro de grid */
+  box-sizing: border-box;
+}
+
+/* 2. DESTAQUE DO LINK ATIVO NO MENU */
 nav.sitenav a.active,
 nav.sitenav a[href="custeio-agricola.html"].active {
   color: #A6503A !important;
@@ -29,7 +48,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   padding-bottom: 2px !important;
 }
 
-/* Estilo para caixas de fórmulas matemáticas sem CDNs externas */
+/* 3. CAIXA DE FÓRMULAS */
 .formula-box {
   background-color: #f4f6f0;
   border-left: 4px solid #1b4332;
@@ -41,7 +60,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   border-radius: 0 6px 6px 0;
 }
 
-/* Ajustes rígidos para a tabela lateral não estourar nem mudar de largura */
+/* 4. TABELA INTELIGENTE E ANTI-SOBREPOSIÇÃO */
 .ledger-table-wrap {
   margin-top: 15px;
   overflow-x: auto;
@@ -49,50 +68,35 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   overflow-y: auto;
   border-top: 1px solid rgba(0,0,0,0.1);
   padding-top: 10px;
+  width: 100%;
 }
 
 .ledger-table-wrap table {
   width: 100%;
-  table-layout: fixed; /* Mantém as colunas estáticas independente do tamanho do texto */
+  min-width: 500px; /* Garante espaço mínimo para os números não sobreporem */
   border-collapse: collapse;
 }
 
 .ledger-table-wrap th, 
 .ledger-table-wrap td {
-  padding: 6px 2px;
+  padding: 8px 6px;
   text-align: right;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-family: 'IBM Plex Mono', monospace;
-  white-space: nowrap; /* Impede a quebra indesejada de linha em números grandes */
+  white-space: nowrap;
 }
 
 .ledger-table-wrap th:first-child, 
 .ledger-table-wrap td:first-child {
   text-align: left;
-  width: 50px; /* Largura fixa para a coluna "Ano" */
+  width: 60px;
 }
 
-/* Botões do Sistema de Amortização */
-.sistema-toggle {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 15px;
-}
-
-.sistema-toggle button {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background: #f8f8f8;
-  cursor: pointer;
-  border-radius: 4px;
+/* Rótulos com quebra limpa caso o número seja gigante no resumo */
+.ledger-row .val {
+  word-break: break-all;
+  text-align: right;
   font-weight: 600;
-}
-
-.sistema-toggle button.active {
-  background: #a8722a;
-  color: #fff;
-  border-color: #a8722a;
 }
 </style>
 
@@ -105,7 +109,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   <header class="site-header">
     <div class="top">
       <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
-      <nav class="sitenav">
+      <nav class="sitenav" id="mainNav">
         <a href="index.html">Início</a>
         <a href="juros-compostos.html">Juros compostos</a>
         <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
@@ -132,7 +136,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
     </section>
 
     <div class="grid">
-      <!-- Formulário de Entrada -->
+      <!-- Formulário de Entrada (Lado Esquerdo Fixo) -->
       <div class="card">
         <h2>Dados da Simulação</h2>
         <p class="sub">Informe os valores e condições negociados com a instituição financeira</p>
@@ -168,7 +172,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
         <button type="button" id="btnCalcular" class="btn-primary">Calcular Custeio</button>
       </div>
 
-      <!-- Resumo do Resultado e Tabela Integrada -->
+      <!-- Resumo do Resultado e Tabela Integrada (Lado Direito Fixo) -->
       <div class="ledger">
         <h2>Resumo do Financiamento</h2>
         
@@ -202,7 +206,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
           <span class="val" id="resTotal">-</span>
         </div>
 
-        <!-- Tabela Integrada no Container Lateral com Layout Fixo -->
+        <!-- Tabela Integrada no Container Lateral com Proteção de Largura -->
         <div class="ledger-table-wrap">
           <table id="tabelaAmortizacao">
             <thead>
@@ -215,7 +219,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
               </tr>
             </thead>
             <tbody>
-              <!-- Conteúdo injetado via JS -->
+              <!-- Preenchido via JavaScript -->
             </tbody>
           </table>
         </div>
@@ -284,7 +288,6 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   </footer>
 </div>
 
-<!-- Lógica de Cálculo em JS Puro com Atualização em Tempo Real -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const footYearEl = document.getElementById('footYear');
@@ -293,20 +296,47 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const btnCalcular = document.getElementById('btnCalcular');
-  btnCalcular.addEventListener('click', calcularCusteio);
+  if (btnCalcular) {
+    btnCalcular.addEventListener('click', calcularCusteio);
+  }
 
-  // Ouve eventos nos campos de entrada para simulação instantânea
+  // Atualização em tempo real
   const inputs = document.querySelectorAll('.card input, .card select');
   inputs.forEach(input => {
     input.addEventListener('input', calcularCusteio);
     input.addEventListener('change', calcularCusteio);
   });
 
-  // Cálculo inicial na carga da página
+  // Garante a presença do botão Custeio Agrícola no menu se ele sumir
+  garantirBotaoMenu();
+
+  // Executa o cálculo inicial
   calcularCusteio();
 });
 
+// Função para garantir que o botão Custeio Agrícola nunca suma da navegação
+function garantirBotaoMenu() {
+  const nav = document.getElementById('mainNav') || document.querySelector('nav.sitenav');
+  if (nav) {
+    const jaExiste = nav.querySelector('a[href="custeio-agricola.html"]');
+    if (!jaExiste) {
+      const link = document.createElement('a');
+      link.href = 'custeio-agricola.html';
+      link.textContent = 'Custeio Agrícola';
+      link.className = 'active';
+      // Insere logo após o "Financiamento Trator" se existir
+      const tratorLink = nav.querySelector('a[href="financiamento-trator.html"]');
+      if (tratorLink && tratorLink.nextSibling) {
+        nav.insertBefore(link, tratorLink.nextSibling);
+      } else {
+        nav.appendChild(link);
+      }
+    }
+  }
+}
+
 function fmtR$(val) {
+  if (!isFinite(val) || isNaN(val)) return 'R$ 0,00';
   return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
@@ -326,7 +356,7 @@ function calcularCusteio() {
   let saldoDevedor = valorInput;
   let totalJuros = 0;
 
-  // Carência
+  // Fase de Carência
   for (let m = 1; m <= carenciaMeses; m++) {
     const jurosMes = saldoDevedor * taxaMensal;
     totalJuros += jurosMes;
@@ -425,14 +455,14 @@ function calcularCusteio() {
     }
   }
 
-  // Preenche os rótulos do painel lateral
+  // Preenchimento dos resultados nos rótulos laterais
   document.getElementById('resValor').textContent = fmtR$(valorInput);
   document.getElementById('resPrimeira').textContent = fmtR$(primeiraParcela);
   document.getElementById('resUltima').textContent = fmtR$(ultimaParcela);
   document.getElementById('resJuros').textContent = fmtR$(totalJuros);
   document.getElementById('resTotal').textContent = fmtR$(valorInput + totalJuros);
 
-  // Injeta o corpo da tabela
+  // Injeção do HTML da tabela
   document.querySelector('#tabelaAmortizacao tbody').innerHTML = tabelaHTML;
 }
 </script>
