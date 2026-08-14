@@ -28,6 +28,18 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   border-bottom: 2px solid #A6503A !important;
   padding-bottom: 2px !important;
 }
+
+/* Estilo limpo e nativo para as fórmulas sem depender de CDNs externas */
+.formula-box {
+  background-color: #f4f6f0;
+  border-left: 4px solid #1b4332;
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.05rem;
+  color: #1b4332;
+  border-radius: 0 6px 6px 0;
+}
 </style>
 
 <!-- Google AdSense -->
@@ -178,30 +190,33 @@ nav.sitenav a[href="custeio-agricola.html"].active {
       <p>De acordo com o MCR, o prazo de reembolso do custeio agrícola é fixado com base no ciclo produtivo da cultura. Durante a <strong>carência</strong>, não há amortização do principal, mas incidem juros sobre o saldo devedor.</p>
 
       <h3>3. Fórmulas Matemáticas Utilizadas na Simulação</h3>
-      <p>A taxa de juros informada ao ano ($i_a$) é convertida para taxa equivalente mensal ($i_m$) por juros compostos:</p>
+      <p>A taxa de juros informada ao ano (i<sub>a</sub>) é convertida para a taxa mensal equivalente (i<sub>m</sub>):</p>
 
-      $$\mathbf{i_m = (1 + i_a)^{\frac{1}{12}} - 1}$$
+      <div class="formula-box">
+        i<sub>m</sub> = (1 + i<sub>a</sub>)<sup>(1/12)</sup> - 1
+      </div>
 
       <h4>A. Carência (Capitalização de Juros)</h4>
-      <p>Durante os $c$ meses de carência, o saldo devedor ($SD$) é atualizado mês a mês sem pagamento do principal:</p>
+      <p>Durante os c meses de carência, o saldo devedor (SD) é atualizado mês a mês:</p>
 
-      $$\mathbf{SD_{k} = SD_{k-1} \times (1 + i_m)}$$
+      <div class="formula-box">
+        SD<sub>k</sub> = SD<sub>k-1</sub> × (1 + i<sub>m</sub>)
+      </div>
 
       <h4>B. Sistema SAC (Sistema de Amortização Constante)</h4>
-      <p>A quota de amortização ($A$) é fixa em todos os meses restantes ($n = \text{total de meses} - c$):</p>
+      <p>A quota de amortização (A) é fixa nos meses restantes pós-carência (n):</p>
 
-      $$\mathbf{A = \frac{SD_{inicial}}{n}}$$
-
-      <p>A prestação ($P_k$) do mês $k$ é a soma da amortização com os juros do período:</p>
-
-      $$\mathbf{P_k = A + (SD_{k-1} \times i_m)}$$
+      <div class="formula-box">
+        A = SD<sub>inicial</sub> / n<br>
+        Prestação (P<sub>k</sub>) = A + (SD<sub>k-1</sub> × i<sub>m</sub>)
+      </div>
 
       <h4>C. Sistema Price (Tabela Price / Juros Compostos)</h4>
-      <p>A prestação ($P$) é constante ao longo do período de amortização pós-carência:</p>
+      <p>A prestação (P) é constante ao longo do período de amortização pós-carência:</p>
 
-      $$\mathbf{P = SD_{inicial} \times \left[ \frac{i_m \times (1 + i_m)^n}{(1 + i_m)^n - 1} \right]}$$
-
-      <p>Onde a parcela de juros do mês é $J_k = SD_{k-1} \times i_m$ e a amortização é $A_k = P - J_k$.</p>
+      <div class="formula-box">
+        P = SD<sub>inicial</sub> × [ (i<sub>m</sub> × (1 + i<sub>m</sub>)<sup>n</sup>) / ((1 + i<sub>m</sub>)<sup>n</sup> - 1) ]
+      </div>
     </article>
   </main>
 
@@ -218,10 +233,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   </footer>
 </div>
 
-<!-- Renderização MathJax sem a dependência do polyfill.io -->
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-<!-- Lógica de Cálculo em JS Puro com Atualização Automática em Tempo Real -->
+<!-- Lógica de Cálculo em JS Puro -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const footYearEl = document.getElementById('footYear');
@@ -232,14 +244,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCalcular = document.getElementById('btnCalcular');
   btnCalcular.addEventListener('click', calcularCusteio);
 
-  // Garante a atualização instantânea ao alternar SAC/Price ou alterar qualquer número
+  // Garante a atualização instantânea ao alterar qualquer campo
   const inputs = document.querySelectorAll('.card input, .card select');
   inputs.forEach(input => {
     input.addEventListener('input', calcularCusteio);
     input.addEventListener('change', calcularCusteio);
   });
 
-  // Executa a simulação inicial com os valores padrão
+  // Executa a simulação inicial
   calcularCusteio();
 });
 
