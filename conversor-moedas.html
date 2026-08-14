@@ -125,7 +125,7 @@
         </div>
 
         <button class="btn-primary" id="cb-calc">Converter</button>
-        <div class="status" id="cb-status">Atualizando cotações...</div>
+        <div class="status" id="cb-status">Carregando cotações em tempo real...</div>
       </div>
 
       <div class="ledger">
@@ -133,7 +133,7 @@
         <div class="ledger-row total"><span class="label">Valor convertido</span><span class="fill"></span><span class="val" id="cb-resultado">—</span></div>
         <div class="ledger-row"><span class="label">Taxa aplicada</span><span class="fill"></span><span class="val" id="cb-taxa">—</span></div>
         <div class="ledger-row"><span class="label">Atualizado em</span><span class="fill"></span><span class="val" id="cb-hora">—</span></div>
-        <div class="hint">A cotação reflete a **API pública comercial** em tempo real para a operação de <strong id="hint-tipo">Compra</strong>.</div>
+        <div class="hint">A cotação reflete a <strong>API pública comercial</strong> em tempo real para a operação de <strong id="hint-tipo">Compra</strong>.</div>
       </div>
     </div>
 
@@ -149,7 +149,7 @@
         <dt>Por que o conversor às vezes mostra uma mensagem de erro?</dt>
         <dd>Isso acontece se houver instabilidade na conexão com a internet ou se a API pública estiver temporariamente fora do ar.</dd>
         <dt>A cotação é atualizada automaticamente?</dt>
-        <dd>Sim, ela é recarregada ao abrir a página e atualizada em segundo plano a cada 15 segundos.</dd>
+        <dd>Sim, ela é recarregada ao abrir a página e atualizada em segundo plano a cada 30 segundos.</dd>
       </dl>
     </article>
   </main>
@@ -176,32 +176,29 @@ document.addEventListener('DOMContentLoaded', () => {
     footYearEl.textContent = new Date().getFullYear();
   }
 
-  // Define o tipo de taxa selecionado padrão ('bid' = Compra, 'ask' = Venda)
+  // 'bid' = Compra, 'ask' = Venda
   let tipoCotacaoAtual = 'bid';
 
-  // Tabelas internas para armazenar Compra e Venda separadamente
+  // Objeto de cotações zerado até a API responder
   let cotacoesEmBRL = {
-    bid: { 'BRL': 1.0, 'USD': 5.18, 'EUR': 5.97, 'GBP': 6.99, 'ARS': 0.005, 'JPY': 0.035 },
-    ask: { 'BRL': 1.0, 'USD': 5.18, 'EUR': 5.97, 'GBP': 6.99, 'ARS': 0.005, 'JPY': 0.035 }
+    bid: { 'BRL': 1.0 },
+    ask: { 'BRL': 1.0 }
   };
 
   async function carregarcotacoes() {
     const statusEl = document.getElementById('cb-status');
     try {
-      const timestamp = new Date().getTime();
-      const url = `https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL?t=${timestamp}`;
+      // URL limpa sem cabeçalhos proibidos pelo servidor da AwesomeAPI
+      const url = `https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL?t=${Date.now()}`;
       
-      const resp = await fetch(url, { 
-        cache: 'no-store',
-        headers: { 'Pragma': 'no-cache', 'Cache-Control': 'no-cache' }
-      });
+      const resp = await fetch(url);
 
-      if (!resp.ok) throw new Error('Falha ao conectar com o servidor de cotações');
+      if (!resp.ok) throw new Error('Servidor indisponível');
 
       const data = await resp.json();
 
       if (data && data.USDBRL) {
-        // Armazena as taxas de COMPRA (bid)
+        // Mapeamento Compra (bid)
         cotacoesEmBRL.bid['BRL'] = 1.0;
         cotacoesEmBRL.bid['USD'] = parseFloat(data.USDBRL.bid);
         cotacoesEmBRL.bid['EUR'] = parseFloat(data.EURBRL.bid);
@@ -209,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cotacoesEmBRL.bid['ARS'] = parseFloat(data.ARSBRL.bid);
         cotacoesEmBRL.bid['JPY'] = parseFloat(data.JPYBRL.bid);
 
-        // Armazena as taxas de VENDA (ask)
+        // Mapeamento Venda (ask)
         cotacoesEmBRL.ask['BRL'] = 1.0;
         cotacoesEmBRL.ask['USD'] = parseFloat(data.USDBRL.ask);
         cotacoesEmBRL.ask['EUR'] = parseFloat(data.EURBRL.ask);
@@ -223,10 +220,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     } catch (e) {
-      console.warn('Erro ao carregar cotações em tempo real:', e);
+      console.warn('Alerta de atualização da API:', e);
       if (statusEl) {
-        statusEl.textContent = 'Não foi possível atualizar em tempo real. Exibindo estimativa comercial.';
-        statusEl.classList.add('err');
+        statusEl.textContent = 'Conectando ao servidor de câmbio...';
       }
     }
   }
@@ -240,7 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const de = deInput ? deInput.value : 'USD';
     const para = paraInput ? paraInput.value : 'BRL';
 
-    // Seleciona a tabela correspondente (bid ou ask)
     const taxasAtuais = cotacoesEmBRL[tipoCotacaoAtual];
 
     const valorDeEmBRL = taxasAtuais[de] || 1.0;
@@ -250,7 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalEmBRL = valor * valorDeEmBRL;
     const resultado = totalEmBRL / valorParaEmBRL;
     
-    // Taxa direta aplicada
     const taxaDireta = valorDeEmBRL / valorParaEmBRL;
 
     const resultadoFormatado = resultado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -290,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Evento no botão converter
+  // Clique no botão converter
   const btnCalc = document.getElementById('cb-calc');
   if (btnCalc) {
     btnCalc.addEventListener('click', async (e) => {
@@ -300,25 +294,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Listener para os campos de entrada e seleção
+  // Ouvintes de alteração nos campos
   ['cb-valor', 'cb-de', 'cb-para'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
       el.addEventListener('input', converterMoeda);
-      el.addEventListener('change', async () => {
-        await carregarcotacoes();
-        converterMoeda();
-      });
+      el.addEventListener('change', converterMoeda);
     }
   });
 
-  // Carga inicial e loop automático de atualização a cada 15 segundos
+  // Inicialização rápida
   carregarcotacoes().then(() => {
     converterMoeda();
+    // Atualização em segundo plano a cada 30 segundos
     setInterval(async () => {
       await carregarcotacoes();
       converterMoeda();
-    }, 15000);
+    }, 30000);
   });
 });
 </script>
