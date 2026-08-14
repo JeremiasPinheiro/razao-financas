@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Simulador de Custeio Agrícola e Financiamento Rural — Razão</title>
-<meta name="description" content="Simule financiamentos e custeio agrícola para safra, insumos e maquinários. Compare os sistemas SAC e Price com taxa anual e carência.">
+<meta name="description" content="Simule o financiamento e custeio agrícola para safra, insumos e preparo do solo. Entenda o Manual de Crédito Rural (MCR), fórmulas SAC e Price com período de carência.">
 
 <!-- Tag Canonical -->
 <link rel="canonical" href="https://razaofinancas.com.br/custeio-agricola.html">
 
-<!-- Carregamento Limpo e Atualizado do Google Fonts (Sem erros 404) -->
+<!-- Carregamento Limpo das Fontes do Google -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -60,28 +60,28 @@ nav.sitenav a[href="custeio-agricola.html"].active {
 
   <main class="calc">
     <section class="page-hero">
-      <div class="eyebrow">Agronegócio</div>
+      <div class="eyebrow">Agronegócio & Crédito Rural</div>
       <h1>Simulador de Custeio Agrícola</h1>
-      <p class="lede">Planeje o financiamento para insumos, preparo de solo, colheita e maquinário com prazos flexíveis e carência.</p>
+      <p class="lede">Planeje o financiamento para aquisição de insumos, sementes, fertilizantes, tratos culturais e colheita sob as diretrizes do Manual de Crédito Rural (MCR).</p>
     </section>
 
     <div class="grid">
       <!-- Formulário de Entrada -->
       <div class="card">
         <h2>Dados da Simulação</h2>
-        <p class="sub">Informe os valores e prazos do seu crédito rural</p>
+        <p class="sub">Informe os valores e condições negociados com a instituição financeira</p>
 
-        <label for="valor">Valor do Crédito (R$)</label>
+        <label for="valor">Valor do Crédito / Operação (R$)</label>
         <input type="number" id="valor" value="250000" step="1000" min="1000">
 
         <div class="row-inline">
           <div>
             <label for="taxaAnual">Taxa de Juros (% a.a.)</label>
-            <input type="number" id="taxaAnual" value="8.5" step="0.1" min="0">
+            <input type="number" id="taxaAnual" value="8.0" step="0.1" min="0">
           </div>
           <div>
-            <label for="prazoAnos">Prazo (Anos)</label>
-            <input type="number" id="prazoAnos" value="5" step="1" min="1" max="30">
+            <label for="prazoAnos">Prazo Total (Anos)</label>
+            <input type="number" id="prazoAnos" value="3" step="1" min="1" max="10">
           </div>
         </div>
 
@@ -104,7 +104,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
 
       <!-- Resumo do Resultado -->
       <div class="ledger">
-        <h2>Resumo da Simulação</h2>
+        <h2>Resumo do Financiamento</h2>
         
         <div class="ledger-row">
           <span class="label">Valor Solicitado</span>
@@ -113,7 +113,7 @@ nav.sitenav a[href="custeio-agricola.html"].active {
         </div>
 
         <div class="ledger-row">
-          <span class="label">Primeira Parcela</span>
+          <span class="label">Primeira Parcela (pós-carência)</span>
           <span class="fill"></span>
           <span class="val" id="resPrimeira">-</span>
         </div>
@@ -125,24 +125,24 @@ nav.sitenav a[href="custeio-agricola.html"].active {
         </div>
 
         <div class="ledger-row cost">
-          <span class="label">Total de Juros</span>
+          <span class="label">Total de Juros Pagos</span>
           <span class="fill"></span>
           <span class="val" id="resJuros">-</span>
         </div>
 
         <div class="ledger-row total">
-          <span class="label">Custo Total Pago</span>
+          <span class="label">Custo Total da Operação</span>
           <span class="fill"></span>
           <span class="val" id="resTotal">-</span>
         </div>
 
-        <p class="hint"><strong>Nota:</strong> Durante o período de carência, os juros são acumulados sobre o saldo devedor.</p>
+        <p class="hint"><strong>Regra MCR:</strong> Durante a carência agrícola, os juros contratuais são acumulados sobre o saldo devedor até o início das amortizações.</p>
       </div>
     </div>
 
     <!-- Tabela Detalhada de Amortização -->
     <article class="copy" style="max-width: 100%; margin-top: 30px;">
-      <h2>Detalhamento das Parcelas</h2>
+      <h2>Evolução das Parcelas do Crédito Rural</h2>
       <div class="table-wrap">
         <table class="mini" id="tabelaAmortizacao">
           <thead>
@@ -155,10 +155,53 @@ nav.sitenav a[href="custeio-agricola.html"].active {
             </tr>
           </thead>
           <tbody>
-            <!-- Preenchido via JavaScript -->
+            <!-- Preenchido via JS -->
           </tbody>
         </table>
       </div>
+    </article>
+
+    <!-- GUIA EXPLICATIVO, LEGISLAÇÃO E FÓRMULAS MATEMÁTICAS -->
+    <article class="copy" style="max-width: 100%; margin-top: 40px; border-top: 2px solid var(--ink); padding-top: 30px;">
+      <h2>Como Funciona o Custeio Agrícola no Brasil?</h2>
+      <p>O <strong>Custeio Agrícola</strong> é uma modalidade de crédito rural regulamentada pelo Banco Central do Brasil através do <strong>Manual de Crédito Rural (MCR)</strong>. Destina-se a cobrir despesas normais dos ciclos produtivos, como a compra de sementes, fertilizantes, defensivos agrícolas, combustível, colheita e preparo do solo.</p>
+
+      <h3>1. Diretrizes Legais do Crédito Rural (MCR)</h3>
+      <p>As operações de crédito rural no Sistema Financeiro Nacional (SFN) observam regras específicas do MCR de acordo com o enquadramento do produtor:</p>
+      <ul>
+        <li><strong>Pronaf (Programa Nacional de Fortalecimento da Agricultura Familiar):</strong> Atende pequenos produtores com taxas subsidiadas pelo governo federal (geralmente entre 0,5% a.a. e 6% a.a.).</li>
+        <li><strong>Pronamp (Programa Nacional de Apoio ao Médio Produtor Rural):</strong> Voltado a médios produtores com limites de renda bruta anual e taxas pré-fixadas competitivas.</li>
+        <li><strong>Demais Produtores (Demais Recursos Controlados / Livre):</strong> Taxas contratadas conforme vigência do Plano Safra e políticas comerciais das instituições financeiras autorizadas.</li>
+      </ul>
+
+      <h3>2. Período de Carência e Prazos</h3>
+      <p>De acordo com o MCR, o prazo de reembolso do custeio agrícola é fixado com base no ciclo produtivo da cultura (podendo variar geralmente de 1 a 3 anos em culturas semi-permanentes/permanentes ou alinhado à época da colheita em culturas anuais). Durante a <strong>carência</strong>, não há amortização do principal, mas incidem juros sobre o saldo devedor.</p>
+
+      <h3>3. Fórmulas Matemáticas Utilizadas na Simulação</h3>
+      <p>A taxa de juros informada ao ano ($i_a$) é convertida para taxa equivalente mensal ($i_m$) por juros compostos:</p>
+
+      $$\mathbf{i_m = (1 + i_a)^{\frac{1}{12}} - 1}$$
+
+      <h4>A. Carência (Capitalização de Juros)</h4>
+      <p>Durante os $c$ meses de carência, o saldo devedor ($SD$) é atualizado mês a mês sem pagamento do principal:</p>
+
+      $$\mathbf{SD_{k} = SD_{k-1} \times (1 + i_m)}$$
+
+      <h4>B. Sistema SAC (Sistema de Amortização Constante)</h4>
+      <p>A quota de amortização ($A$) é fixa em todos os meses restantes ($n = \text{total de meses} - c$):</p>
+
+      $$\mathbf{A = \frac{SD_{inicial}}{n}}$$
+
+      <p>A prestação ($P_k$) do mês $k$ é a soma da amortização com os juros do período:</p>
+
+      $$\mathbf{P_k = A + (SD_{k-1} \times i_m)}$$
+
+      <h4>C. Sistema Price (Tabela Price / Juros Compostos)</h4>
+      <p>A prestação ($P$) é constante ao longo do período de amortização pós-carência:</p>
+
+      $$\mathbf{P = SD_{inicial} \times \left[ \frac{i_m \times (1 + i_m)^n}{(1 + i_m)^n - 1} \right]}$$
+
+      <p>Onde a parcela de juros do mês é $J_k = SD_{k-1} \times i_m$ e a amortização é $A_k = P - J_k$.</p>
     </article>
   </main>
 
@@ -175,10 +218,13 @@ nav.sitenav a[href="custeio-agricola.html"].active {
   </footer>
 </div>
 
+<!-- Renderização MathJax para Fórmulas Matemáticas -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 <!-- Lógica de Cálculo em JS Puro -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Atualiza o ano do rodapé
   const footYearEl = document.getElementById('footYear');
   if (footYearEl) {
     footYearEl.textContent = new Date().getFullYear();
@@ -187,7 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCalcular = document.getElementById('btnCalcular');
   btnCalcular.addEventListener('click', calcularCusteio);
 
-  // Executa o primeiro cálculo automático ao carregar
   calcularCusteio();
 });
 
@@ -213,13 +258,13 @@ function calcularCusteio() {
   let primeiraParcela = 0;
   let ultimaParcela = 0;
 
-  const mesesAmortizacao = totalMeses - carencia;
+  const mesesAmortizacao = Math.max(1, totalMeses - carencia);
 
-  // Fase 1: Período de Carência (Apenas juros incidem e acumulam)
+  // Fase 1: Período de Carência
   for (let m = 1; m <= carencia; m++) {
     const jurosMes = saldoDevedor * taxaMensal;
     totalJuros += jurosMes;
-    saldoDevedor += jurosMes; // Juros capitalizados na carência
+    saldoDevedor += jurosMes;
 
     tabelaHTML += `
       <tr>
