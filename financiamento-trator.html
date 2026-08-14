@@ -16,6 +16,11 @@
   <link rel="stylesheet" href="style.css">
   
   <style>
+    /* Trava global contra estouro de layout */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     /* Estilo para o link ativo do menu */
     nav.sitenav a.active {
       color: #A6503A !important;
@@ -38,47 +43,76 @@
       border-radius: 1px !important;
     }
 
-    /* FIXAÇÃO E RESPONSIVIDADE DA TABELA E CARD DE RESULTADO */
-    .ledger {
-      max-width: 100%;
-      overflow: hidden; /* Evita que o card estique */
+    /* FIXAÇÃO E ESTRUTURA RIGIDA DO CARD E TABELA */
+    .calc .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+      gap: 24px;
+      align-items: start;
     }
 
+    @media (max-width: 768px) {
+      .calc .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card, .ledger {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden; /* Não deixa nenhum filho esticar o container */
+    }
+
+    .ledger-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ledger-row .val {
+      word-break: break-word;
+      text-align: right;
+      font-size: 0.95rem;
+    }
+
+    /* TABELA RIGIDA */
     .table-wrap {
       width: 100%;
-      overflow-x: auto; /* Adiciona barra de rolagem interna se os valores forem gigantes */
+      max-width: 100%;
+      overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      margin-top: 14px;
+      margin-top: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 6px;
     }
 
     table.mini {
-      width: 100%;
-      min-width: 520px; /* Garante que a tabela tenha um tamanho mínimo adequado */
-      table-layout: fixed; /* Força colunas com larguras proporcionais fixas */
+      width: 100% !important;
+      min-width: 500px; /* Garante usabilidade técnica mantendo a rolagem interna segura */
+      table-layout: fixed !important; /* Força que as larguras de coluna sejam respeitadas rigorosamente */
       border-collapse: collapse;
     }
 
     table.mini th, 
     table.mini td {
-      word-break: break-word; /* Quebra valores gigantes se necessário */
-      white-space: normal;
-      padding: 8px 4px;
+      padding: 8px 6px;
+      font-size: 0.85rem;
+      text-align: right;
+      word-wrap: break-word;
+      word-break: break-all;
+      overflow: hidden;
     }
 
-    /* Ajuste de largura das colunas */
-    table.mini th:nth-child(1),
-    table.mini td:nth-child(1) {
+    table.mini th:first-child,
+    table.mini td:first-child {
+      text-align: left;
       width: 14%;
     }
 
-    table.mini th:nth-child(2),
-    table.mini td:nth-child(2),
-    table.mini th:nth-child(3),
-    table.mini td:nth-child(3),
-    table.mini th:nth-child(4),
-    table.mini td:nth-child(4),
-    table.mini th:nth-child(5),
-    table.mini td:nth-child(5) {
+    table.mini th:nth-child(n+2),
+    table.mini td:nth-child(n+2) {
       width: 21.5%;
     }
   </style>
@@ -124,10 +158,10 @@
         <div class="sub">Escolha uma linha de crédito rural de referência ou informe uma taxa própria.</div>
 
         <label for="tr-valor">Valor do trator (R$)</label>
-        <input type="number" id="tr-valor" value="280000" min="0" step="1000">
+        <input type="number" id="tr-valor" value="280000" min="0" step="1000" oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);">
 
         <label for="tr-entrada">Entrada (R$)</label>
-        <input type="number" id="tr-entrada" value="40000" min="0" step="1000">
+        <input type="number" id="tr-entrada" value="40000" min="0" step="1000" oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);">
 
         <label for="tr-linha">Linha de crédito (referência)</label>
         <select id="tr-linha">
@@ -139,10 +173,10 @@
         </select>
 
         <label for="tr-taxa">Taxa de juros (% ao ano)</label>
-        <input type="number" id="tr-taxa" value="12.5" min="0" step="0.1">
+        <input type="number" id="tr-taxa" value="12.5" min="0" step="0.1" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
 
         <label for="tr-prazo">Prazo (anos)</label>
-        <input type="number" id="tr-prazo" value="7" min="1" step="1">
+        <input type="number" id="tr-prazo" value="7" min="1" max="50" step="1" oninput="if(this.value.length > 3) this.value = this.value.slice(0, 3);">
 
         <label>Sistema de amortização</label>
         <div class="toggle" id="tr-sistema">
@@ -163,7 +197,15 @@
 
         <div class="table-wrap">
           <table class="mini" id="tr-tabela">
-            <thead><tr><th>Ano</th><th>Amortização</th><th>Juros</th><th>Parcela anual</th><th>Saldo devedor</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Ano</th>
+                <th>Amortização</th>
+                <th>Juros</th>
+                <th>Parcela anual</th>
+                <th>Saldo devedor</th>
+              </tr>
+            </thead>
             <tbody></tbody>
           </table>
         </div>
@@ -210,7 +252,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function formatarBRL(valor) {
-    return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    if (isNaN(valor) || !isFinite(valor)) return 'R$ 0,00';
+    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
   let sistemaAtual = 'SAC';
@@ -224,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const valorTrator = parseFloat(valorTratorInput ? valorTratorInput.value : 0) || 0;
     const entrada = parseFloat(entradaInput ? entradaInput.value : 0) || 0;
     const taxaAno = (parseFloat(taxaInput ? taxaInput.value : 0) || 0) / 100;
-    const anos = Math.max(1, parseInt(prazoInput ? prazoInput.value : 1) || 1);
+    const anos = Math.min(50, Math.max(1, parseInt(prazoInput ? prazoInput.value : 1) || 1));
     const financiado = Math.max(0, valorTrator - entrada);
 
     let rows = [];
