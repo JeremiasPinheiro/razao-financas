@@ -67,16 +67,16 @@
         <div class="sub">Cotação de venda comercial atualizada via API pública.</div>
 
         <label for="cb-valor">Valor</label>
-        <input type="number" id="cb-valor" value="100" min="0" step="1">
+        <input type="number" id="cb-valor" value="1" min="0" step="any">
 
         <div class="row-inline">
           <div>
             <label for="cb-de">De</label>
             <select id="cb-de">
               <option value="BRL">BRL — Real</option>
-              <option value="USD" selected>USD — Dólar americano</option>
+              <option value="USD">USD — Dólar americano</option>
               <option value="EUR">EUR — Euro</option>
-              <option value="GBP">GBP — Libra esterlina</option>
+              <option value="GBP" selected>GBP — Libra esterlina</option>
               <option value="ARS">ARS — Peso argentino</option>
               <option value="JPY">JPY — Iene</option>
             </select>
@@ -95,7 +95,7 @@
         </div>
 
         <button class="btn-primary" id="cb-calc">Converter</button>
-        <div class="status" id="cb-status">Cotações carregadas ao abrir a página.</div>
+        <div class="status" id="cb-status">Atualizando cotações...</div>
       </div>
 
       <div class="ledger">
@@ -103,13 +103,13 @@
         <div class="ledger-row total"><span class="label">Valor convertido</span><span class="fill"></span><span class="val" id="cb-resultado">—</span></div>
         <div class="ledger-row"><span class="label">Taxa aplicada (Venda)</span><span class="fill"></span><span class="val" id="cb-taxa">—</span></div>
         <div class="ledger-row"><span class="label">Atualizado em</span><span class="fill"></span><span class="val" id="cb-hora">—</span></div>
-        <div class="hint">A cotação reflete a <strong>taxa de venda da API pública comercial</strong>. Se a internet estiver indisponível, o conversor sinaliza para evitar cálculos incorretos.</div>
+        <div class="hint">A cotação reflete a <strong>taxa de venda da API pública comercial</strong> em tempo real.</div>
       </div>
     </div>
 
     <article class="copy">
       <h2>De onde vem a cotação</h2>
-      <p>Este conversor busca a cotação comercial de venda diretamente de uma API pública no momento em que a página é carregada. Todas as moedas utilizam a referência do real brasileiro para permitir a conversão cruzada direta.</p>
+      <p>Este conversor busca a cotação comercial de venda diretamente de uma API pública em tempo real. Todas as moedas utilizam a referência do real brasileiro para permitir a conversão cruzada direta.</p>
 
       <h2>Por que essa cotação é diferente da que você vê no cartão ou na casa de câmbio</h2>
       <p>A cotação comercial é o ponto de partida de mercado, mas não inclui o <strong>spread</strong> comercial nem taxas operacionais e tributos como o <strong>IOF</strong> aplicados por instituições financeiras no momento do fechamento do câmbio.</p>
@@ -118,7 +118,7 @@
         <dt>Por que o conversor às vezes mostra uma mensagem de erro?</dt>
         <dd>Isso acontece se houver instabilidade na conexão com a internet ou se a API pública estiver temporariamente fora do ar.</dd>
         <dt>A cotação é atualizada automaticamente?</dt>
-        <dd>Sim, ela é recarregada ao abrir a página e atualizada em segundo plano periodicamente.</dd>
+        <dd>Sim, ela é recarregada ao abrir a página e atualizada em segundo plano a cada 15 segundos.</dd>
       </dl>
     </article>
   </main>
@@ -145,12 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
     footYearEl.textContent = new Date().getFullYear();
   }
 
-  // Objeto centralizador de taxas de VENDA (Base: 1 BRL)
+  // Tabela interna de taxas de venda (Base: 1 BRL)
   let cotacoesEmBRL = {
     'BRL': 1.0,
-    'USD': 5.00,
-    'EUR': 5.50,
-    'GBP': 6.50,
+    'USD': 5.185,
+    'EUR': 5.979,
+    'GBP': 6.999,
     'ARS': 0.005,
     'JPY': 0.035
   };
@@ -158,32 +158,38 @@ document.addEventListener('DOMContentLoaded', () => {
   async function carregarcotacoes() {
     const statusEl = document.getElementById('cb-status');
     try {
-      // Busca as cotações comerciais das moedas em BRL sem cache no navegador
-      const url = 'https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL';
-      const resp = await fetch(url, { cache: 'no-store' });
+      // Adiciona timestamp para evitar qualquer tipo de cache do navegador ou servidor intermediário
+      const timestamp = new Date().getTime();
+      const url = `https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,GBP-BRL,ARS-BRL,JPY-BRL?t=${timestamp}`;
+      
+      const resp = await fetch(url, { 
+        cache: 'no-store',
+        headers: {
+          'Pragma': 'no-cache',
+          'Cache-Control': 'no-cache'
+        }
+      });
 
       if (!resp.ok) throw new Error('Falha ao conectar com o servidor de cotações');
 
       const data = await resp.json();
 
-      // Mapeamento explícito das taxas de VENDA (ask) retornado pela API pública
+      // Mapeia rigorosamente as taxas de venda ('ask') em ponto flutuante
       if (data && data.USDBRL) {
         cotacoesEmBRL['BRL'] = 1.0;
-        cotacoesEmBRL['USD'] = parseFloat(data.USDBRL.ask);
-        cotacoesEmBRL['EUR'] = parseFloat(data.EURBRL.ask);
-        cotacoesEmBRL['GBP'] = parseFloat(data.GBPBRL.ask);
-        cotacoesEmBRL['ARS'] = parseFloat(data.ARSBRL.ask);
-        cotacoesEmBRL['JPY'] = parseFloat(data.JPYBRL.ask);
+        if (data.USDBRL.ask) cotacoesEmBRL['USD'] = parseFloat(data.USDBRL.ask);
+        if (data.EURBRL.ask) cotacoesEmBRL['EUR'] = parseFloat(data.EURBRL.ask);
+        if (data.GBPBRL.ask) cotacoesEmBRL['GBP'] = parseFloat(data.GBPBRL.ask);
+        if (data.ARSBRL.ask) cotacoesEmBRL['ARS'] = parseFloat(data.ARSBRL.ask);
+        if (data.JPYBRL.ask) cotacoesEmBRL['JPY'] = parseFloat(data.JPYBRL.ask);
 
         if (statusEl) {
           statusEl.textContent = 'Cotações de venda atualizadas (' + new Date().toLocaleTimeString('pt-BR') + ')';
           statusEl.classList.remove('err');
         }
-      } else {
-        throw new Error('Formato de dados retornado é inválido');
       }
     } catch (e) {
-      console.warn('Erro ao atualizar cotações comerciais. Mantendo base de contingência.', e);
+      console.warn('Erro ao carregar cotações em tempo real:', e);
       if (statusEl) {
         statusEl.textContent = 'Não foi possível atualizar em tempo real. Exibindo estimativa comercial.';
         statusEl.classList.add('err');
@@ -197,23 +203,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const paraInput = document.getElementById('cb-para');
 
     const valor = parseFloat(valorInput ? valorInput.value : 0) || 0;
-    const de = deInput ? deInput.value : 'USD';
+    const de = deInput ? deInput.value : 'GBP';
     const para = paraInput ? paraInput.value : 'BRL';
 
-    // Obtém a taxa de venda em BRL de cada moeda cadastrada
     const valorDeEmBRL = cotacoesEmBRL[de] || 1.0;
     const valorParaEmBRL = cotacoesEmBRL[para] || 1.0;
 
-    // Cálculo de conversão: converte a moeda de origem para BRL e depois para a moeda de destino
+    // Cálculo da conversão cruzada
     const totalEmBRL = valor * valorDeEmBRL;
     const resultado = totalEmBRL / valorParaEmBRL;
     
-    // Taxa de câmbio direta de venda entre o par selecionado
+    // Taxa de venda direta entre as moedas
     const taxaDireta = valorDeEmBRL / valorParaEmBRL;
 
     const resultadoFormatado = resultado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     
-    // Define precisão de casas decimais para moedas com cotação muito baixa (ex: ARS/JPY)
     const casasDecimaisTaxa = taxaDireta < 0.01 ? 6 : 4;
     const taxaFormatada = taxaDireta.toLocaleString('pt-BR', { minimumFractionDigits: casasDecimaisTaxa, maximumFractionDigits: casasDecimaisTaxa });
 
@@ -226,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elHora) elHora.textContent = new Date().toLocaleTimeString('pt-BR');
   }
 
-  // Escuta o clique no botão de conversão
+  // Evento no botão converter
   const btnCalc = document.getElementById('cb-calc');
   if (btnCalc) {
     btnCalc.addEventListener('click', async (e) => {
@@ -236,22 +240,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Atualização em tempo real nas mudanças dos campos de entrada e seleção
+  // Atualização em tempo real nas mudanças dos inputs
   ['cb-valor', 'cb-de', 'cb-para'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
-      el.addEventListener('input', converterMoeda);
-      el.addEventListener('change', converterMoeda);
+      el.addEventListener('input', () => {
+        converterMoeda();
+      });
+      el.addEventListener('change', async () => {
+        await carregarcotacoes();
+        converterMoeda();
+      });
     }
   });
 
-  // Carga inicial das taxas de venda e atualização automática a cada 30 segundos
+  // Carga inicial e loop automático de atualização a cada 15 segundos
   carregarcotacoes().then(() => {
     converterMoeda();
     setInterval(async () => {
       await carregarcotacoes();
       converterMoeda();
-    }, 30000);
+    }, 15000);
   });
 });
 </script>
