@@ -5,87 +5,387 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Simulador de financiamento de trator agrícola — Razão</title>
 <meta name="description" content="Simule o financiamento de um trator agrícola nas linhas de crédito rural (Moderfrota, Pronaf) com sistema SAC ou Price, parcela, prazo e total de juros.">
+
+<!-- Fontes oficiais do projeto Razão -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- CSS Externo do Repositório -->
 <link rel="stylesheet" href="assets/style.css">
 
 <style>
-  /* Fallback e estilos essenciais do sistema Razão */
-  :root {
-    --bg-color: #f4f6f4;
-    --card-bg: #ffffff;
-    --text-color: #1c2826;
-    --primary-color: #5c3a21;
-    --primary-hover: #4a2e1a;
-    --border-color: #d1dcd5;
-    --accent-bg: #e8efe9;
-    --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  }
+/* CSS do Projeto Razão */
+:root {
+  --paper: #EDF1E6;
+  --paper-line: #C7D3BC;
+  --card: #FBFAF6;
+  --ink: #1E2A18;
+  --ink-soft: #5B6B51;
+  --brass: #A8792E;
+  --brass-dark: #8A5F1F;
+  --alert: #A6503A;
+  --good: #3E6B4F;
+  --shadow: 0 1px 0 rgba(30, 42, 24, 0.06);
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: var(--font-main); background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; padding: 20px; }
-  .wrap { max-width: 1000px; margin: 0 auto; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
 
-  /* Header */
-  .site-header { border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 30px; }
-  .site-header .top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px; }
-  .brand { text-decoration: none; color: var(--text-color); font-weight: bold; font-size: 1.1rem; }
-  .brand .mark { background: var(--primary-color); color: #fff; padding: 2px 8px; border-radius: 4px; margin-right: 6px; }
-  .sitenav a { text-decoration: none; color: #555; margin-left: 12px; font-size: 0.9rem; }
-  .sitenav a.current, .sitenav a:hover { color: var(--primary-color); font-weight: bold; }
+body {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px),
+    var(--paper);
+  color: var(--ink);
+  font-family: 'IBM Plex Sans', sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
 
-  /* Hero Section */
-  .page-hero { margin-bottom: 30px; }
-  .page-hero .eyebrow { text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; color: #666; font-weight: bold; }
-  .page-hero h1 { font-size: 2rem; margin: 5px 0 10px 0; color: #111; }
-  .page-hero .lede { color: #444; font-size: 1.05rem; }
+::selection {
+  background: var(--brass);
+  color: var(--card);
+}
 
-  /* Layout Principal Grid */
-  .calc .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 40px; }
-  @media (max-width: 768px) { .calc .grid { grid-template-columns: 1fr; } }
+h1, h2, h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  margin: 0;
+}
 
-  /* Cards */
-  .card, .ledger { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 24px; }
-  .card h2, .ledger h2 { font-size: 1.3rem; margin-bottom: 5px; }
-  .card .sub { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+a { color: var(--brass-dark); }
 
-  /* Formulário */
-  label { display: block; font-size: 0.85rem; font-weight: 600; margin-top: 15px; margin-bottom: 5px; }
-  input[type="number"], select { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 1rem; background: #fafafa; }
-  input[type="number"]:focus, select:focus { outline: none; border-color: var(--primary-color); background: #fff; }
+.wrap {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
 
-  /* Toggle SAC / Price */
-  .toggle { display: flex; gap: 8px; margin-top: 5px; }
-  .toggle button { flex: 1; padding: 8px; border: 1px solid var(--border-color); background: #f0f0f0; border-radius: 6px; cursor: pointer; font-weight: bold; }
-  .toggle button.on { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+/* Header & Navegação */
+.site-header {
+  padding: 26px 0 22px;
+  border-bottom: 2px solid var(--ink);
+}
 
-  /* Botão principal */
-  .btn-primary { width: 100%; margin-top: 25px; padding: 12px; background: var(--primary-color); color: #fff; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-  .btn-primary:hover { background: var(--primary-hover); }
+.site-header .top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
 
-  /* Painel de Resultados */
-  .ledger-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--border-color); font-size: 0.95rem; }
-  .ledger-row .fill { flex: 1; }
-  .ledger-row .val { font-weight: bold; }
-  .ledger-row.cost .val { color: #c0392b; }
-  .ledger-row.total { border-bottom: none; font-size: 1.1rem; padding-top: 15px; }
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--ink);
+}
 
-  /* Tabela de Parcelas */
-  .table-wrap { overflow-x: auto; margin-top: 20px; }
-  table.mini { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
-  table.mini th, table.mini td { padding: 8px 10px; border-bottom: 1px solid var(--border-color); }
-  table.mini th { background: var(--accent-bg); font-weight: 600; }
-  .hint { font-size: 0.8rem; color: #666; margin-top: 15px; line-height: 1.4; }
+.brand .mark {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  padding: 1px 8px;
+}
 
-  /* Artigo descritivo */
-  .copy { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 30px; margin-bottom: 40px; }
-  .copy h2 { font-size: 1.2rem; margin-top: 20px; margin-bottom: 8px; color: #222; }
-  .copy h2:first-child { margin-top: 0; }
-  .copy p { font-size: 0.95rem; color: #444; margin-bottom: 15px; }
-  .copy .muted { font-size: 0.85rem; color: #777; font-style: italic; }
+.brand .tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
 
-  /* Footer */
-  .sitefoot { border-top: 1px solid var(--border-color); padding-top: 20px; font-size: 0.85rem; color: #666; text-align: center; }
-  .footer-links a { color: #555; text-decoration: none; margin: 0 10px; }
-  .footer-bottom { margin-top: 10px; }
+nav.sitenav {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+nav.sitenav a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  text-decoration: none;
+  color: var(--ink-soft);
+  padding: 8px 12px;
+  border: 1.5px solid transparent;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+nav.sitenav a:hover { color: var(--ink); }
+
+nav.sitenav a.current, nav.sitenav a.active {
+  color: var(--alert) !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid var(--alert) !important;
+  border-radius: 4px 4px 0 0 !important;
+  background: transparent !important;
+}
+
+/* Hero & Artigos */
+.page-hero { padding: 40px 0 8px; }
+
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--brass-dark);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.page-hero h1 {
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  line-height: 1.15;
+  max-width: 680px;
+}
+
+.page-hero .lede {
+  color: var(--ink-soft);
+  max-width: 620px;
+  margin-top: 14px;
+  font-size: 1rem;
+}
+
+article.copy {
+  max-width: 680px;
+  padding: 8px 0 30px;
+}
+
+article.copy h2 {
+  font-size: 1.25rem;
+  margin-top: 36px;
+  margin-bottom: 10px;
+}
+
+article.copy p {
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+
+article.copy p.muted {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+/* Calculadora Layout */
+main.calc { padding: 26px 0 60px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+@media (max-width: 720px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--paper-line);
+  border-radius: 6px;
+  padding: 26px 26px 22px;
+  box-shadow: var(--shadow);
+}
+
+.card h2 { font-size: 1.15rem; margin-bottom: 4px; }
+
+.card .sub {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin: 14px 0 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.02em;
+}
+
+label:first-of-type { margin-top: 0; }
+
+input[type=number], input[type=text], select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  background: var(--paper);
+  border: 1.5px solid var(--paper-line);
+  border-radius: 4px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .15s;
+}
+
+input[type=number]:focus, input[type=text]:focus, select:focus {
+  border-color: var(--brass);
+}
+
+.btn-primary, button.primary, button[type="submit"] {
+  margin-top: 20px !important;
+  width: 100% !important;
+  padding: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: var(--brass) !important;
+  color: var(--card) !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.04em !important;
+  cursor: pointer !important;
+  transition: background .15s !important;
+}
+
+.btn-primary:hover, button.primary:hover, button[type="submit"]:hover {
+  background: var(--brass-dark) !important;
+}
+
+/* Tabela e Resultados */
+.ledger {
+  background: var(--card);
+  border: 1px solid var(--paper-line);
+  border-radius: 6px;
+  padding: 24px 26px;
+  box-shadow: var(--shadow);
+}
+
+.ledger h2 { font-size: 1.15rem; margin-bottom: 16px; }
+
+.ledger-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px dotted var(--paper-line);
+  font-size: 0.92rem;
+}
+
+.ledger-row .label { color: var(--ink-soft); white-space: nowrap; }
+.ledger-row .fill { flex: 1; border-bottom: 1px dotted var(--paper-line); opacity: 0; }
+.ledger-row .val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ledger-row.total .val { color: var(--good); font-size: 1.05rem; }
+.ledger-row.cost .val { color: var(--alert); }
+
+table.mini {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+  font-size: 0.82rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table.mini th {
+  text-align: right;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 500;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  padding: 6px 4px;
+  border-bottom: 1.5px solid var(--ink);
+}
+
+table.mini th:first-child, table.mini td:first-child { text-align: left; }
+
+table.mini td {
+  text-align: right;
+  padding: 6px 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  border-bottom: 1px solid var(--paper-line);
+}
+
+.hint {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin-top: 14px;
+  line-height: 1.5;
+}
+
+.hint strong { color: var(--ink); }
+
+/* Rodapé */
+footer.sitefoot {
+  border-top: 2px solid var(--ink);
+  padding: 22px 0 40px;
+  margin-top: 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+footer.sitefoot .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+footer.sitefoot .footer-links a { color: var(--ink-soft); text-decoration: none; }
+footer.sitefoot .footer-links a:hover { color: var(--brass-dark); text-decoration: underline; }
+
+footer.sitefoot .footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Botões de Seleção (Toggle) */
+.toggle {
+  display: flex !important;
+  gap: 10px !important;
+  margin: 12px 0 18px 0 !important;
+  width: 100% !important;
+}
+
+.toggle button {
+  flex: 1 !important;
+  padding: 10px 14px !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  color: var(--ink-soft) !important;
+  background-color: var(--paper) !important;
+  border: 1.5px solid var(--paper-line) !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease-in-out !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+  text-align: center !important;
+}
+
+.toggle button:hover {
+  color: var(--ink) !important;
+  background-color: var(--card) !important;
+  border-color: var(--brass) !important;
+  transform: translateY(-1px) !important;
+}
+
+.toggle button.on, .toggle button.active {
+  color: var(--card) !important;
+  background-color: var(--brass) !important;
+  border-color: var(--brass-dark) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 4px rgba(168, 121, 46, 0.25) !important;
+}
 </style>
 </head>
 <body>
@@ -100,7 +400,7 @@
         <a href="financiamento-imobiliario.html">Financiamento</a>
         <a href="conversor-moedas.html">Câmbio</a>
         <a href="cripto-imposto.html">Cripto (IR)</a>
-        <a href="financiamento-trator.html" class="current">Financiamento trator</a>
+        <a href="financiamento-trator.html" class="active">Financiamento trator</a>
       </nav>
     </div>
   </header>
@@ -176,7 +476,7 @@
       <p>Financiamentos de trator no crédito rural costumam ter prazo de até 7 anos, com carência de até 14 meses antes do início dos pagamentos — um período pensado para dar tempo até a primeira safra gerar receita. Esta calculadora não modela a carência: ela mostra as parcelas como se o pagamento começasse imediatamente, então o cronograma real de um contrato com carência será um pouco diferente do resultado aqui.</p>
 
       <h2>SAC ou Price: o que muda no fluxo de caixa</h2>
-      <p>No sistema <strong>SAC</strong>, a amortização é constante e a parcela começa mais alta, caindo ano a ano — o que exige uma capacidade de pagamento maior logo nas primeiras safras. No sistema <strong>Price</strong>, a parcela é igual todo ano, o que facilita o planejamento financeiro, mas resulta em mais juros pagos ao longo de todo o contrato. Para produtores com receita mais previsível ano a ano, o Price tende a ser mais confortável; para quem prefere reduzir o custo total e consegue pagar mais nos primeiros anos, o SAC costuma sair mais barato no fim das contas.</p>
+      <p>No sistema <strong>SAC</strong>, a amortização é constante e a parcela começa mais alta, caindo ano a ano — o que exige uma capacidade de pagamento maior logo nas primeiras safras. No sistema <strong>Price</strong>, a parcela é igual todo ano, o que facilita o planejamento financeiro, mas resulta em mais juros pagos ao longo de todo o contrato. Para produtores com receita mais previsível ano a ano, el Price tende a ser mais confortável; para quem prefere reduzir o custo total e consegue pagar mais nos primeiros anos, o SAC costuma sair mais barato no fim das contas.</p>
 
       <p class="muted">Esta calculadora usa taxas de crédito rural apenas como referência ilustrativa — elas mudam a cada Plano Safra e variam conforme a instituição financeira, o porte do produtor e a linha específica contratada. Confirme sempre a taxa vigente e as condições de carência diretamente com o banco antes de fechar o financiamento.</p>
     </article>
@@ -198,7 +498,6 @@
 <script src="assets/utils.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Fallback seguro de formatação monetária
   const formatarMoeda = (valor) => {
     if (typeof BRL === 'function') {
       return BRL(valor);
@@ -206,13 +505,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
-  // Ano atual no rodapé
   const footYear = document.getElementById('footYear');
   if (footYear) {
     footYear.textContent = new Date().getFullYear();
   }
 
-  // Alteração no select de linhas de crédito
   const trLinha = document.getElementById('tr-linha');
   if (trLinha) {
     trLinha.addEventListener('change', (e) => {
@@ -225,7 +522,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Alternador SAC / Price
   let sistemaAtual = 'SAC';
   const botoesSistema = document.querySelectorAll('#tr-sistema button');
   botoesSistema.forEach(btn => {
@@ -237,7 +533,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Função principal de cálculo
   function calcTrator() {
     const valorTrator = parseFloat(document.getElementById('tr-valor')?.value) || 0;
     const entrada = parseFloat(document.getElementById('tr-entrada')?.value) || 0;
@@ -272,7 +567,6 @@ document.addEventListener('DOMContentLoaded', () => {
         rows.push({ a, amort, juros, parcela, saldo: Math.max(0, saldo) });
       }
     } else {
-      // Tabela Price
       const pmt = taxaAno === 0 
         ? financiado / anos 
         : (financiado * taxaAno) / (1 - Math.pow(1 + taxaAno, -anos));
@@ -299,7 +593,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Exibição nos campos de resultado
     const elFinanciado = document.getElementById('tr-financiado');
     const elPrimeira = document.getElementById('tr-primeira');
     const elUltima = document.getElementById('tr-ultima');
@@ -312,7 +605,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elJurosPagos) elJurosPagos.textContent = formatarMoeda(totalJuros);
     if (elTotalPago) elTotalPago.textContent = formatarMoeda(financiado + totalJuros);
 
-    // Preenchimento da tabela
     const tbody = document.querySelector('#tr-tabela tbody');
     if (tbody) {
       tbody.innerHTML = '';
@@ -331,13 +623,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Listener no botão Simular
   const btnCalc = document.getElementById('tr-calc');
   if (btnCalc) {
     btnCalc.addEventListener('click', calcTrator);
   }
 
-  // Executa o cálculo ao carregar
   calcTrator();
 });
 </script>
