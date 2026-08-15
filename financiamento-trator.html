@@ -56,7 +56,7 @@ h1, h2, h3 {
 a { color: var(--brass-dark); }
 
 .wrap {
-  max-width: 920px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -69,10 +69,8 @@ a { color: var(--brass-dark); }
 
 .site-header .top {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 14px;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .brand {
@@ -102,18 +100,18 @@ a { color: var(--brass-dark); }
 
 nav.sitenav {
   display: flex;
-  gap: 6px;
+  gap: 10px 18px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 nav.sitenav a {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   text-decoration: none;
   color: var(--ink-soft);
-  padding: 8px 12px;
-  border: 1.5px solid transparent;
-  border-radius: 4px;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
   transition: all 0.15s ease;
 }
 
@@ -123,12 +121,11 @@ nav.sitenav a.current, nav.sitenav a.active {
   color: var(--alert) !important;
   font-weight: 600 !important;
   border-bottom: 2px solid var(--alert) !important;
-  border-radius: 4px 4px 0 0 !important;
   background: transparent !important;
 }
 
 /* Hero & Artigos */
-.page-hero { padding: 40px 0 8px; }
+.page-hero { padding: 36px 0 8px; }
 
 .eyebrow {
   font-family: 'IBM Plex Mono', monospace;
@@ -348,7 +345,7 @@ footer.sitefoot .footer-bottom {
   width: 100%;
 }
 
-/* Botões de Seleção (Toggle) */
+/* Botoes de selecao (Toggle SAC/PRICE) */
 .toggle {
   display: flex !important;
   gap: 10px !important;
@@ -376,7 +373,6 @@ footer.sitefoot .footer-bottom {
   color: var(--ink) !important;
   background-color: var(--card) !important;
   border-color: var(--brass) !important;
-  transform: translateY(-1px) !important;
 }
 
 .toggle button.on, .toggle button.active {
@@ -384,7 +380,6 @@ footer.sitefoot .footer-bottom {
   background-color: var(--brass) !important;
   border-color: var(--brass-dark) !important;
   font-weight: 600 !important;
-  box-shadow: 0 2px 4px rgba(168, 121, 46, 0.25) !important;
 }
 </style>
 </head>
@@ -394,13 +389,21 @@ footer.sitefoot .footer-bottom {
   <header class="site-header">
     <div class="top">
       <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <!-- Menu completo do site Razao com todos os 13 botoes -->
       <nav class="sitenav">
         <a href="index.html">Início</a>
         <a href="juros-compostos.html">Juros compostos</a>
-        <a href="financiamento-imobiliario.html">Financiamento</a>
-        <a href="conversor-moedas.html">Câmbio</a>
-        <a href="cripto-imposto.html">Cripto (IR)</a>
-        <a href="financiamento-trator.html" class="active">Financiamento trator</a>
+        <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+        <a href="financiamento-trator.html" class="current active">Financiamento Trator</a>
+        <a href="amortizacao-extra.html">Amortização Extra</a>
+        <a href="emprestimo.html">Empréstimo</a>
+        <a href="independencia-financeira.html">Independência Financeira</a>
+        <a href="preco-medio.html">Preço Médio</a>
+        <a href="salario-liquido.html">Salário Líquido</a>
+        <a href="tesouro-poupanca.html">Tesouro vs Poupança</a>
+        <a href="conversor-moedas.html">Conversor de Moedas</a>
+        <a href="cripto-imposto.html">Cripto Imposto</a>
+        <a href="faturamento-mei.html">Faturamento MEI</a>
       </nav>
     </div>
   </header>
@@ -476,7 +479,7 @@ footer.sitefoot .footer-bottom {
       <p>Financiamentos de trator no crédito rural costumam ter prazo de até 7 anos, com carência de até 14 meses antes do início dos pagamentos — um período pensado para dar tempo até a primeira safra gerar receita. Esta calculadora não modela a carência: ela mostra as parcelas como se o pagamento começasse imediatamente, então o cronograma real de um contrato com carência será um pouco diferente do resultado aqui.</p>
 
       <h2>SAC ou Price: o que muda no fluxo de caixa</h2>
-      <p>No sistema <strong>SAC</strong>, a amortização é constante e a parcela começa mais alta, caindo ano a ano — o que exige uma capacidade de pagamento maior logo nas primeiras safras. No sistema <strong>Price</strong>, a parcela é igual todo ano, o que facilita o planejamento financeiro, mas resulta em mais juros pagos ao longo de todo o contrato. Para produtores com receita mais previsível ano a ano, el Price tende a ser mais confortável; para quem prefere reduzir o custo total e consegue pagar mais nos primeiros anos, o SAC costuma sair mais barato no fim das contas.</p>
+      <p>No sistema <strong>SAC</strong>, a amortização é constante e a parcela começa mais alta, caindo ano a ano — o que exige uma capacidade de pagamento maior logo nas primeiras safras. No sistema <strong>Price</strong>, a parcela é igual todo ano, o que facilita o planejamento financeiro, mas resulta em mais juros pagos ao longo de todo o contrato. Para produtores com receita mais previsível ano a ano, o Price tende a ser mais confortável; para quem prefere reduzir o custo total e consegue pagar mais nos primeiros anos, o SAC costuma sair mais barato no fim das contas.</p>
 
       <p class="muted">Esta calculadora usa taxas de crédito rural apenas como referência ilustrativa — elas mudam a cada Plano Safra e variam conforme a instituição financeira, o porte do produtor e a linha específica contratada. Confirme sempre a taxa vigente e as condições de carência diretamente com o banco antes de fechar o financiamento.</p>
     </article>
@@ -498,6 +501,7 @@ footer.sitefoot .footer-bottom {
 <script src="assets/utils.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  // Função de formatação BRL resiliente
   const formatarMoeda = (valor) => {
     if (typeof BRL === 'function') {
       return BRL(valor);
@@ -505,11 +509,13 @@ document.addEventListener('DOMContentLoaded', () => {
     return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
+  // Atualizar ano do rodapé
   const footYear = document.getElementById('footYear');
   if (footYear) {
     footYear.textContent = new Date().getFullYear();
   }
 
+  // Mudar a taxa ao alterar o select de linha de crédito
   const trLinha = document.getElementById('tr-linha');
   if (trLinha) {
     trLinha.addEventListener('change', (e) => {
@@ -522,6 +528,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Alternador do sistema SAC / Price
   let sistemaAtual = 'SAC';
   const botoesSistema = document.querySelectorAll('#tr-sistema button');
   botoesSistema.forEach(btn => {
@@ -533,6 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Função principal de cálculo (SAC e Price)
   function calcTrator() {
     const valorTrator = parseFloat(document.getElementById('tr-valor')?.value) || 0;
     const entrada = parseFloat(document.getElementById('tr-entrada')?.value) || 0;
@@ -567,6 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rows.push({ a, amort, juros, parcela, saldo: Math.max(0, saldo) });
       }
     } else {
+      // Sistema Price
       const pmt = taxaAno === 0 
         ? financiado / anos 
         : (financiado * taxaAno) / (1 - Math.pow(1 + taxaAno, -anos));
@@ -593,6 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Atualização dos cards na tela
     const elFinanciado = document.getElementById('tr-financiado');
     const elPrimeira = document.getElementById('tr-primeira');
     const elUltima = document.getElementById('tr-ultima');
@@ -605,6 +615,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elJurosPagos) elJurosPagos.textContent = formatarMoeda(totalJuros);
     if (elTotalPago) elTotalPago.textContent = formatarMoeda(financiado + totalJuros);
 
+    // Preenchimento da tabela de amortização
     const tbody = document.querySelector('#tr-tabela tbody');
     if (tbody) {
       tbody.innerHTML = '';
@@ -623,11 +634,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Listener no botão Simular
   const btnCalc = document.getElementById('tr-calc');
   if (btnCalc) {
     btnCalc.addEventListener('click', calcTrator);
   }
 
+  // Cálculo automático inicial
   calcTrator();
 });
 </script>
