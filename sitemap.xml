@@ -1,10 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Página Inicial -->
   <url>
     <loc>https://razaofinancas.com.br/</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-09-16</lastmod>
     <priority>1.00</priority>
   </url>
+
+  <!-- Hub de Artigos -->
+  <url>
+    <loc>https://razaofinancas.com.br/artigos.html</loc>
+    <lastmod>2026-09-16</lastmod>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Artigos Individuais -->
+  <url>
+    <loc>https://razaofinancas.com.br/artigo-cripto-impostos.html</loc>
+    <lastmod>2026-09-16</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://razaofinancas.com.br/artigo-faturamento-mei.html</loc>
+    <lastmod>2026-09-16</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://razaofinancas.com.br/artigo-financiamento-imobiliario.html</loc>
+    <lastmod>2026-09-16</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://razaofinancas.com.br/artigo-financiamento-trator.html</loc>
+    <lastmod>2026-09-16</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://razaofinancas.com.br/artigo-juros-compostos.html</loc>
+    <lastmod>2026-09-16</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://razaofinancas.com.br/artigo-tesouro-vs-poupanca.html</loc>
+    <lastmod>2026-09-16</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Ferramentas -->
   <url>
     <loc>https://razaofinancas.com.br/juros-compostos.html</loc>
     <lastmod>2026-08-10</lastmod>
@@ -65,6 +107,8 @@
     <lastmod>2026-08-10</lastmod>
     <priority>0.80</priority>
   </url>
+
+  <!-- Páginas Institucionais -->
   <url>
     <loc>https://razaofinancas.com.br/sobre.html</loc>
     <lastmod>2026-08-10</lastmod>
