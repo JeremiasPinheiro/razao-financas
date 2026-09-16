@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabela SAC vs Price no Financiamento Imobiliário: Como Calcular e Amortizar — Razão</title>
+  <meta name="description" content="Entenda a diferença entre os sistemas SAC e Price no financiamento imobiliário, como calcular cada um e quando a amortização extraordinária compensa mais.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #EDF1E6;
+      --paper-line: #C7D3BC;
+      --card: #FBFAF6;
+      --ink: #1E2A18;
+      --ink-soft: #5B6B51;
+      --brass: #A8792E;
+      --brass-dark: #8A5F1F;
+      --alert: #A6503A;
+      --good: #3E6B4F;
+      --shadow: 0 1px 0 rgba(30, 42, 24, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background:
+        repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px),
+        var(--paper);
+      color: var(--ink);
+      font-family: 'IBM Plex Sans', sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--brass);
+      color: var(--card);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    a {
+      color: var(--brass-dark);
+    }
+
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- Header / Navegação ---------- */
+    .site-header {
+      padding: 26px 0 22px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .site-header .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand .mark {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      border: 1.5px solid var(--ink);
+      border-radius: 3px;
+      padding: 1px 8px;
+    }
+
+    .brand .tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    nav.sitenav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    nav.sitenav a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      text-decoration: none;
+      color: var(--ink-soft);
+      padding: 8px 12px;
+      border: 1.5px solid transparent;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+
+    nav.sitenav a:hover {
+      color: var(--ink);
+    }
+
+    nav.sitenav a.active {
+      color: var(--alert) !important;
+      font-weight: 600 !important;
+      border-bottom: 2px solid var(--alert) !important;
+      border-radius: 4px 4px 0 0 !important;
+      background: transparent !important;
+    }
+
+    /* ---------- Hero & Artigo ---------- */
+    .page-hero {
+      padding: 40px 0 8px;
+    }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--brass-dark);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      line-height: 1.15;
+      max-width: 720px;
+    }
+
+    .page-hero .lede {
+      color: var(--ink-soft);
+      max-width: 680px;
+      margin-top: 14px;
+      font-size: 1rem;
+    }
+
+    article.copy {
+      max-width: 680px;
+      padding: 8px 0 30px;
+    }
+
+    article.copy h2 {
+      font-size: 1.25rem;
+      margin-top: 36px;
+      margin-bottom: 10px;
+    }
+
+    article.copy h3 {
+      font-size: 1.05rem;
+      margin-top: 22px;
+      margin-bottom: 8px;
+      color: var(--brass-dark);
+    }
+
+    article.copy p {
+      margin: 0 0 14px;
+      color: var(--ink);
+    }
+
+    article.copy p.muted {
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+
+    article.copy ul {
+      margin: 0 0 16px 20px;
+      padding: 0;
+      color: var(--ink);
+    }
+
+    article.copy li {
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--paper-line);
+      border-radius: 6px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+      margin-top: 0 !important;
+    }
+
+    .card .sub {
+      color: var(--ink-soft);
+      font-size: 0.88rem;
+      margin-bottom: 0;
+    }
+
+    .formula-box {
+      font-family: 'IBM Plex Mono', monospace;
+      background: var(--card);
+      border-left: 3px solid var(--brass);
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 0.88rem;
+      color: var(--ink);
+    }
+
+    /* ---------- Rodapé ---------- */
+    footer.sitefoot {
+      border-top: 2px solid var(--ink);
+      padding: 22px 0 40px;
+      margin-top: 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--ink-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    footer.sitefoot .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    footer.sitefoot .footer-links a {
+      color: var(--ink-soft);
+      text-decoration: none;
+    }
+
+    footer.sitefoot .footer-links a:hover {
+      color: var(--brass-dark);
+      text-decoration: underline;
+    }
+
+    footer.sitefoot .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <header class="site-header">
+      <div class="top">
+        <a href="index.html" class="brand">
+          <span class="mark">R</span>
+          <span class="tag">Razão · Ferramentas Financeiras</span>
+        </a>
+        <nav class="sitenav">
+          <a href="index.html">Início</a>
+          <a href="juros-compostos.html">Juros compostos</a>
+          <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+          <a href="financiamento-trator.html">Financiamento Trator</a>
+          <a href="amortizacao-extra.html">Amortização Extra</a>
+          <a href="emprestimo-pessoal.html">Empréstimo</a>
+          <a href="independencia-financeira.html">Independência Financeira</a>
+          <a href="preco-medio.html">Preço Médio</a>
+          <a href="salario-liquido.html">Salário Líquido</a>
+          <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+          <a href="conversor-moedas.html">Conversor de Moedas</a>
+          <a href="cripto-imposto.html">Cripto Imposto</a>
+          <a href="faturamento-mei.html">Faturamento MEI</a>
+          <a href="artigos.html" class="active">Artigos</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-hero">
+      <div class="eyebrow">Crédito & Imóveis</div>
+      <h1>Tabela SAC vs Price no Financiamento Imobiliário: Como Calcular e Amortizar</h1>
+      <p class="lede">A escolha entre os sistemas SAC e Price define o valor da primeira parcela, o total de juros acumulados e a velocidade de amortização do imóvel. Entenda qual modalidade se encaixa melhor no seu planejamento.</p>
+    </section>
+
+    <article class="copy">
+
+      <p>Ao financiar um imóvel no Brasil, quase toda instituição financeira oferece a escolha entre dois sistemas de amortização: SAC e Price. Essa decisão, tomada logo no início do contrato, tem um impacto que se estende por décadas — no valor da primeira parcela, no total de juros pagos e até na velocidade com que a dívida efetivamente diminui. Entender a lógica por trás de cada sistema é o que permite escolher com base em números, não em achismo.</p>
+
+      <h2>O que os dois sistemas têm em comum</h2>
+      <p>Tanto o SAC quanto o Price dividem cada parcela do financiamento em duas partes: <strong>amortização</strong>, que é a fatia que efetivamente reduz o saldo devedor, e <strong>juros</strong>, cobrados sobre o saldo devedor daquele mês. A diferença entre os sistemas está em qual dessas duas partes é mantida constante ao longo do contrato.</p>
+
+      <h2>Sistema SAC: amortização constante</h2>
+      <p>SAC significa Sistema de Amortização Constante. Como o nome indica, o valor da amortização é sempre o mesmo, calculado dividindo o valor total financiado pelo número de parcelas do contrato.</p>
+      
+      <div class="formula-box">
+        Amortização mensal (SAC) = Valor financiado ÷ Número de parcelas
+      </div>
+
+      <p>Como o saldo devedor cai na mesma proporção todo mês, os juros — calculados sobre esse saldo — também diminuem mês a mês. O resultado é uma parcela total que começa mais alta e vai caindo ao longo de todo o financiamento, formando uma curva decrescente quando representada em um gráfico.</p>
+      
+      <ul>
+        <li><strong>Vantagem:</strong> o saldo devedor cai mais rápido no início do contrato, e o total de juros pagos ao final costuma ser menor;</li>
+        <li><strong>Desvantagem:</strong> a primeira parcela é mais alta, o que pode ser um obstáculo na aprovação de crédito, já que os bancos costumam calcular a renda mínima exigida com base nesse valor inicial.</li>
+      </ul>
+
+      <h2>Tabela Price: parcela fixa</h2>
+      <p>Já a Tabela Price mantém a parcela total constante do início ao fim do contrato — o mesmo valor é pago todo mês. Para que isso seja matematicamente possível, a composição interna da parcela muda: no começo, a maior parte é juros; perto do final, a maior parte passa a ser amortização.</p>
+      
+      <div class="formula-box">
+        Parcela (Price) = Valor financiado × [ i × (1+i)ⁿ ] ÷ [ (1+i)ⁿ − 1 ]<br>
+        <small style="color: var(--ink-soft);">(onde <strong>i</strong> é a taxa de juros mensal e <strong>n</strong> é o número total de parcelas)</small>
+      </div>
+
+      <p>Isso acontece porque, nos primeiros meses, o saldo devedor ainda é praticamente o valor total financiado, então os juros sobre esse saldo são altos — e como a parcela é fixa, sobra pouco para amortizar. Só depois de vários anos de contrato o saldo devedor começa a cair de forma mais visível.</p>
+      
+      <ul>
+        <li><strong>Vantagem:</strong> previsibilidade total do valor da parcela, o que facilita o planejamento financeiro mensal;</li>
+        <li><strong>Desvantagem:</strong> o total de juros pagos ao longo do contrato é maior que no SAC, e a dívida demora mais para começar a cair de forma expressiva.</li>
+      </ul>
+
+      <h2>Comparação lado a lado</h2>
+      <ul>
+        <li><strong>Primeira parcela:</strong> mais alta no SAC, mais baixa no Price;</li>
+        <li><strong>Última parcela:</strong> mais baixa no SAC, igual à primeira no Price;</li>
+        <li><strong>Total de juros pagos:</strong> geralmente menor no SAC;</li>
+        <li><strong>Previsibilidade mensal:</strong> maior no Price;</li>
+        <li><strong>Exigência de renda para aprovação:</strong> maior no SAC, por causa da primeira parcela mais alta.</li>
+      </ul>
+
+      <h2>Qual sistema escolher?</h2>
+      <p>Não existe resposta universal — a escolha depende da sua situação financeira no momento da contratação e das suas prioridades:</p>
+      <ul>
+        <li>Se sua renda comporta uma parcela inicial mais alta, e o objetivo é pagar menos juros no total, o SAC tende a ser mais vantajoso financeiramente;</li>
+        <li>Se sua prioridade é ter uma parcela previsível, sem oscilações, e a renda está mais no limite para aprovação do crédito, o Price pode viabilizar a compra que o SAC não permitiria.</li>
+      </ul>
+
+      <h2>O papel da amortização extraordinária</h2>
+      <p>Independentemente do sistema escolhido, fazer aportes extras diretamente no saldo devedor — a chamada amortização extraordinária — reduz o custo total do financiamento em qualquer um dos dois sistemas. Ao amortizar um valor extra, você pode optar por manter a mesma parcela e reduzir o prazo do contrato, ou manter o prazo e reduzir o valor da parcela. A primeira opção costuma gerar mais economia de juros no total, porque reduz o tempo de exposição da dívida aos juros compostos.</p>
+
+      <h2>O que essas contas não incluem</h2>
+      <p>Tanto no SAC quanto no Price, os cálculos tradicionais consideram apenas a taxa de juros contratada. Na prática, um financiamento imobiliário real no Brasil também inclui:</p>
+      <ul>
+        <li>Seguros obrigatórios — MIP (Morte e Invalidez Permanente) e DFI (Danos Físicos ao Imóvel);</li>
+        <li>Taxa de administração mensal cobrada pela instituição financeira;</li>
+        <li>Em alguns contratos, correção monetária pela TR ou outro índice, que pode alterar o saldo devedor além dos juros contratuais.</li>
+      </ul>
+      <p>Por isso, ao comparar propostas de bancos diferentes, vale sempre observar o Custo Efetivo Total (CET) divulgado no contrato, e não apenas a taxa de juros anunciada — é o CET que reflete o custo real do financiamento, incluindo todos esses componentes adicionais.</p>
+
+      <div class="card" style="margin-top: 30px;">
+        <h2>Simule seu Financiamento</h2>
+        <p class="sub">Compare na prática as parcelas do SAC e Price para o valor do imóvel que deseja adquirir acessando nossa <a href="financiamento-imobiliario.html">Calculadora de Financiamento Imobiliário</a>.</p>
+      </div>
+
+      <p class="muted" style="margin-top: 20px;">Este artigo possui caráter estritamente informativo. Condições financeiras e taxas de juros variam de acordo com cada instituição e análise de crédito.</p>
+
+    </article>
+
+    <footer class="sitefoot">
+      <div class="footer-links">
+        <a href="sobre.html">Quem Somos</a>
+        <a href="privacidade.html">Política de Privacidade</a>
+        <a href="termos.html">Termos de Uso</a>
+      </div>
+      <div class="footer-bottom">
+        <span>Razão — feito com HTML, CSS e JS puro.</span>
+        <span id="footYear"></span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('footYear').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
