@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tesouro Direto vs Poupança em 2026: Rentabilidade, Taxas e Imposto de Renda — Razão</title>
+  <meta name="description" content="Compare Tesouro Direto e poupança em 2026 com a Selic a 14% ao ano: regras de rendimento, tabela de Imposto de Renda regressiva e quando cada um faz sentido.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #EDF1E6;
+      --paper-line: #C7D3BC;
+      --card: #FBFAF6;
+      --ink: #1E2A18;
+      --ink-soft: #5B6B51;
+      --brass: #A8792E;
+      --brass-dark: #8A5F1F;
+      --alert: #A6503A;
+      --good: #3E6B4F;
+      --shadow: 0 1px 0 rgba(30, 42, 24, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background:
+        repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px),
+        var(--paper);
+      color: var(--ink);
+      font-family: 'IBM Plex Sans', sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--brass);
+      color: var(--card);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    a {
+      color: var(--brass-dark);
+    }
+
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- Header / Navegação ---------- */
+    .site-header {
+      padding: 26px 0 22px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .site-header .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand .mark {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      border: 1.5px solid var(--ink);
+      border-radius: 3px;
+      padding: 1px 8px;
+    }
+
+    .brand .tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    nav.sitenav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    nav.sitenav a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      text-decoration: none;
+      color: var(--ink-soft);
+      padding: 8px 12px;
+      border: 1.5px solid transparent;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+
+    nav.sitenav a:hover {
+      color: var(--ink);
+    }
+
+    nav.sitenav a.active {
+      color: var(--alert) !important;
+      font-weight: 600 !important;
+      border-bottom: 2px solid var(--alert) !important;
+      border-radius: 4px 4px 0 0 !important;
+      background: transparent !important;
+    }
+
+    /* ---------- Hero & Artigo ---------- */
+    .page-hero {
+      padding: 40px 0 8px;
+    }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--brass-dark);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      line-height: 1.15;
+      max-width: 720px;
+    }
+
+    .page-hero .lede {
+      color: var(--ink-soft);
+      max-width: 680px;
+      margin-top: 14px;
+      font-size: 1rem;
+    }
+
+    article.copy {
+      max-width: 680px;
+      padding: 8px 0 30px;
+    }
+
+    article.copy h2 {
+      font-size: 1.25rem;
+      margin-top: 36px;
+      margin-bottom: 10px;
+    }
+
+    article.copy h3 {
+      font-size: 1.05rem;
+      margin-top: 22px;
+      margin-bottom: 8px;
+      color: var(--brass-dark);
+    }
+
+    article.copy p {
+      margin: 0 0 14px;
+      color: var(--ink);
+    }
+
+    article.copy p.muted {
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+
+    article.copy ul {
+      margin: 0 0 16px 20px;
+      padding: 0;
+      color: var(--ink);
+    }
+
+    article.copy li {
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--paper-line);
+      border-radius: 6px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+      margin-top: 0 !important;
+    }
+
+    .card .sub {
+      color: var(--ink-soft);
+      font-size: 0.88rem;
+      margin-bottom: 0;
+    }
+
+    /* ---------- Rodapé ---------- */
+    footer.sitefoot {
+      border-top: 2px solid var(--ink);
+      padding: 22px 0 40px;
+      margin-top: 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--ink-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    footer.sitefoot .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    footer.sitefoot .footer-links a {
+      color: var(--ink-soft);
+      text-decoration: none;
+    }
+
+    footer.sitefoot .footer-links a:hover {
+      color: var(--brass-dark);
+      text-decoration: underline;
+    }
+
+    footer.sitefoot .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <header class="site-header">
+      <div class="top">
+        <a href="index.html" class="brand">
+          <span class="mark">R</span>
+          <span class="tag">Razão · Ferramentas Financeiras</span>
+        </a>
+        <nav class="sitenav">
+          <a href="index.html">Início</a>
+          <a href="juros-compostos.html">Juros compostos</a>
+          <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+          <a href="financiamento-trator.html">Financiamento Trator</a>
+          <a href="amortizacao-extra.html">Amortização Extra</a>
+          <a href="emprestimo-pessoal.html">Empréstimo</a>
+          <a href="independencia-financeira.html">Independência Financeira</a>
+          <a href="preco-medio.html">Preço Médio</a>
+          <a href="salario-liquido.html">Salário Líquido</a>
+          <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+          <a href="conversor-moedas.html">Conversor de Moedas</a>
+          <a href="cripto-imposto.html">Cripto Imposto</a>
+          <a href="faturamento-mei.html">Faturamento MEI</a>
+          <a href="artigos.html" class="active">Artigos</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-hero">
+      <div class="eyebrow">Renda Fixa & Investimentos</div>
+      <h1>Tesouro Direto vs Poupança em 2026: Rentabilidade, Taxas e Imposto de Renda</h1>
+      <p class="lede">Com a taxa Selic em patamar elevado no cenário de 2026, entenda a diferença de rentabilidade real entre a caderneta de poupança e os títulos do Tesouro Direto descontando o Imposto de Renda.</p>
+    </section>
+
+    <article class="copy">
+
+      <p>Com a taxa Selic em 14% ao ano — nível definido pelo Copom na reunião de 5 de agosto de 2026, após uma sequência de cortes que também reduziu a taxa em reuniões anteriores do ano —, a distância entre o rendimento da poupança e o do Tesouro Direto voltou a ficar bem visível. Entender exatamente como cada um é calculated, e como o Imposto de Renda entra nessa conta, é o que permite comparar as duas opções de forma justa, em vez de escolher só pela familiaridade.</p>
+
+      <h2>Como a poupança rende: uma regra com duas fórmulas</h2>
+      <p>A poupança não tem uma taxa fixa — sua rentabilidade segue uma regra que muda conforme o patamar da Selic:</p>
+      <ul>
+        <li>Quando a Selic está <strong>acima de 8,5% ao ano</strong>, a poupança rende 0,5% ao mês, mais a variação da Taxa Referencial (TR);</li>
+        <li>Quando a Selic está <strong>em 8,5% ao ano ou menos</strong>, a poupança passa a render 70% da Selic, mais a TR.</li>
+      </ul>
+      <p>Com a Selic a 14% em agosto de 2026, estamos no primeiro cenário: a poupança rende os tradicionais 0,5% ao mês mais a TR, que nos últimos anos tem oscilado próxima de zero. Em termos anuais aproximados, isso equivale a algo em torno de 6,2% a 6,4% ao ano, dependendo da TR do período — bem abaixo dos 14% da Selic.</p>
+      <p>A grande vantagem da poupança é sua simplicidade: rendimento isento de Imposto de Renda para pessoa física, sem tabela regressiva para calcular, sem necessidade de declarar ganho de capital separadamente.</p>
+
+      <h2>Como o Tesouro Selic e CDBs são tributados</h2>
+      <p>O Tesouro Selic — título público pós-fixado que acompanha de perto a variação da taxa básica de juros — e a maioria dos CDBs (Certificados de Depósito Bancário) seguem uma lógica diferente: rendem próximo de 100% da Selic ou do CDI (taxa de referência do mercado interbancário, historicamente muito próxima da Selic), mas sofrem incidência de Imposto de Renda sobre o rendimento, numa tabela regressiva por tempo de aplicação:</p>
+      <ul>
+        <li><strong>Até 180 dias:</strong> alíquota de 22,5%;</li>
+        <li><strong>De 181 a 360 dias:</strong> alíquota de 20%;</li>
+        <li><strong>De 361 a 720 dias:</strong> alíquota de 17,5%;</li>
+        <li><strong>Acima de 720 dias:</strong> alíquota de 15%.</li>
+      </ul>
+      <p>O imposto incide apenas sobre o rendimento, nunca sobre o capital aplicado, e é descontado automaticamente no resgate — não é preciso calcular e recolher separadamente, como acontece com ações ou criptoativos.</p>
+
+      <h2>Comparando os números com a Selic atual</h2>
+      <p>Com a Selic a 14% ao ano, mesmo descontando a maior alíquota possível de Imposto de Renda (22,5%, para resgates em menos de 180 dias), o rendimento líquido do Tesouro Selic ainda supera com folga o rendimento da poupança no mesmo período. A vantagem do Tesouro Selic cresce ainda mais em aplicações de prazo mais longo, quando a alíquota de IR cai para 15%.</p>
+      <p>Essa distância tende a diminuir apenas em cenários de Selic muito baixa — historicamente, abaixo de 8,5% ao ano —, quando a fórmula da poupança passa a acompanhar 70% da Selic, reduzindo a vantagem relativa dos títulos públicos e CDBs sobre a caderneta.</p>
+
+      <h2>Liquidez: um ponto a favor de ambos, com diferenças sutis</h2>
+      <p>Tanto a poupança quanto o Tesouro Selic são considerados investimentos de alta liquidez, mas com uma diferença prática importante:</p>
+      <ul>
+        <li>A poupança só rende integralmente se o resgate acontecer no "aniversário" mensal da aplicação — resgatar antes da data de aniversário mensal significa perder o rendimento daquele período incompleto;</li>
+        <li>O Tesouro Selic rende diariamente, e pode ser resgatado a qualquer momento sem perda proporcional do rendimento já acumulado, embora esteja sujeito à cobrança de taxa de custódia da B3 (atualmente isenta para valores investidos até R$15.000 no Tesouro Selic) e ao IOF regressivo em resgates com menos de 30 dias.</li>
+      </ul>
+
+      <h2>CDB: uma terceira opção a considerar</h2>
+      <p>Além do Tesouro Selic, CDBs de bancos e financeiras são outra alternativa de renda fixa pós-fixada, geralmente remunerados como um percentual do CDI — por exemplo, "100% do CDI" ou "110% do CDI". CDBs que pagam mais de 100% do CDI podem superar o próprio Tesouro Selic em rentabilidade bruta, mas é importante verificar:</p>
+      <ul>
+        <li>Se o CDB tem cobertura do Fundo Garantidor de Créditos (FGC), que protege até R$250 mil por CPF e por instituição em caso de quebra do banco emissor;</li>
+        <li>O prazo de carência para resgate, já que alguns CDBs só permitem resgate no vencimento;</li>
+        <li>A mesma tabela regressiva de Imposto de Renda que se aplica ao Tesouro Selic também vale para CDBs.</li>
+      </ul>
+
+      <h2>Quando a poupança ainda pode fazer sentido</h2>
+      <p>Apesar da desvantagem de rentabilidade no cenário atual, a poupança ainda tem espaço em situações específicas: para reservas de emergência muito pequenas, onde a diferença de rendimento em termos absolutos é irrelevante; para quem prioriza a simplicidade extrema, sem qualquer cálculo de imposto envolvido; ou como reserva complementar de curtíssimo prazo, quando o valor pode precisar ser resgatado a qualquer momento antes de completar 30 dias, evitando o IOF regressivo que incide sobre Tesouro Selic e CDBs nesse período.</p>
+
+      <div class="card" style="margin-top: 30px;">
+        <h2>Simule seu Rendimento</h2>
+        <p class="sub">Compare na prática o rendimento líquido do Tesouro Direto com a Poupança para o seu prazo usando nossa <a href="tesouro-vs-poupanca.html">Calculadora Tesouro vs Poupança</a>.</p>
+      </div>
+
+      <p class="muted" style="margin-top: 20px;">Este artigo possui caráter educativo. Rentabilidades passadas não são garantia de resultados futuros.</p>
+
+    </article>
+
+    <footer class="sitefoot">
+      <div class="footer-links">
+        <a href="sobre.html">Quem Somos</a>
+        <a href="privacidade.html">Política de Privacidade</a>
+        <a href="termos.html">Termos de Uso</a>
+      </div>
+      <div class="footer-bottom">
+        <span>Razão — feito com HTML, CSS e JS puro.</span>
+        <span id="footYear"></span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('footYear').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
