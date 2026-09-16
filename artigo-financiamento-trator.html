@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Como Funciona o Financiamento de Tratores e Máquinas Agrícolas pelo Plano Safra — Razão</title>
+  <meta name="description" content="Entenda como funciona o financiamento de tratores e máquinas agrícolas pelo Plano Safra, as linhas Moderfrota e Pronaf, taxas, prazos e garantias exigidas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #EDF1E6;
+      --paper-line: #C7D3BC;
+      --card: #FBFAF6;
+      --ink: #1E2A18;
+      --ink-soft: #5B6B51;
+      --brass: #A8792E;
+      --brass-dark: #8A5F1F;
+      --alert: #A6503A;
+      --good: #3E6B4F;
+      --shadow: 0 1px 0 rgba(30, 42, 24, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background:
+        repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px),
+        var(--paper);
+      color: var(--ink);
+      font-family: 'IBM Plex Sans', sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--brass);
+      color: var(--card);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    a {
+      color: var(--brass-dark);
+    }
+
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- Header / Navegação ---------- */
+    .site-header {
+      padding: 26px 0 22px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .site-header .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand .mark {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      border: 1.5px solid var(--ink);
+      border-radius: 3px;
+      padding: 1px 8px;
+    }
+
+    .brand .tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    nav.sitenav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    nav.sitenav a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      text-decoration: none;
+      color: var(--ink-soft);
+      padding: 8px 12px;
+      border: 1.5px solid transparent;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+
+    nav.sitenav a:hover {
+      color: var(--ink);
+    }
+
+    nav.sitenav a.active {
+      color: var(--alert) !important;
+      font-weight: 600 !important;
+      border-bottom: 2px solid var(--alert) !important;
+      border-radius: 4px 4px 0 0 !important;
+      background: transparent !important;
+    }
+
+    /* ---------- Hero & Artigo ---------- */
+    .page-hero {
+      padding: 40px 0 8px;
+    }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--brass-dark);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      line-height: 1.15;
+      max-width: 720px;
+    }
+
+    .page-hero .lede {
+      color: var(--ink-soft);
+      max-width: 680px;
+      margin-top: 14px;
+      font-size: 1rem;
+    }
+
+    article.copy {
+      max-width: 680px;
+      padding: 8px 0 30px;
+    }
+
+    article.copy h2 {
+      font-size: 1.25rem;
+      margin-top: 36px;
+      margin-bottom: 10px;
+    }
+
+    article.copy h3 {
+      font-size: 1.05rem;
+      margin-top: 22px;
+      margin-bottom: 8px;
+      color: var(--brass-dark);
+    }
+
+    article.copy p {
+      margin: 0 0 14px;
+      color: var(--ink);
+    }
+
+    article.copy p.muted {
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+
+    article.copy ul {
+      margin: 0 0 16px 20px;
+      padding: 0;
+      color: var(--ink);
+    }
+
+    article.copy li {
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--paper-line);
+      border-radius: 6px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+      margin-top: 0 !important;
+    }
+
+    .card .sub {
+      color: var(--ink-soft);
+      font-size: 0.88rem;
+      margin-bottom: 0;
+    }
+
+    /* ---------- Rodapé ---------- */
+    footer.sitefoot {
+      border-top: 2px solid var(--ink);
+      padding: 22px 0 40px;
+      margin-top: 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--ink-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    footer.sitefoot .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    footer.sitefoot .footer-links a {
+      color: var(--ink-soft);
+      text-decoration: none;
+    }
+
+    footer.sitefoot .footer-links a:hover {
+      color: var(--brass-dark);
+      text-decoration: underline;
+    }
+
+    footer.sitefoot .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <header class="site-header">
+      <div class="top">
+        <a href="index.html" class="brand">
+          <span class="mark">R</span>
+          <span class="tag">Razão · Ferramentas Financeiras</span>
+        </a>
+        <nav class="sitenav">
+          <a href="index.html">Início</a>
+          <a href="juros-compostos.html">Juros compostos</a>
+          <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+          <a href="financiamento-trator.html">Financiamento Trator</a>
+          <a href="amortizacao-extra.html">Amortização Extra</a>
+          <a href="emprestimo-pessoal.html">Empréstimo</a>
+          <a href="independencia-financeira.html">Independência Financeira</a>
+          <a href="preco-medio.html">Preço Médio</a>
+          <a href="salario-liquido.html">Salário Líquido</a>
+          <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+          <a href="conversor-moedas.html">Conversor de Moedas</a>
+          <a href="cripto-imposto.html">Cripto Imposto</a>
+          <a href="faturamento-mei.html">Faturamento MEI</a>
+          <a href="artigos.html" class="active">Artigos</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-hero">
+      <div class="eyebrow">Agronegócio & Crédito Rural</div>
+      <h1>Como Funciona o Financiamento de Tratores e Máquinas Agrícolas pelo Plano Safra</h1>
+      <p class="lede">Compreenda as linhas de crédito rural como Moderfrota e Pronaf, taxas de juros, prazos de amortização e as garantias exigidas para renovar sua frota agrícola.</p>
+    </section>
+
+    <article class="copy">
+
+      <p>Comprar um trator ou uma colheitadeira à vista está fora da realidade da maior parte dos produtores rurais brasileiros — são equipamentos que custam de dezenas a centenas de milhares de reais. Por isso, o financiamento via crédito rural, dentro do Plano Safra, é o caminho mais comum para renovar ou ampliar a frota de máquinas de uma propriedade. Entender como esse sistema funciona ajuda a negociar melhor com o banco e a escolher a linha de crédito certa para o seu perfil.</p>
+
+      <h2>O que é o Plano Safra e por que ele muda todo ano</h2>
+      <p>O Plano Safra é o conjunto de linhas de crédito rural com juros controlados pelo governo federal, renovado a cada ciclo entre 1º de julho e 30 de junho do ano seguinte. A cada novo ciclo, o governo define quais linhas existem, quais taxas serão praticadas e quais limites de valor cada produtor pode acessar, considerando o porte da propriedade e a categoria do produtor (pequeno, médio ou grande).</p>
+      <p>Essa renovação anual é o motivo pelo qual uma taxa de financiamento de trator pesquisada há dois anos pode não valer mais hoje — o ciclo 2026/27, por exemplo, trouxe ajustes refletindo o movimento macroeconômico e da Selic ao longo de 2026.</p>
+
+      <h2>Moderfrota: a linha mais usada para máquinas agrícolas</h2>
+      <p>O Moderfrota (Programa de Modernização da Frota de Tratores Agrícolas e Implementos Associados e Colheitadeiras) é a principal linha de crédito para aquisição de tratores, colheitadeiras, plantadeiras e outros implementos. No ciclo 2026/27, a taxa de referência do Moderfrota atende a modalidade padrão e a modalidade Pronamp, voltada a médios produtores rurais que atendem critérios específicos de renda bruta anual.</p>
+      
+      <ul>
+        <li><strong>Prazo:</strong> geralmente até 7 anos, incluindo carência;</li>
+        <li><strong>Carência:</strong> pode chegar a até 14 meses, período pensado para alinhar o início dos pagamentos com a entrada de receita da safra;</li>
+        <li><strong>Garantia:</strong> normalmente a alienação fiduciária do próprio equipamento financiado, o que significa que o bem permanece em nome do banco até a quitação total.</li>
+      </ul>
+
+      <h2>Pronaf Mais Alimentos: taxas menores para a agricultura familiar</h2>
+      <p>Para quem se enquadra como agricultor familiar segundo os critérios do Pronaf, existe uma linha bem mais vantajosa: o Pronaf Mais Alimentos, com taxas reduzidas para financiamento de máquinas e equipamentos. Essa diferença de taxa em relação ao Moderfrota padrão é enorme — pode representar dezenas de milhares de reais a menos em juros pagos ao longo do contrato, dependendo do valor financiado.</p>
+      <p>O enquadramento no Pronaf depende de comprovação de renda familiar dentro dos limites do programa e de exploração da propriedade em regime familiar, com documentação específica emitida por órgãos de assistência técnica rural ou sindicatos.</p>
+
+      <h3>Outras linhas relevantes</h3>
+      <ul>
+        <li><strong>Pronamp:</strong> voltado a médios produtores, com taxas intermediárias entre o Pronaf e o Moderfrota padrão;</li>
+        <li><strong>Linhas de bancos estaduais de desenvolvimento:</strong> em alguns estados, bancos regionais oferecem complementação de taxa para produtores locais;</li>
+        <li><strong>BNDES Finame Agrícola:</strong> outra via de acesso a crédito para máquinas, operada através de bancos repassadores.</li>
+      </ul>
+
+      <h2>Como escolher entre SAC e Price no crédito rural</h2>
+      <p>Assim como no financiamento imobiliário, o crédito rural para máquinas pode ser amortizado pelo sistema SAC (parcela decrescente, amortização constante) ou pela Tabela Price (parcela fixa do início ao fim). No contexto rural, essa escolha tem um peso adicional: o fluxo de caixa de uma propriedade rural costuma ser sazonal, concentrado nos meses após a colheita.</p>
+      
+      <ul>
+        <li>No <strong>SAC</strong>, a parcela começa mais alta e cai ao longo do contrato — exige capacidade de pagamento maior logo nas primeiras safras, mas reduz o total de juros pagos;</li>
+        <li>No <strong>Price</strong>, a parcela é igual todo ano, o que facilita o planejamento financeiro em propriedades com receita mais estável, mas resulta em mais juros pagos no total do contrato.</li>
+      </ul>
+
+      <h2>Documentação e processo de contratação</h2>
+      <p>Para contratar um financiamento de trator via Plano Safra, o produtor geralmente precisa apresentar:</p>
+      
+      <ul>
+        <li>CPF ou CNPJ da propriedade rural e comprovação de posse ou propriedade da terra;</li>
+        <li>Declaração de Aptidão ao Pronaf (DAP) ou Cadastro Nacional da Agricultura Familiar (CAF), quando aplicável às linhas do Pronaf;</li>
+        <li>Projeto técnico ou orçamento detalhado do equipamento a ser financiado;</li>
+        <li>Comprovação de capacidade de pagamento, com base no histórico de produção e faturamento da propriedade.</li>
+      </ul>
+      
+      <p>O prazo entre a solicitação e a liberação do crédito varia bastante entre instituições, e vale a pena iniciar o processo com antecedência em relação à safra em que o equipamento será usado.</p>
+
+      <h2>O que considerar antes de assinar o contrato</h2>
+      <p>Antes de fechar qualquer financiamento de máquina agrícola, vale simular diferentes cenários de prazo, sistema de amortização e carência, e comparar o custo total de cada um — não apenas o valor da primeira parcela. Também é importante verificar se existem tarifas administrativas, seguro do bem financiado e taxas de abertura de crédito (TAC) que aumentam o custo efetivo além da taxa de juros anunciada, e confirmar diretamente com a instituição financeira as condições vigentes no ciclo do Plano Safra em curso, já que elas mudam a cada ano.</p>
+
+      <div class="card" style="margin-top: 30px;">
+        <h2>Simule seu Financiamento Maquinário</h2>
+        <p class="sub">Calcule os prazos e projeções das parcelas de crédito rural usando nossa <a href="financiamento-trator.html">Calculadora de Financiamento de Tratores</a>.</p>
+      </div>
+
+      <p class="muted" style="margin-top: 20px;">Este artigo possui caráter estritamente informativo. Regras e taxas do Plano Safra estão sujeitas a alterações normativas do Ministério da Agricultura e do Banco Central.</p>
+
+    </article>
+
+    <footer class="sitefoot">
+      <div class="footer-links">
+        <a href="sobre.html">Quem Somos</a>
+        <a href="privacidade.html">Política de Privacidade</a>
+        <a href="termos.html">Termos de Uso</a>
+      </div>
+      <div class="footer-bottom">
+        <span>Razão — feito com HTML, CSS e JS puro.</span>
+        <span id="footYear"></span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('footYear').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
