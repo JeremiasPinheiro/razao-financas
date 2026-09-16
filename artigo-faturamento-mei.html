@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guia Definitivo do Limite de Faturamento do MEI em 2026: Proporcionalidade e Transbordo — Razão</title>
+  <meta name="description" content="Entenda as regras de faturamento do MEI em 2026: teto anual de R$ 81.000, cálculo proporcional no ano de abertura e regras para transbordo até ou acima de 20%.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #EDF1E6;
+      --paper-line: #C7D3BC;
+      --card: #FBFAF6;
+      --ink: #1E2A18;
+      --ink-soft: #5B6B51;
+      --brass: #A8792E;
+      --brass-dark: #8A5F1F;
+      --alert: #A6503A;
+      --good: #3E6B4F;
+      --shadow: 0 1px 0 rgba(30, 42, 24, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background:
+        repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px),
+        var(--paper);
+      color: var(--ink);
+      font-family: 'IBM Plex Sans', sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--brass);
+      color: var(--card);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    a {
+      color: var(--brass-dark);
+    }
+
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- Header / Navegação ---------- */
+    .site-header {
+      padding: 26px 0 22px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .site-header .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand .mark {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      border: 1.5px solid var(--ink);
+      border-radius: 3px;
+      padding: 1px 8px;
+    }
+
+    .brand .tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    nav.sitenav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    nav.sitenav a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      text-decoration: none;
+      color: var(--ink-soft);
+      padding: 8px 12px;
+      border: 1.5px solid transparent;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+
+    nav.sitenav a:hover {
+      color: var(--ink);
+    }
+
+    nav.sitenav a.active {
+      color: var(--alert) !important;
+      font-weight: 600 !important;
+      border-bottom: 2px solid var(--alert) !important;
+      border-radius: 4px 4px 0 0 !important;
+      background: transparent !important;
+    }
+
+    /* ---------- Hero & Artigo ---------- */
+    .page-hero {
+      padding: 40px 0 8px;
+    }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--brass-dark);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      line-height: 1.15;
+      max-width: 720px;
+    }
+
+    .page-hero .lede {
+      color: var(--ink-soft);
+      max-width: 680px;
+      margin-top: 14px;
+      font-size: 1rem;
+    }
+
+    article.copy {
+      max-width: 680px;
+      padding: 8px 0 30px;
+    }
+
+    article.copy h2 {
+      font-size: 1.25rem;
+      margin-top: 36px;
+      margin-bottom: 10px;
+    }
+
+    article.copy h3 {
+      font-size: 1.05rem;
+      margin-top: 22px;
+      margin-bottom: 8px;
+      color: var(--brass-dark);
+    }
+
+    article.copy p {
+      margin: 0 0 14px;
+      color: var(--ink);
+    }
+
+    article.copy p.muted {
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+
+    article.copy ul {
+      margin: 0 0 16px 20px;
+      padding: 0;
+      color: var(--ink);
+    }
+
+    article.copy li {
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--paper-line);
+      border-radius: 6px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+      margin-top: 0 !important;
+    }
+
+    .card .sub {
+      color: var(--ink-soft);
+      font-size: 0.88rem;
+      margin-bottom: 0;
+    }
+
+    /* ---------- Rodapé ---------- */
+    footer.sitefoot {
+      border-top: 2px solid var(--ink);
+      padding: 22px 0 40px;
+      margin-top: 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--ink-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    footer.sitefoot .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    footer.sitefoot .footer-links a {
+      color: var(--ink-soft);
+      text-decoration: none;
+    }
+
+    footer.sitefoot .footer-links a:hover {
+      color: var(--brass-dark);
+      text-decoration: underline;
+    }
+
+    footer.sitefoot .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <header class="site-header">
+      <div class="top">
+        <a href="index.html" class="brand">
+          <span class="mark">R</span>
+          <span class="tag">Razão · Ferramentas Financeiras</span>
+        </a>
+        <nav class="sitenav">
+          <a href="index.html">Início</a>
+          <a href="juros-compostos.html">Juros compostos</a>
+          <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+          <a href="financiamento-trator.html">Financiamento Trator</a>
+          <a href="amortizacao-extra.html">Amortização Extra</a>
+          <a href="emprestimo-pessoal.html">Empréstimo</a>
+          <a href="independencia-financeira.html">Independência Financeira</a>
+          <a href="preco-medio.html">Preço Médio</a>
+          <a href="salario-liquido.html">Salário Líquido</a>
+          <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+          <a href="conversor-moedas.html">Conversor de Moedas</a>
+          <a href="cripto-imposto.html">Cripto Imposto</a>
+          <a href="faturamento-mei.html">Faturamento MEI</a>
+          <a href="artigos.html" class="active">Artigos</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-hero">
+      <div class="eyebrow">Negócios & Legislação MEI</div>
+      <h1>Guia Definitivo do Limite de Faturamento do MEI em 2026: Proporcionalidade e Transbordo</h1>
+      <p class="lede">O limite de faturamento do Microempreendedor Individual segue em R$ 81.000 por ano em 2026. Entenda como funciona a proporcionalidade e as regras rígidas em caso de transbordo do teto.</p>
+    </section>
+
+    <article class="copy">
+
+      <p>O limite de faturamento do Microempreendedor Individual segue em R$ 81.000 por ano em 2026, valor que não muda desde 2018, apesar de discussões recorrentes no Congresso sobre reajustá-lo. Para quem já é MEI ou está pensando em abrir um, entender exatamente como esse teto funciona — e o que acontece quando ele é ultrapassado — evita surpresas caras na hora de fazer a Declaração Anual do Simples Nacional (DASN-SIMEI).</p>
+
+      <h2>O limite anual não é dividido em 12 partes iguais na prática</h2>
+      <p>É comum ver o limite de R$ 81.000 dividido por 12 e apresentado como "R$ 6.750 por mês". Esse número é uma referência útil para acompanhamento, mas não existe uma regra formal de limite mensal para o MEI regular — o que importa é o total acumulado no ano-calendário, de janeiro a dezembro. Um MEI pode faturar R$ 2.000 em um mês e R$ 15.000 em outro, sem problema algum, desde que o somatório do ano não ultrapasse o teto.</p>
+      <p>Isso muda numa única situação: quando o MEI foi aberto no meio do ano. Nesse caso, entra em cena a regra da <strong>proporcionalidade</strong>.</p>
+
+      <h2>Como funciona o limite proporcional no ano de abertura</h2>
+      <p>Quem abre o MEI em qualquer mês diferente de janeiro não tem direito ao limite cheio de R$ 81.000 naquele primeiro ano. O limite é calculated proporcionalmente aos meses em que a empresa esteve efetivamente aberta, contando o próprio mês de abertura como um mês inteiro.</p>
+      
+      <ul>
+        <li>A fórmula é simples: multiplique R$ 6.750 pelo número de meses restantes no ano, incluindo o mês de abertura.</li>
+        <li>Um MEI aberto em março tem 10 meses ativos naquele ano (março a dezembro), então o limite proporcional é R$ 6.750 × 10 = R$ 67.500.</li>
+        <li>Um MEI aberto em outubro tem apenas 3 meses ativos (outubro, novembro e dezembro), com limite proporcional de R$ 20.250.</li>
+        <li>A partir do segundo ano completo de atividade, o limite volta a ser o valor cheio de R$ 81.000, sem proporcionalidade.</li>
+      </ul>
+
+      <p>Esse detalhe pega muita gente de surpresa: um empreendedor que abre o MEI em agosto e fatura R$ 40.000 até dezembro pode já estar acima do limite proporcional daquele ano (5 meses × R$ 6.750 = R$ 33.750), mesmo estando bem abaixo do teto cheio de R$ 81.000.</p>
+
+      <h2>O que é o transbordo e as duas faixas de consequência</h2>
+      <p>Quando o faturamento ultrapassa o limite (cheio ou proporcional), a Receita Federal chama esse excesso de "transbordo" ou excesso de receita bruta. As regras de consequência dependem de quanto o MEI ultrapassou o teto:</p>
+
+      <h3>Excesso de até 20% do limite</h3>
+      <p>Se o faturamento ficar acima do limite, mas dentro de uma margem de até 20% a mais, o MEI continua enquadrado como tal até 31 de dezembro daquele ano. Sobre a parcela que excedeu o limite, é devido um valor complementar de DAS (Documento de Arrecadação do Simples Nacional), calculated com as alíquotas normais do Simples Nacional aplicadas sobre o excedente. A partir de 1º de janeiro do ano seguinte, o empreendedor é automaticamente reclassificado como Microempresa (ME), passando a seguir as regras tributárias e as obrigações acessórias desse regime.</p>
+
+      <h3>Excesso acima de 20% do limite</h3>
+      <p>Se o faturamento ultrapassar o limite em mais de 20%, a consequência é mais severa: o desenquadramento do MEI é <strong>retroativo a 1º de janeiro do próprio ano</strong> em que o excesso ocorreu. Na prática, isso significa que o empreendedor passa a ser tributado como Microempresa desde o início daquele ano-calendário, tendo que recalcular e recolher a diferença de impostos sobre todo o faturamento já gerado, com acréscimo de juros e multa por atraso.</p>
+
+      <h2>Por que vale a pena acompanhar o faturamento mês a mês</h2>
+      <p>A melhor forma de evitar o cenário de desenquadramento retroativo é monitorar o acumulado do ano regularmente, não só no fechamento de dezembro. Um MEI que percebe, em setembro, que está projetando fechar o ano acima do limite tem tempo de se planejar: pode reduzir o ritmo de faturamento ou já se preparar financeiramente e administrativamente para migrar para Microempresa, contratando um contador antes da mudança de regime se tornar obrigatória.</p>
+      <p>Vale reforçar que "faturamento" para efeito desse limite é a receita bruta total da atividade — todas as vendas e prestações de serviço — e não o lucro.</p>
+
+      <h2>Atividades com CNAEs específicos e o limite</h2>
+      <p>O limite de R$ 81.000 vale para o MEI de forma geral, independentemente da atividade exercida (CNAE), desde que essa atividade conste na lista de ocupações permitidas para o MEI. Não existem, atualmente, limites diferenciados por tipo de atividade dentro do MEI.</p>
+
+      <div class="card" style="margin: 28px 0;">
+        <h2>Resumo Prático</h2>
+        <ul style="margin: 10px 0 0 18px;">
+          <li><strong>Limite cheio:</strong> R$ 81.000 por ano-calendário completo.</li>
+          <li><strong>Referência mensal:</strong> R$ 6.750 (apenas para acompanhamento).</li>
+          <li><strong>Ano de abertura:</strong> limite proporcional aos meses ativos (R$ 6.750 × nº de meses).</li>
+          <li><strong>Excesso de até 20%:</strong> permanece MEI até dezembro, paga DAS sobre o excedente e migra para ME em janeiro.</li>
+          <li><strong>Excesso acima de 20%:</strong> desenquadramento retroativo a janeiro do mesmo ano com recálculo retroativo como ME.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Simule seu Limite de MEI</h2>
+        <p class="sub">Calcule se você está dentro do teto anual proporcional e veja quanto ainda pode faturar este ano usando nossa <a href="faturamento-mei.html">Calculadora de Faturamento MEI</a>.</p>
+      </div>
+
+      <p class="muted" style="margin-top: 20px;">Este artigo possui caráter estritamente informativo. As regras do Simples Nacional e limites do MEI podem sofrer atualizações legislativas.</p>
+
+    </article>
+
+    <footer class="sitefoot">
+      <div class="footer-links">
+        <a href="sobre.html">Quem Somos</a>
+        <a href="privacidade.html">Política de Privacidade</a>
+        <a href="termos.html">Termos de Uso</a>
+      </div>
+      <div class="footer-bottom">
+        <span>Razão — feito com HTML, CSS e JS puro.</span>
+        <span id="footYear"></span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('footYear').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
