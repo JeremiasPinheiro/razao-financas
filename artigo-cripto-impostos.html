@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Como Declarar e Calcular Imposto sobre Criptomoedas e Criptoativos no Brasil em 2026 — Razão</title>
+  <meta name="description" content="Guia sobre a tributação de criptomoedas no Brasil em 2026: isenção de R$35.000, alíquotas progressivas, corretoras estrangeiras e como declarar corretamente.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #EDF1E6;
+      --paper-line: #C7D3BC;
+      --card: #FBFAF6;
+      --ink: #1E2A18;
+      --ink-soft: #5B6B51;
+      --brass: #A8792E;
+      --brass-dark: #8A5F1F;
+      --alert: #A6503A;
+      --good: #3E6B4F;
+      --shadow: 0 1px 0 rgba(30, 42, 24, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background:
+        repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px),
+        var(--paper);
+      color: var(--ink);
+      font-family: 'IBM Plex Sans', sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--brass);
+      color: var(--card);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    a {
+      color: var(--brass-dark);
+    }
+
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- Header / Navegação ---------- */
+    .site-header {
+      padding: 26px 0 22px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .site-header .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand .mark {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      border: 1.5px solid var(--ink);
+      border-radius: 3px;
+      padding: 1px 8px;
+    }
+
+    .brand .tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    nav.sitenav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    nav.sitenav a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      text-decoration: none;
+      color: var(--ink-soft);
+      padding: 8px 12px;
+      border: 1.5px solid transparent;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+
+    nav.sitenav a:hover {
+      color: var(--ink);
+    }
+
+    nav.sitenav a.active {
+      color: var(--alert) !important;
+      font-weight: 600 !important;
+      border-bottom: 2px solid var(--alert) !important;
+      border-radius: 4px 4px 0 0 !important;
+      background: transparent !important;
+    }
+
+    /* ---------- Hero & Artigo ---------- */
+    .page-hero {
+      padding: 40px 0 8px;
+    }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--brass-dark);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      line-height: 1.15;
+      max-width: 720px;
+    }
+
+    .page-hero .lede {
+      color: var(--ink-soft);
+      max-width: 680px;
+      margin-top: 14px;
+      font-size: 1rem;
+    }
+
+    article.copy {
+      max-width: 680px;
+      padding: 8px 0 30px;
+    }
+
+    article.copy h2 {
+      font-size: 1.25rem;
+      margin-top: 36px;
+      margin-bottom: 10px;
+    }
+
+    article.copy h3 {
+      font-size: 1.05rem;
+      margin-top: 22px;
+      margin-bottom: 8px;
+      color: var(--brass-dark);
+    }
+
+    article.copy p {
+      margin: 0 0 14px;
+      color: var(--ink);
+    }
+
+    article.copy p.muted {
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+
+    article.copy ul {
+      margin: 0 0 16px 20px;
+      padding: 0;
+      color: var(--ink);
+    }
+
+    article.copy li {
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--paper-line);
+      border-radius: 6px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+      margin-top: 0 !important;
+    }
+
+    .card .sub {
+      color: var(--ink-soft);
+      font-size: 0.88rem;
+      margin-bottom: 0;
+    }
+
+    .formula-box {
+      font-family: 'IBM Plex Mono', monospace;
+      background: var(--card);
+      border-left: 3px solid var(--brass);
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 0.88rem;
+      color: var(--ink);
+    }
+
+    /* ---------- Rodapé ---------- */
+    footer.sitefoot {
+      border-top: 2px solid var(--ink);
+      padding: 22px 0 40px;
+      margin-top: 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--ink-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    footer.sitefoot .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    footer.sitefoot .footer-links a {
+      color: var(--ink-soft);
+      text-decoration: none;
+    }
+
+    footer.sitefoot .footer-links a:hover {
+      color: var(--brass-dark);
+      text-decoration: underline;
+    }
+
+    footer.sitefoot .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <header class="site-header">
+      <div class="top">
+        <a href="index.html" class="brand">
+          <span class="mark">R</span>
+          <span class="tag">Razão · Ferramentas Financeiras</span>
+        </a>
+        <nav class="sitenav">
+          <a href="index.html">Início</a>
+          <a href="juros-compostos.html">Juros compostos</a>
+          <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+          <a href="financiamento-trator.html">Financiamento Trator</a>
+          <a href="amortizacao-extra.html">Amortização Extra</a>
+          <a href="emprestimo-pessoal.html">Empréstimo</a>
+          <a href="independencia-financeira.html">Independência Financeira</a>
+          <a href="preco-medio.html">Preço Médio</a>
+          <a href="salario-liquido.html">Salário Líquido</a>
+          <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+          <a href="conversor-moedas.html">Conversor de Moedas</a>
+          <a href="cripto-imposto.html">Cripto Imposto</a>
+          <a href="faturamento-mei.html">Faturamento MEI</a>
+          <a href="artigos.html" class="active">Artigos</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-hero">
+      <div class="eyebrow">Tributação & Criptoativos</div>
+      <h1>Como Declarar e Calcular Imposto sobre Criptomoedas e Criptoativos no Brasil em 2026</h1>
+      <p class="lede">Regras vigentes de isenção, tributação de operações nacionais e no exterior, prazos de DARF e como calcular o custo médio ponderado.</p>
+    </section>
+
+    <article class="copy">
+
+      <p>Quem investe em criptomoedas no Brasil precisa lidar com uma camada de responsabilidade que muitos ignoram até vender pela primeira vez com lucro: a tributação. Diferente de uma crença comum, criptoativos não estão fora do radar da Receita Federal — pelo contrário, desde 2019 existem regras específicas e obrigações de declaração que valem tanto para quem opera em corretoras nacionais quanto para quem usa exchanges no exterior.</p>
+
+      <h2>A isenção de R$35.000 por mês em corretoras nacionais</h2>
+      <p>A regra mais conhecida entre investidores de cripto é a isenção mensal: vendas de criptoativos que, somadas, não ultrapassem R$35.000 no mês, ficam isentas de imposto sobre o ganho de capital, desde que realizadas em corretoras nacionais. Esse limite não mudou desde sua criação e não é corrigido pela inflação.</p>
+      <p>Um ponto que gera confusão frequente: o limite de R$35.000 é sobre o <strong>total vendido no mês</strong>, somando todas as moedas e todas as corretoras nacionais usadas — não é um limite por operação, nem por criptoativo específico. Vender R$20.000 em Bitcoin e R$18.000 em Ethereum no mesmo mês já ultrapassa o limite, mesmo que cada venda pareça pequena isoladamente.</p>
+
+      <h2>Alíquotas quando a isenção não se aplica</h2>
+      <p>Quando o total vendido no mês ultrapassa R$35.000, o ganho de capital apurado sobre essa venda passa a ser tributado pela tabela progressiva de ganho de capital, a mesma usada para outros ativos como imóveis:</p>
+      <ul>
+        <li><strong>15%:</strong> sobre a parcela do ganho até R$5 milhões;</li>
+        <li><strong>17,5%:</strong> sobre a parcela entre R$5 milhões e R$10 milhões;</li>
+        <li><strong>20%:</strong> sobre a parcela entre R$10 milhões e R$30 milhões;</li>
+        <li><strong>22,5%:</strong> sobre a parcela acima de R$30 milhões.</li>
+      </ul>
+      <p>Para a grande maioria dos investidores de varejo, o ganho inteiro fica dentro da primeira faixa, o que na prática significa uma alíquota efetiva de 15% sobre o lucro apurado.</p>
+
+      <h2>Como calcular o ganho de capital manualmente</h2>
+      <p>O ganho é simplesmente a diferença entre o valor recebido na venda e o custo de aquisição da porção vendida. A dificuldade prática aparece quando o mesmo criptoativo foi comprado em momentos diferentes, a preços diferentes — nesse caso, a Receita Federal exige o uso do <strong>custo médio ponderado</strong>.</p>
+      
+      <div class="formula-box">
+        Custo médio por unidade = Soma do valor gasto em todas as compras ÷ Quantidade total de moedas compradas
+      </div>
+
+      <p>Ao vender parte da posição, multiplica-se a quantidade vendida pelo custo médio, chegando ao custo da porção vendida. A diferença entre o valor da venda e esse custo é o ganho tributável daquela operação específica.</p>
+
+      <h2>Corretoras estrangeiras seguem outra regra desde 2023</h2>
+      <p>Com a Lei 14.754/2023, criptoativos mantidos ou negociados em corretoras no exterior passaram a seguir um regime próprio, diferente do applied às operações nacionais:</p>
+      <ul>
+        <li>Não existe isenção mensal de R$35.000 para essas operações — todo ganho é, em tese, tributável;</li>
+        <li>A alíquota é fixa em 15%, sem a progressividade usada nas operações nacionais;</li>
+        <li>A apuração é feita anualmente, na Declaração de Ajuste Anual, e não mês a mês como no regime nacional;</li>
+        <li>É possível compensar prejuízos com ganhos dentro do mesmo ano-base, algo que o regime de corretora nacional trata de forma diferente.</li>
+      </ul>
+      <p>Isso cria uma situação em que a mesma pessoa pode estar sujeita a dois regimes tributários diferentes ao mesmo tempo, dependendo de onde cada operação foi realizada — daí a importância de manter registros separados por corretora e por país.</p>
+
+      <h2>Como e quando pagar o imposto</h2>
+      <p>Para operações em corretora nacional com ganho tributável, o cálculo é feito mês a mês através do programa GCAP (Ganho de Capital) da Receita Federal, e o pagamento é feito via DARF, usando o código de receita 4600. O prazo é até o último dia útil do mês seguinte ao da venda com lucro.</p>
+      <p>Perder esse prazo gera multa de 0,33% ao dia sobre o valor devido, limitada a 20% do total, além de juros calculados pela taxa Selic acumulada no período de atraso. Como corretoras nacionais são obrigadas, desde a Instrução Normativa RFB 1.888/2019, a informar movimentações de seus clientes à Receita Federal, a chance de uma omissão ser identificada em cruzamento de dados é considerável.</p>
+
+      <h2>Declarar mesmo quando isento</h2>
+      <p>Um erro comum é assumir que, estando dentro da faixa de isenção, não há nenhuma obrigação com o Fisco. Na realidade, mesmo os ganhos isentos precisam ser <strong>informados</strong> na Declaração de Ajuste Anual, na ficha de Rendimentos Isentos e Não Tributáveis. Além disso, a posse de criptoativos em si — mesmo sem venda — costuma precisar ser declarada na ficha de Bens e Direitos quando o valor de aquisição ultrapassa os limites estabelecidos pela Receita Federal para esse tipo de declaração.</p>
+
+      <h2>Boas práticas para quem investe em cripto</h2>
+      <ul>
+        <li>Manter um controle detalhado de todas as compras, com data, quantidade e preço pago;</li>
+        <li>Calcular o custo médio ponderado atualizado a cada nova compra, não apenas no momento da venda;</li>
+        <li>Separar operações por corretora nacional e estrangeira, já que seguem regimes tributários diferentes;</li>
+        <li>Guardar comprovantes de todas as operações por, no mínimo, cinco anos, prazo em que a Receita Federal pode revisar declarações anteriores;</li>
+        <li>Consultar um contador especializado em criptoativos quando o volume de operações crescer, já que as regras têm nuances que mudam com frequência.</li>
+      </ul>
+
+      <div class="card" style="margin-top: 30px;">
+        <h2>Calcule seu Imposto Cripto</h2>
+        <p class="sub">Descubra se suas operações do mês estão isentas e apure o DARF devido com nossa <a href="cripto-imposto.html">Calculadora de Imposto sobre Criptoativos</a>.</p>
+      </div>
+
+      <p class="muted" style="margin-top: 20px;">Este artigo possui caráter educativo e não substitui a orientação de um contador ou advogado tributarista.</p>
+
+    </article>
+
+    <footer class="sitefoot">
+      <div class="footer-links">
+        <a href="sobre.html">Quem Somos</a>
+        <a href="privacidade.html">Política de Privacidade</a>
+        <a href="termos.html">Termos de Uso</a>
+      </div>
+      <div class="footer-bottom">
+        <span>Razão — feito com HTML, CSS e JS puro.</span>
+        <span id="footYear"></span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('footYear').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
