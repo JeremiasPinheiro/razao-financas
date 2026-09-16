@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artigos e Guias Financeiros — Razão</title>
+  <meta name="description" content="Explore nossos guias e artigos educativos sobre tributação de criptomoedas, faturamento MEI, financiamentos, juros compostos e renda fixa.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #EDF1E6;
+      --paper-line: #C7D3BC;
+      --card: #FBFAF6;
+      --ink: #1E2A18;
+      --ink-soft: #5B6B51;
+      --brass: #A8792E;
+      --brass-dark: #8A5F1F;
+      --alert: #A6503A;
+      --good: #3E6B4F;
+      --shadow: 0 1px 0 rgba(30, 42, 24, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background:
+        repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px),
+        var(--paper);
+      color: var(--ink);
+      font-family: 'IBM Plex Sans', sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--brass);
+      color: var(--card);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    a {
+      color: var(--brass-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- Header / Navegação ---------- */
+    .site-header {
+      padding: 26px 0 22px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .site-header .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand .mark {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      border: 1.5px solid var(--ink);
+      border-radius: 3px;
+      padding: 1px 8px;
+    }
+
+    .brand .tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    nav.sitenav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    nav.sitenav a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      text-decoration: none;
+      color: var(--ink-soft);
+      padding: 8px 12px;
+      border: 1.5px solid transparent;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+
+    nav.sitenav a:hover {
+      color: var(--ink);
+    }
+
+    nav.sitenav a.active {
+      color: var(--alert) !important;
+      font-weight: 600 !important;
+      border-bottom: 2px solid var(--alert) !important;
+      border-radius: 4px 4px 0 0 !important;
+      background: transparent !important;
+    }
+
+    /* ---------- Hero ---------- */
+    .page-hero {
+      padding: 40px 0 20px;
+    }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--brass-dark);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      line-height: 1.15;
+    }
+
+    .page-hero .lede {
+      color: var(--ink-soft);
+      max-width: 680px;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    /* ---------- Grid de Artigos ---------- */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 30px 0 50px;
+    }
+
+    .article-card {
+      background: var(--card);
+      border: 1px solid var(--paper-line);
+      border-radius: 6px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .article-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--brass);
+    }
+
+    .article-card .tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--brass-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .article-card h2 {
+      font-size: 1.2rem;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .article-card h2 a {
+      color: var(--ink);
+    }
+
+    .article-card h2 a:hover {
+      color: var(--brass-dark);
+    }
+
+    .article-card p {
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      margin: 0 0 16px;
+      line-height: 1.45;
+    }
+
+    .article-card .read-more {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--brass-dark);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ---------- Rodapé ---------- */
+    footer.sitefoot {
+      border-top: 2px solid var(--ink);
+      padding: 22px 0 40px;
+      margin-top: 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--ink-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    footer.sitefoot .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    footer.sitefoot .footer-links a {
+      color: var(--ink-soft);
+    }
+
+    footer.sitefoot .footer-links a:hover {
+      color: var(--brass-dark);
+      text-decoration: underline;
+    }
+
+    footer.sitefoot .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <header class="site-header">
+      <div class="top">
+        <a href="index.html" class="brand">
+          <span class="mark">R</span>
+          <span class="tag">Razão · Ferramentas Financeiras</span>
+        </a>
+        <nav class="sitenav">
+          <a href="index.html">Início</a>
+          <a href="juros-compostos.html">Juros compostos</a>
+          <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+          <a href="financiamento-trator.html">Financiamento Trator</a>
+          <a href="amortizacao-extra.html">Amortização Extra</a>
+          <a href="emprestimo-pessoal.html">Empréstimo</a>
+          <a href="independencia-financeira.html">Independência Financeira</a>
+          <a href="preco-medio.html">Preço Médio</a>
+          <a href="salario-liquido.html">Salário Líquido</a>
+          <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+          <a href="conversor-moedas.html">Conversor de Moedas</a>
+          <a href="cripto-imposto.html">Cripto Imposto</a>
+          <a href="faturamento-mei.html">Faturamento MEI</a>
+          <a href="artigos.html" class="active">Artigos</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="page-hero">
+      <div class="eyebrow">Conhecimento Prático</div>
+      <h1>Artigos e Guias Financeiros</h1>
+      <p class="lede">Explore nossas análises detalhadas e entenda a matemática por trás dos seus investimentos, tributos e financiamentos.</p>
+    </section>
+
+    <main class="articles-grid">
+
+      <!-- 1. Cripto Impostos -->
+      <article class="article-card">
+        <div>
+          <div class="tag">Tributação</div>
+          <h2><a href="artigo-cripto-imposto.html">Como Declarar e Calcular Imposto sobre Criptomoedas e Criptoativos</a></h2>
+          <p>Guia das regras de tributação: isenção de R$35.000, corretoras no exterior, apuração pelo custo médio e prazos do DARF.</p>
+        </div>
+        <a href="artigo-cripto-imposto.html" class="read-more">Ler artigo completo →</a>
+      </article>
+
+      <!-- 2. Faturamento MEI -->
+      <article class="article-card">
+        <div>
+          <div class="tag">Empreendedorismo</div>
+          <h2><a href="artigo-faturamento-mei.html">Limite de Faturamento MEI: Como Calcular a Proporcionalidade e Evitar o Desenquadramento</a></h2>
+          <p>Entenda a regra do limite proporcional ao mês de abertura, quando ocorre a migração para ME e como calcular o excesso.</p>
+        </div>
+        <a href="artigo-faturamento-mei.html" class="read-more">Ler artigo completo →</a>
+      </article>
+
+      <!-- 3. Financiamento Imobiliário -->
+      <article class="article-card">
+        <div>
+          <div class="tag">Crédito & Imóveis</div>
+          <h2><a href="artigo-financiamento-imobiliario.html">Financiamento Imobiliário: Como Funcionam as Tabela SAC e Tabela Price</a></h2>
+          <p>Descubra a diferença entre parcelas decrescentes e fixas, o impacto do juro composto e como amortizar o saldo devedor.</p>
+        </div>
+        <a href="artigo-financiamento-imobiliario.html" class="read-more">Ler artigo completo →</a>
+      </article>
+
+      <!-- 4. Financiamento Trator -->
+      <article class="article-card">
+        <div>
+          <div class="tag">Agronegócio</div>
+          <h2><a href="artigo-financiamento-trator.html">Financiamento de Tratores e Máquinas Agrícolas: Linhas de Crédito e Custos</a></h2>
+          <p>Análise de programas como Pronaf, Moderfrota e Custeio, taxas de juros rurais e prazos de carência no setor agro.</p>
+        </div>
+        <a href="artigo-financiamento-trator.html" class="read-more">Ler artigo completo →</a>
+      </article>
+
+      <!-- 5. Juros Compostos -->
+      <article class="article-card">
+        <div>
+          <div class="tag">Planejamento & Matemática</div>
+          <h2><a href="artigo-juros-compostos.html">O Poder dos Juros Compostos no Planejamento Financeiro a Longo Prazo</a></h2>
+          <p>Entenda como os juros compostos funcionam, por que o tempo pesa mais que a taxa de retorno e como usar esse princípio a seu favor.</p>
+        </div>
+        <a href="artigo-juros-compostos.html" class="read-more">Ler artigo completo →</a>
+      </article>
+
+      <!-- 6. Tesouro vs Poupança -->
+      <article class="article-card">
+        <div>
+          <div class="tag">Renda Fixa</div>
+          <h2><a href="artigo-tesouro-vs-poupanca.html">Tesouro Direto vs Poupança em 2026: Rentabilidade, Taxas e Imposto</a></h2>
+          <p>Compare a rentabilidade real da poupança com o Tesouro Selic e CDBs com a Selic atual, descontando a tabela regressiva do IR.</p>
+        </div>
+        <a href="artigo-tesouro-vs-poupanca.html" class="read-more">Ler artigo completo →</a>
+      </article>
+
+    </main>
+
+    <footer class="sitefoot">
+      <div class="footer-links">
+        <a href="sobre.html">Quem Somos</a>
+        <a href="privacidade.html">Política de Privacidade</a>
+        <a href="termos.html">Termos de Uso</a>
+      </div>
+      <div class="footer-bottom">
+        <span>Razão — feito com HTML, CSS e JS puro.</span>
+        <span id="footYear"></span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('footYear').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
