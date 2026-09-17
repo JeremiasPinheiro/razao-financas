@@ -1,124 +1,394 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Razão - Ferramentas Financeiras</title>
-  <meta name="description" content="Calculadoras e ferramentas financeiras gratuitas: juros compostos, financiamento imobiliario, conversor de moedas e simulador agrícola.">
-  
-  <!-- Favicon inline para resolver o erro GET favicon.ico 404 no console -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>R</text></svg>">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="style.css">
-  
-  <style>
-    /* Força a remoção de fundos, bordas de container ou sombras do link ativo */
-    nav.sitenav a.active {
-      color: #A6503A !important;
-      background: transparent !important;
-      background-color: transparent !important;
-      border: none !important;
-      box-shadow: none !important;
-      outline: none !important;
-      text-decoration: none !important;
-    }
+<link rel="canonical" href="https://razaofinancas.com.br/cripto-imposto.html">
 
-    /* Aplica o estilo diretamente na palavra com display isolado */
-    .nav-active-item {
-      color: #A6503A !important;
-      font-weight: 600 !important;
-      border-bottom: 2px solid #A6503A !important;
-      padding-bottom: 2px !important;
-      display: inline-block !important;
-      line-height: 1.2 !important;
-    }
-  </style>
+<!-- Favicon inline em SVG -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23FBFAF6' stroke='%231E2A18' stroke-width='2'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-weight='bold' font-size='20' fill='%231E2A18'>R</text></svg>">
 
-  <!-- Código do Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4283089731677395"
-       crossorigin="anonymous"></script>
+<title>Imposto de Renda sobre Criptomoedas — Razão</title>
+<meta name="description" content="Descubra se a venda de criptomoedas está isenta pela regra dos R$ 35.000 mensais e quanto de imposto pagar via DARF.">
+
+<!-- Fontes oficiais do projeto Razão -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* CSS do Projeto Razão */
+:root { 
+  --paper: #EDF1E6; 
+  --paper-line: #C7D3BC; 
+  --card: #FBFAF6; 
+  --ink: #1E2A18; 
+  --ink-soft: #5B6B51; 
+  --brass: #A8792E; 
+  --brass-dark: #8A5F1F; 
+  --alert: #A6503A; 
+  --good: #3E6B4F; 
+  --shadow: 0 1px 0 rgba(30, 42, 24, 0.06);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body { 
+  background: repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px), var(--paper); 
+  color: var(--ink); 
+  font-family: 'IBM Plex Sans', sans-serif; 
+  line-height: 1.5; 
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--brass);
+  color: var(--card);
+}
+
+h1, h2, h3 { 
+  font-family: 'Fraunces', serif; 
+  font-weight: 600; 
+  margin: 0; 
+}
+
+a { color: var(--brass-dark); }
+
+.wrap { 
+  max-width: 960px; 
+  margin: 0 auto; 
+  padding: 0 24px 60px; 
+}
+
+/* Header e Menu de Navegação */
+header.site-header { 
+  padding: 26px 0 22px; 
+  border-bottom: 2px solid var(--ink); 
+  display: flex; 
+  flex-direction: column; 
+  gap: 16px; 
+}
+
+.brand { 
+  display: flex; 
+  align-items: baseline; 
+  gap: 12px; 
+  text-decoration: none; 
+  color: var(--ink); 
+}
+
+.brand .mark { 
+  font-family: 'Fraunces', serif; 
+  font-weight: 700; 
+  font-size: 1.3rem; 
+  border: 1.5px solid var(--ink); 
+  border-radius: 3px; 
+  padding: 1px 8px; 
+}
+
+.brand .tag { 
+  font-family: 'IBM Plex Mono', monospace; 
+  font-size: 0.7rem; 
+  color: var(--ink-soft); 
+  letter-spacing: 0.1em; 
+  text-transform: uppercase; 
+}
+
+nav.sitenav { 
+  display: flex; 
+  gap: 10px 18px; 
+  flex-wrap: wrap; 
+  align-items: center; 
+}
+
+nav.sitenav a { 
+  font-family: 'IBM Plex Mono', monospace; 
+  font-size: 0.82rem; 
+  text-decoration: none; 
+  color: var(--ink-soft); 
+  padding: 4px 0; 
+  border-bottom: 2px solid transparent; 
+  transition: all 0.15s ease; 
+}
+
+nav.sitenav a:hover { color: var(--ink); }
+
+nav.sitenav a.current, nav.sitenav a.active {
+  color: var(--alert) !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid var(--alert) !important;
+  background: transparent !important;
+}
+
+/* Hero & Conteúdo */
+.hero { padding: 36px 0 8px; }
+
+.eyebrow { 
+  font-family: 'IBM Plex Mono', monospace; 
+  font-size: 0.74rem; 
+  color: var(--brass-dark); 
+  letter-spacing: 0.1em; 
+  text-transform: uppercase; 
+  margin-bottom: 10px; 
+}
+
+.hero h1 { 
+  font-size: clamp(1.7rem, 4vw, 2.4rem); 
+  line-height: 1.15;
+  max-width: 680px; 
+}
+
+.hero p { 
+  color: var(--ink-soft); 
+  max-width: 620px; 
+  margin-top: 14px; 
+  font-size: 1rem;
+}
+
+.grid { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 28px; 
+  margin-top: 26px; 
+}
+
+@media (max-width: 720px) { 
+  .grid { grid-template-columns: 1fr; } 
+}
+
+.card, .ledger { 
+  background: var(--card); 
+  border: 1px solid var(--paper-line); 
+  border-radius: 6px; 
+  padding: 26px 26px 22px; 
+  box-shadow: var(--shadow);
+}
+
+.card h2, .ledger h2 { font-size: 1.15rem; margin-bottom: 14px; }
+
+.sub {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin-bottom: 16px;
+}
+
+label { 
+  display: block; 
+  font-size: 0.78rem; 
+  color: var(--ink-soft); 
+  margin: 14px 0 5px; 
+  font-family: 'IBM Plex Mono', monospace; 
+  letter-spacing: 0.02em;
+}
+
+label:first-of-type { margin-top: 0; }
+
+input[type=number], select { 
+  width: 100%; 
+  padding: 10px 12px; 
+  font-size: 0.95rem; 
+  font-family: 'IBM Plex Mono', monospace; 
+  font-variant-numeric: tabular-nums; 
+  background: var(--paper); 
+  border: 1.5px solid var(--paper-line); 
+  border-radius: 4px; 
+  color: var(--ink); 
+  outline: none; 
+  transition: border-color .15s; 
+}
+
+input[type=number]:focus, select:focus { border-color: var(--brass); }
+
+/* Toggle Regime de Corretora */
+.toggle-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.btn-toggle {
+  flex: 1;
+  padding: 9px;
+  border: 1.5px solid var(--paper-line);
+  background: var(--paper);
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.btn-toggle.active, .btn-toggle.on {
+  background: var(--brass);
+  color: var(--card);
+  border-color: var(--brass);
+  font-weight: 600;
+}
+
+button.primary { 
+  margin-top: 20px !important; 
+  width: 100% !important; 
+  padding: 12px !important; 
+  border: none !important; 
+  border-radius: 4px !important; 
+  background: var(--brass) !important; 
+  color: var(--card) !important; 
+  font-family: 'IBM Plex Mono', monospace !important; 
+  font-size: 0.85rem !important; 
+  letter-spacing: 0.04em !important; 
+  cursor: pointer !important; 
+  transition: background .15s !important; 
+}
+
+button.primary:hover { background: var(--brass-dark) !important; }
+
+/* Tabela e Resultados */
+.ledger-row { 
+  display: flex; 
+  justify-content: space-between; 
+  gap: 8px; 
+  padding: 8px 0; 
+  border-bottom: 1px dotted var(--paper-line); 
+  font-size: 0.92rem; 
+}
+
+.ledger-row .val { 
+  font-family: 'IBM Plex Mono', monospace; 
+  font-variant-numeric: tabular-nums; 
+  font-weight: 600; 
+}
+
+.ledger-row.cost .val { color: var(--alert); }
+.ledger-row.total .val { color: var(--good); font-size: 1.05rem; }
+
+.hint {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-top: 18px;
+  line-height: 1.4;
+}
+
+article { max-width: 680px; margin-top: 40px; }
+article h2 { font-size: 1.25rem; margin-top: 36px; margin-bottom: 10px; }
+article p { margin: 0 0 14px; color: var(--ink); }
+
+.muted {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-top: 24px;
+}
+
+/* Rodapé */
+footer.sitefoot {
+  border-top: 2px solid var(--ink);
+  padding: 22px 0 40px;
+  margin-top: 40px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+footer.sitefoot .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+footer.sitefoot .footer-links a { color: var(--ink-soft); text-decoration: none; }
+footer.sitefoot .footer-links a:hover { color: var(--brass-dark); text-decoration: underline; }
+
+footer.sitefoot .footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+</style>
 </head>
 <body>
-
 <div class="wrap">
   <header class="site-header">
-    <div class="top">
-      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
-      <nav class="sitenav">
-  <a href="index.html">Início</a>
-  <a href="juros-compostos.html">Juros compostos</a>
-  <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
-  <a href="financiamento-trator.html">Financiamento Trator</a>
-  <a href="amortizacao-extra.html">Amortização Extra</a>
-  <a href="emprestimo-pessoal.html">Empréstimo</a>
-  <a href="independencia-financeira.html">Independência Financeira</a>
-  <a href="preco-medio.html">Preço Médio</a>
-  <a href="salario-liquido.html">Salário Líquido</a>
-  <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
-  <a href="conversor-moedas.html">Conversor de Moedas</a>
-  <a href="cripto-imposto.html" class="active"><span class="nav-active-item">Cripto Imposto</span></a>
-  <a href="faturamento-mei.html">Faturamento MEI</a>
-</nav>
-    </div>
+    <a href="index.html" class="brand">
+      <span class="mark">R</span>
+      <span class="tag">Razão · ferramentas financeiras</span>
+    </a>
+    <nav class="sitenav">
+      <a href="index.html">Início</a>
+      <a href="juros-compostos.html">Juros compostos</a>
+      <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+      <a href="financiamento-trator.html">Financiamento Trator</a>
+      <a href="amortizacao-extra.html">Amortização Extra</a>
+      <a href="emprestimo-pessoal.html">Empréstimo</a>
+      <a href="independencia-financeira.html">Independência Financeira</a>
+      <a href="preco-medio.html">Preço Médio</a>
+      <a href="salario-liquido.html">Salário Líquido</a>
+      <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+      <a href="conversor-moedas.html">Conversor de Moedas</a>
+      <a href="cripto-imposto.html" class="current active">Cripto Imposto</a>
+      <a href="faturamento-mei.html">Faturamento MEI</a>
+      <a href="artigos.html">Artigos</a>
+    </nav>
   </header>
 
-  <section class="page-hero">
+  <section class="hero">
     <div class="eyebrow">Calculadora</div>
     <h1>Imposto sobre ganho de capital em criptomoedas</h1>
-    <p class="lede">Descubra se a venda está isenta pela regra dos R$35.000 mensais e, se não estiver, quanto de imposto pagar via DARF.</p>
+    <p>Descubra se a venda está isenta pela regra dos R$ 35.000 mensais e, se não estiver, quanto de imposto pagar via DARF.</p>
   </section>
 
-  <main class="calc">
-    <div class="grid">
-      <div class="card">
-        <h2>Dados da operação</h2>
-        <div class="sub">Preencha com os valores da venda que você quer apurar.</div>
+  <div class="grid">
+    <div class="card">
+      <h2>Dados da operação</h2>
+      <div class="sub">Preencha com os valores da venda que você quer apurar.</div>
 
-        <label>Corretora usada na operação</label>
-        <div class="toggle" id="cr-regime">
-          <button class="on" data-val="NACIONAL">Nacional</button>
-          <button data-val="ESTRANGEIRA">Estrangeira</button>
-        </div>
-
-        <label for="cr-totalmes">Total vendido em cripto no mês (R$)</label>
-        <input type="number" id="cr-totalmes" value="20000" min="0" step="500">
-
-        <label for="cr-venda">Valor de venda desta operação (R$)</label>
-        <input type="number" id="cr-venda" value="20000" min="0" step="500">
-
-        <label for="cr-custo">Custo de aquisição da porção vendida (R$)</label>
-        <input type="number" id="cr-custo" value="12000" min="0" step="500">
-
-        <button class="btn-primary" id="cr-calc">Calcular</button>
+      <label>Corretora usada na operação</label>
+      <div class="toggle-group" id="cr-regime">
+        <button type="button" class="btn-toggle active" data-val="NACIONAL">Nacional</button>
+        <button type="button" class="btn-toggle" data-val="ESTRANGEIRA">Estrangeira</button>
       </div>
 
-      <div class="ledger">
-        <h2>Resultado</h2>
-        <div class="ledger-row"><span class="label">Ganho de capital apurado</span><span class="fill"></span><span class="val" id="cr-ganho">—</span></div>
-        <div class="ledger-row"><span class="label">Situação</span><span class="fill"></span><span class="val" id="cr-situacao">—</span></div>
-        <div class="ledger-row"><span class="label">Alíquota efetiva</span><span class="fill"></span><span class="val" id="cr-aliquota">—</span></div>
-        <div class="ledger-row cost"><span class="label">Imposto devido (DARF)</span><span class="fill"></span><span class="val" id="cr-imposto">—</span></div>
-        <div class="ledger-row total"><span class="label">Vencimento estimado</span><span class="fill"></span><span class="val" id="cr-vencimento">—</span></div>
-        <div class="hint" id="cr-hint">Preencha os campos e clique em calcular.</div>
-      </div>
+      <label for="cr-totalmes">Total vendido em cripto no mês (R$)</label>
+      <input type="number" id="cr-totalmes" value="20000" min="0" step="500">
+
+      <label for="cr-venda">Valor de venda desta operação (R$)</label>
+      <input type="number" id="cr-venda" value="20000" min="0" step="500">
+
+      <label for="cr-custo">Custo de aquisição da porção vendida (R$)</label>
+      <input type="number" id="cr-custo" value="12000" min="0" step="500">
+
+      <button type="button" class="primary" id="cr-calc">Calcular</button>
     </div>
 
-    <article class="copy">
-      <h2>A regra da isenção de R$35.000</h2>
-      <p>Para pessoas físicas que operam em corretoras nacionais, a Receita Federal isenta de imposto o ganho obtido em meses em que o total de vendas de criptoativos — somando todas as moedas e todas as corretoras nacionais usadas — não ultrapassa R$35.000. Esse limite não é corrigido pela inflação desde que foi estabelecido em 2019, e vale para o total movimentado no mês, não por operação isolada. Se você vendeu R$10.000 em Bitcoin e mais R$28.000 em Ethereum no mesmo mês, o total de R$38.000 já ultrapassa o limite, mesmo que cada venda individual pareça pequena.</p>
+    <div class="ledger">
+      <h2>Resultado</h2>
+      <div class="ledger-row"><span>Ganho de capital apurado</span><span class="val" id="cr-ganho">—</span></div>
+      <div class="ledger-row"><span>Situação</span><span class="val" id="cr-situacao">—</span></div>
+      <div class="ledger-row"><span>Alíquota efetiva</span><span class="val" id="cr-aliquota">—</span></div>
+      <div class="ledger-row cost"><span>Imposto devido (DARF)</span><span class="val" id="cr-imposto">—</span></div>
+      <div class="ledger-row total"><span>Vencimento estimado</span><span class="val" id="cr-vencimento">—</span></div>
+      <div class="hint" id="cr-hint">Preencha os campos e clique em calcular.</div>
+    </div>
+  </div>
 
-      <h2>Como calcular o ganho de capital manualmente</h2>
-      <p>O ganho é a diferença entre o valor recebido na venda e o custo de aquisição da porção vendida. Quando você comprou o criptoativo em lotes diferentes, a Receita Federal exige o uso do <strong>custo médio ponderado</strong>: some o valor total gasto em todas as compras e divida pela quantidade total de moedas compradas, para achar o custo médio por unidade. Ao vender parte da posição, multiplique a quantidade vendida pelo custo médio para achar o custo da porção vendida, e subtraia esse valor do total recebido na venda — essa diferença é o ganho tributável.</p>
+  <article>
+    <h2>A regra da isenção de R$ 35.000</h2>
+    <p>Para pessoas físicas que operam em corretoras nacionais, a Receita Federal isenta de imposto o ganho obtido em meses em que o total de vendas de criptoativos — somando todas as moedas e todas as corretoras nacionais usadas — não ultrapassa R$ 35.000. Esse limite vale para o total movimentado no mês, não por operação isolada.</p>
 
-      <h2>Alíquotas: corretora nacional x estrangeira</h2>
-      <p>Para operações em corretoras nacionais, quando o total do mês ultrapassa R$35.000, aplica-se a tabela progressiva de ganho de capital: <strong>15%</strong> sobre a parcela do ganho até R$5 milhões, <strong>17,5%</strong> de R$5 milhões a R$10 milhões, <strong>20%</strong> de R$10 milhões a R$30 milhões e <strong>22,5%</strong> acima disso. Para a grande maioria dos investidores de varejo, o ganho fica inteiro na primeira faixa, então a alíquota efetiva é simplesmente 15%. Já para operações em corretoras estrangeiras, desde a Lei 14.754/2023, não existe isenção mensal — todo ganho é tributável, mas a alíquota é fixa em 15%, apurada anualmente na declaração de ajuste, com possibilidade de compensar prejuízos dentro do mesmo ano-base.</p>
+    <h2>Como calcular o ganho de capital manualmente</h2>
+    <p>O ganho é a diferença entre o valor recebido na venda e o custo de aquisição da porção vendida. Quando você comprou o criptoativo em lotes diferentes, a Receita Federal exige o uso do <strong>custo médio ponderado</strong>.</p>
 
-      <h2>Como e quando pagar</h2>
-      <p>O imposto sobre operações em corretora nacional é apurado mês a mês no programa GCAP (Ganho de Capital) da Receita Federal, e pago via DARF com o código de receita <strong>4600</strong>, até o último dia útil do mês seguinte ao da venda com lucro. Perder esse prazo gera multa de 0,33% ao dia sobre o valor devido, limitada a 20%, além de juros pela taxa Selic. Como as corretoras nacionais são obrigadas a informar movimentações à Receita Federal, o risco de ser identificado em caso de omissão é alto.</p>
+    <h2>Alíquotas: corretora nacional x estrangeira</h2>
+    <p>Para operações em corretoras nacionais com vendas acima de R$ 35.000/mês, aplica-se a tabela progressiva (iniciando em 15% até R$ 5 milhões). Para operações em corretoras estrangeiras, desde a Lei 14.754/2023, não existe isenção mensal — todo ganho é tributável à alíquota de 15% apurada na declaração anual.</p>
 
-      <p class="muted">Esta calculadora é uma ferramenta educativa e não substitui orientação de um contador ou o preenchimento oficial do programa GCAP da Receita Federal. As regras tributárias sobre criptoativos podem mudar; confirme sempre as alíquotas e prazos vigentes antes de pagar um DARF.</p>
-    </article>
-  </main>
+    <h2>Como e quando pagar</h2>
+    <p>O imposto sobre operações em corretora nacional é apurado no programa GCAP e pago via DARF com o código de receita <strong>4600</strong>, até o último dia útil do mês seguinte ao da venda com lucro.</p>
+
+    <p class="muted">Esta calculadora é uma ferramenta educativa e não substitui orientação de um contador ou o preenchimento oficial do programa GCAP da Receita Federal.</p>
+  </article>
 
   <footer class="sitefoot">
     <div class="footer-links">
@@ -142,27 +412,27 @@ document.addEventListener('DOMContentLoaded', () => {
     footYearEl.textContent = new Date().getFullYear();
   }
 
-  // Função auxiliar para formatar moeda em Real (BRL)
+  // Formatação de moeda BRL
   function formatarBRL(valor) {
     return (valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
   let regime = 'NACIONAL';
 
-  // Evento de clique nos botões de regime (Nacional / Estrangeira)
-  document.querySelectorAll('#cr-regime button').forEach(btn => {
+  // Toggle Corretora Nacional vs Estrangeira
+  const btnsRegime = document.querySelectorAll('#cr-regime button');
+  btnsRegime.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      document.querySelectorAll('#cr-regime button').forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
+      btnsRegime.forEach(b => b.classList.remove('active', 'on'));
+      btn.classList.add('active');
 
-      // Obtém o valor do dataset ou texto do botão
-      regime = btn.dataset.val || btn.textContent.trim().toUpperCase();
+      regime = btn.dataset.val || 'NACIONAL';
       calcCripto();
     });
   });
 
-  // Cálculo de Imposto de Renda sobre Ganho de Capital (Regime Nacional - Tabela Progressiva)
+  // Tabela progressiva nacional
   function impostoProgressivo(ganho) {
     const faixas = [
       { ate: 5000000, taxa: 0.15 },
@@ -212,7 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (ganhoEl) ganhoEl.textContent = formatarBRL(ganho);
 
-    // Caso não haja ganho de capital (prejuízo ou zero)
+    // Sem ganho de capital ou prejuízo
     if (ganho <= 0) {
       if (situacaoEl) situacaoEl.textContent = 'Prejuízo / Sem Ganho';
       if (aliquotaEl) aliquotaEl.textContent = '0%';
@@ -222,17 +492,17 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Regra de Isenção Nacional (vendas até R$ 35.000 no mês)
+    // Isenção para corretoras nacionais (até R$ 35.000 no mês)
     if (regime === 'NACIONAL' && totalMes <= 35000) {
       if (situacaoEl) situacaoEl.textContent = 'Isento';
       if (aliquotaEl) aliquotaEl.textContent = '0%';
       if (impostoEl) impostoEl.textContent = formatarBRL(0);
       if (vencEl) vencEl.textContent = '-';
-      if (hintEl) hintEl.innerHTML = 'Mesmo isento, esse ganho deve ser <strong>informado</strong> na Declaração de Ajuste Anual.';
+      if (hintEl) hintEl.innerHTML = 'Ganhos isentos devem ser declarados na <strong>Declaração de Ajuste Anual</strong>.';
       return;
     }
 
-    // Cálculo do imposto para operações tributáveis
+    // Operação tributável
     let imposto = 0;
     let aliquotaEfetiva = 0;
 
@@ -241,19 +511,19 @@ document.addEventListener('DOMContentLoaded', () => {
       aliquotaEfetiva = ganho > 0 ? (imposto / ganho) : 0;
       if (hintEl) hintEl.innerHTML = 'Pague via <strong>DARF código 4600</strong> no site da Receita Federal.';
     } else {
-      // Regime Estrangeiro (Lei 14.754/2023 - Alíquota fixa de 15% sem isenção mensal)
+      // Regime Estrangeiro (Lei 14.754/2023 - 15% fixo)
       imposto = ganho * 0.15;
       aliquotaEfetiva = 0.15;
-      if (hintEl) hintEl.innerHTML = 'Operações em corretora estrangeira seguem a <strong>Lei 14.754/2023</strong>.';
+      if (hintEl) hintEl.innerHTML = 'Operações no exterior seguem as regras da <strong>Lei 14.754/2023</strong>.';
     }
 
     if (situacaoEl) situacaoEl.textContent = 'Tributável';
     if (aliquotaEl) aliquotaEl.textContent = (aliquotaEfetiva * 100).toFixed(1) + '%';
     if (impostoEl) impostoEl.textContent = formatarBRL(imposto);
-    if (vencEl) vencEl.textContent = regime === 'NACIONAL' ? proximoVencimento() : 'Na Declaração de Ajuste Anual';
+    if (vencEl) vencEl.textContent = regime === 'NACIONAL' ? proximoVencimento() : 'Na Declaração Anual';
   }
 
-  // Ouvintes de input nos campos para recalcular dinamicamente
+  // Ouvintes para recalcular dinamicamente
   ['cr-totalmes', 'cr-venda', 'cr-custo'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
@@ -262,7 +532,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Ouvinte do botão Calcular
   const btnCalc = document.getElementById('cr-calc');
   if (btnCalc) {
     btnCalc.addEventListener('click', (e) => {
@@ -271,7 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Executa o cálculo inicial
+  // Cálculo inicial
   calcCripto();
 });
 </script>
