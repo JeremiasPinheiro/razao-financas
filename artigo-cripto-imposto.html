@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Como Declarar e Calcular Imposto sobre Criptomoedas e Criptoativos no Brasil em 2026 — Razão</title>
   <meta name="description" content="Guia sobre a tributação de criptomoedas no Brasil em 2026: isenção de R$35.000, alíquotas progressivas, corretoras estrangeiras e como declarar corretamente.">
+  <link rel="canonical" href="https://razaofinancas.com.br/artigo-cripto-imposto.html">
+
+  <!-- Favicon em SVG Data URI (Corrige o erro 404 de favicon.ico) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23FBFAF6' stroke='%231E2A18' stroke-width='2'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-weight='bold' font-size='20' fill='%231E2A18'>R</text></svg>">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
@@ -325,7 +330,7 @@
       <p>Ao vender parte da posição, multiplica-se a quantidade vendida pelo custo médio, chegando ao custo da porção vendida. A diferença entre o valor da venda e esse custo é o ganho tributável daquela operação específica.</p>
 
       <h2>Corretoras estrangeiras seguem outra regra desde 2023</h2>
-      <p>Com a Lei 14.754/2023, criptoativos mantidos ou negociados em corretoras no exterior passaram a seguir um regime próprio, diferente do applied às operações nacionais:</p>
+      <p>Com a Lei 14.754/2023, criptoativos mantidos ou negociados em corretoras no exterior passaram a seguir um regime próprio, diferente do aplicado às operações nacionais:</p>
       <ul>
         <li>Não existe isenção mensal de R$35.000 para essas operações — todo ganho é, em tese, tributável;</li>
         <li>A alíquota é fixa em 15%, sem a progressividade usada nas operações nacionais;</li>
@@ -373,7 +378,12 @@
   </div>
 
   <script>
-    document.getElementById('footYear').textContent = new Date().getFullYear();
+    document.addEventListener('DOMContentLoaded', () => {
+      const footYearEl = document.getElementById('footYear');
+      if (footYearEl) {
+        footYearEl.textContent = new Date().getFullYear();
+      }
+    });
   </script>
 
 </body>
