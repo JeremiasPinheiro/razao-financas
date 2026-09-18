@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tabela SAC vs Price no Financiamento Imobiliário: Como Calcular e Amortizar — Razão</title>
   <meta name="description" content="Entenda a diferença entre os sistemas SAC e Price no financiamento imobiliário, como calcular cada um e quando a amortização extraordinária compensa mais.">
+  <link rel="canonical" href="https://razaofinancas.com.br/artigo-financiamento-imobiliario.html">
+
+  <!-- Favicon em SVG Data URI (Resolve o erro 404 no console) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23FBFAF6' stroke='%231E2A18' stroke-width='2'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-weight='bold' font-size='20' fill='%231E2A18'>R</text></svg>">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
@@ -384,7 +389,12 @@
   </div>
 
   <script>
-    document.getElementById('footYear').textContent = new Date().getFullYear();
+    document.addEventListener('DOMContentLoaded', () => {
+      const footYearEl = document.getElementById('footYear');
+      if (footYearEl) {
+        footYearEl.textContent = new Date().getFullYear();
+      }
+    });
   </script>
 
 </body>
