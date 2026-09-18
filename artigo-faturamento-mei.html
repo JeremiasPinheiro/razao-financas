@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guia Definitivo do Limite de Faturamento do MEI em 2026: Proporcionalidade e Transbordo — Razão</title>
   <meta name="description" content="Entenda as regras de faturamento do MEI em 2026: teto anual de R$ 81.000, cálculo proporcional no ano de abertura e regras para transbordo até ou acima de 20%.">
+  <link rel="canonical" href="https://razaofinancas.com.br/artigo-faturamento-mei.html">
+
+  <!-- Favicon em SVG Data URI (Resolve o erro 404 no console) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23FBFAF6' stroke='%231E2A18' stroke-width='2'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-weight='bold' font-size='20' fill='%231E2A18'>R</text></svg>">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
@@ -296,7 +301,7 @@
       <p>Isso muda numa única situação: quando o MEI foi aberto no meio do ano. Nesse caso, entra em cena a regra da <strong>proporcionalidade</strong>.</p>
 
       <h2>Como funciona o limite proporcional no ano de abertura</h2>
-      <p>Quem abre o MEI em qualquer mês diferente de janeiro não tem direito ao limite cheio de R$ 81.000 naquele primeiro ano. O limite é calculated proporcionalmente aos meses em que a empresa esteve efetivamente aberta, contando o próprio mês de abertura como um mês inteiro.</p>
+      <p>Quem abre o MEI em qualquer mês diferente de janeiro não tem direito ao limite cheio de R$ 81.000 naquele primeiro ano. O limite é calculado proporcionalmente aos meses em que a empresa esteve efetivamente aberta, contando o próprio mês de abertura como um mês inteiro.</p>
       
       <ul>
         <li>A fórmula é simples: multiplique R$ 6.750 pelo número de meses restantes no ano, incluindo o mês de abertura.</li>
@@ -311,13 +316,13 @@
       <p>Quando o faturamento ultrapassa o limite (cheio ou proporcional), a Receita Federal chama esse excesso de "transbordo" ou excesso de receita bruta. As regras de consequência dependem de quanto o MEI ultrapassou o teto:</p>
 
       <h3>Excesso de até 20% do limite</h3>
-      <p>Se o faturamento ficar acima do limite, mas dentro de uma margem de até 20% a mais, o MEI continua enquadrado como tal até 31 de dezembro daquele ano. Sobre a parcela que excedeu o limite, é devido um valor complementar de DAS (Documento de Arrecadação do Simples Nacional), calculated com as alíquotas normais do Simples Nacional aplicadas sobre o excedente. A partir de 1º de janeiro do ano seguinte, o empreendedor é automaticamente reclassificado como Microempresa (ME), passando a seguir as regras tributárias e as obrigações acessórias desse regime.</p>
+      <p>Se o faturamento ficar acima do limite, mas dentro de uma margem de até 20% a mais, o MEI continua enquadrado como tal até 31 de dezembro daquele ano. Sobre a parcela que excedeu o limite, é devido um valor complementar de DAS (Documento de Arrecadação do Simples Nacional), calculado com as alíquotas normais do Simples Nacional aplicadas sobre o excedente. A partir de 1º de janeiro do ano seguinte, o empreendedor é automaticamente reclassificado como Microempresa (ME), passando a seguir as regras tributárias e as obrigações acessórias desse regime.</p>
 
       <h3>Excesso acima de 20% do limite</h3>
       <p>Se o faturamento ultrapassar o limite em mais de 20%, a consequência é mais severa: o desenquadramento do MEI é <strong>retroativo a 1º de janeiro do próprio ano</strong> em que o excesso ocorreu. Na prática, isso significa que o empreendedor passa a ser tributado como Microempresa desde o início daquele ano-calendário, tendo que recalcular e recolher a diferença de impostos sobre todo o faturamento já gerado, com acréscimo de juros e multa por atraso.</p>
 
       <h2>Por que vale a pena acompanhar o faturamento mês a mês</h2>
-      <p>A melhor forma de evitar o cenário de desenquadramento retroativo é monitorar o acumulado do ano regularmente, não só no fechamento de dezembro. Um MEI que percebe, em setembro, que está projetando fechar o ano acima do limite tem tempo de se planejar: pode reduzir o ritmo de faturamento ou já se preparar financeiramente e administrativamente para migrar para Microempresa, contratando um contador antes da mudança de regime se tornar obrigatória.</p>
+      <p>A melhor forma de evitar o cenário de desenquadramento retroativo é monitorar o acumulado do ano regularly, não só no fechamento de dezembro. Um MEI que percebe, em setembro, que está projetando fechar o ano acima do limite tem tempo de se planejar: pode reduzir o ritmo de faturamento ou já se preparar financeiramente e administrativamente para migrar para Microempresa, contratando um contador antes da mudança de regime se tornar obrigatória.</p>
       <p>Vale reforçar que "faturamento" para efeito desse limite é a receita bruta total da atividade — todas as vendas e prestações de serviço — e não o lucro.</p>
 
       <h2>Atividades com CNAEs específicos e o limite</h2>
@@ -357,7 +362,12 @@
   </div>
 
   <script>
-    document.getElementById('footYear').textContent = new Date().getFullYear();
+    document.addEventListener('DOMContentLoaded', () => {
+      const footYearEl = document.getElementById('footYear');
+      if (footYearEl) {
+        footYearEl.textContent = new Date().getFullYear();
+      }
+    });
   </script>
 
 </body>
