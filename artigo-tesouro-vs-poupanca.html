@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tesouro Direto vs Poupança em 2026: Rentabilidade, Taxas e Imposto de Renda — Razão</title>
   <meta name="description" content="Compare Tesouro Direto e poupança em 2026 com a Selic a 14% ao ano: regras de rendimento, tabela de Imposto de Renda regressiva e quando cada um faz sentido.">
+  <link rel="canonical" href="https://razaofinancas.com.br/artigo-tesouro-vs-poupanca.html">
+
+  <!-- Favicon SVG embutido via Data URI (Elimina o erro 404 no console) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23FBFAF6' stroke='%231E2A18' stroke-width='2'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-weight='bold' font-size='20' fill='%231E2A18'>R</text></svg>">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
@@ -289,7 +294,7 @@
 
     <article class="copy">
 
-      <p>Com a taxa Selic em 14% ao ano — nível definido pelo Copom na reunião de 5 de agosto de 2026, após uma sequência de cortes que também reduziu a taxa em reuniões anteriores do ano —, a distância entre o rendimento da poupança e o do Tesouro Direto voltou a ficar bem visível. Entender exatamente como cada um é calculated, e como o Imposto de Renda entra nessa conta, é o que permite comparar as duas opções de forma justa, em vez de escolher só pela familiaridade.</p>
+      <p>Com a taxa Selic em 14% ao ano — nível definido pelo Copom na reunião de 5 de agosto de 2026, após uma sequência de cortes que também reduziu a taxa em reuniões anteriores do ano —, a distância entre o rendimento da poupança e o do Tesouro Direto voltou a ficar bem visível. Entender exatamente como cada um é calculado, e como o Imposto de Renda entra nessa conta, é o que permite comparar as duas opções de forma justa, em vez de escolher só pela familiaridade.</p>
 
       <h2>Como a poupança rende: uma regra com duas fórmulas</h2>
       <p>A poupança não tem uma taxa fixa — sua rentabilidade segue uma regra que muda conforme o patamar da Selic:</p>
@@ -355,7 +360,12 @@
   </div>
 
   <script>
-    document.getElementById('footYear').textContent = new Date().getFullYear();
+    document.addEventListener('DOMContentLoaded', () => {
+      const footYearEl = document.getElementById('footYear');
+      if (footYearEl) {
+        footYearEl.textContent = new Date().getFullYear();
+      }
+    });
   </script>
 
 </body>
