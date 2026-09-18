@@ -247,6 +247,48 @@ input[type=number]:focus, input[type=text]:focus, select:focus {
   background: var(--brass-dark) !important;
 }
 
+/* Card Recomendado / Afiliado */
+.card-recomendado {
+  background: var(--card);
+  border: 1px solid var(--paper-line);
+  border-left: 4px solid var(--brass);
+  border-radius: 6px;
+  padding: 22px 24px;
+  margin: 32px 0 16px;
+  box-shadow: var(--shadow);
+}
+
+.card-recomendado h3 {
+  font-size: 1.2rem;
+  margin: 6px 0 10px 0;
+  color: var(--ink);
+}
+
+.card-recomendado p {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.btn-afiliado {
+  display: inline-block;
+  padding: 10px 18px;
+  background: var(--brass);
+  color: var(--card);
+  text-decoration: none;
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: background 0.15s ease;
+}
+
+.btn-afiliado:hover {
+  background: var(--brass-dark);
+  color: var(--card);
+}
+
 /* Tabela e Resultados */
 .ledger {
   background: var(--card);
@@ -474,6 +516,26 @@ footer.sitefoot .footer-bottom {
 
       <h2>Principais linhas para financiar um trator</h2>
       <p>O <strong>Moderfrota</strong> é a linha mais usada para máquinas e implementos agrícolas em geral, com taxa em torno de 12,5% ao ano no ciclo mais recente (11,5% na modalidade Pronamp, voltada a médios produtores). Para agricultura familiar, o <strong>Pronaf Mais Alimentos</strong> oferece condições bem mais favoráveis — taxas a partir de 2,5% ao ano para equipamentos de até R$100 mil, dentro dos critérios de renda do programa. Cada linha tem regras próprias de quem pode acessar, limite de valor financiado e exigência de garantias, normalmente a alienação fiduciária do próprio trator.</p>
+
+      <!-- Bloco Persuasivo do Afiliado -->
+      <aside class="card-recomendado">
+        <div class="eyebrow">Capacitação Profissional</div>
+        <h3>Quer garantir a aprovação do seu crédito rural sem travar no banco?</h3>
+        <p>
+          Simular as parcelas é apenas a primeira etapa. Falhas na documentação ou erros no projeto técnico são as principais causas de atraso ou recusa de financiamentos de tratores nos bancos e cooperativas.
+        </p>
+        <p>
+          Aprenda no curso <strong>Crédito Rural Descomplicado</strong> como estruturar propostas alinhadas às regras atualizadas do Plano Safra e acelerar a liberação do seu financiamento.
+        </p>
+        <div style="margin-top: 14px;">
+          <a href="https://go.hotmart.com/V107671453O?src=pagina_trator" 
+             target="_blank" 
+             rel="noopener sponsored" 
+             class="btn-afiliado">
+            Garantir Aprovação no Banco &rarr;
+          </a>
+        </div>
+      </aside>
 
       <h2>Prazos e carência</h2>
       <p>Financiamentos de trator no crédito rural costumam ter prazo de até 7 anos, com carência de até 14 meses antes do início dos pagamentos — um período pensado para dar tempo até a primeira safra gerar receita. Esta calculadora não modela a carência: ela mostra as parcelas como se o pagamento começasse imediatamente, então o cronograma real de um contrato com carência será um pouco diferente do resultado aqui.</p>
