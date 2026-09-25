@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carro por Assinatura vs Financiamento — Comparador de Custo Real — Razão</title>
+<meta name="description" content="Compare os custos reais entre assinar um carro zero km e financiar um veículo. Inclui IPVA, seguro, manutenção, taxa de juros e depreciação.">
+<link rel="canonical" href="https://razaofinancas.com.br/carro-assinatura-vs-financiamento.html">
+
+<!-- Favicon SVG inline -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23FBFAF6' stroke='%231E2A18' stroke-width='2'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-weight='bold' font-size='20' fill='%231E2A18'>R</text></svg>">
+
+<!-- Fontes oficiais do Razão -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4283089731677395" crossorigin="anonymous"></script>
+
+<style>
+/* Estilos Oficiais do Sistema Razão */
+:root {
+  --paper: #EDF1E6;
+  --paper-line: #C7D3BC;
+  --card: #FBFAF6;
+  --ink: #1E2A18;
+  --ink-soft: #5B6B51;
+  --brass: #A8792E;
+  --brass-dark: #8A5F1F;
+  --alert: #A6503A;
+  --good: #3E6B4F;
+  --shadow: 0 1px 0 rgba(30, 42, 24, 0.06);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px),
+    var(--paper);
+  color: var(--ink);
+  font-family: 'IBM Plex Sans', sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--brass);
+  color: var(--card);
+}
+
+h1, h2, h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  margin: 0;
+}
+
+a { color: var(--brass-dark); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Header & Nav */
+.site-header {
+  padding: 26px 0 22px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.site-header .top {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.brand .mark {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  padding: 1px 8px;
+}
+
+.brand .tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+nav.sitenav {
+  display: flex;
+  gap: 10px 18px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+nav.sitenav a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  text-decoration: none;
+  color: var(--ink-soft);
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+nav.sitenav a:hover { color: var(--ink); }
+
+nav.sitenav a.active, nav.sitenav a.current {
+  color: var(--alert) !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid var(--alert) !important;
+  background: transparent !important;
+}
+
+/* Page Hero */
+.page-hero { padding: 36px 0 20px; }
+
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--brass-dark);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.page-hero h1 {
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  line-height: 1.15;
+}
+
+.page-hero .lede {
+  color: var(--ink-soft);
+  max-width: 680px;
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+/* Form & Ledger Layout */
+main.calc { padding: 10px 0 60px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+@media (max-width: 720px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.card, .ledger {
+  background: var(--card);
+  border: 1px solid var(--paper-line);
+  border-radius: 6px;
+  padding: 26px 26px 22px;
+  box-shadow: var(--shadow);
+}
+
+.card h2, .ledger h2 { font-size: 1.15rem; margin-bottom: 4px; }
+
+.card .sub {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin: 14px 0 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.02em;
+}
+
+label:first-of-type { margin-top: 0; }
+
+input[type=number] {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  background: var(--paper);
+  border: 1.5px solid var(--paper-line);
+  border-radius: 4px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .15s;
+}
+
+input[type=number]:focus {
+  border-color: var(--brass);
+}
+
+.btn-primary {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  background: var(--brass);
+  color: var(--card);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.btn-primary:hover {
+  background: var(--brass-dark);
+}
+
+/* Ledger Rows */
+.ledger-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dotted var(--paper-line);
+  font-size: 0.92rem;
+}
+
+.ledger-row .label { color: var(--ink-soft); }
+
+.ledger-row .val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ledger-row.cost .val { color: var(--alert); }
+.ledger-row.highlight .val { color: var(--good); font-size: 1.1rem; }
+.ledger-row.total .val { color: var(--ink); font-size: 1.05rem; }
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-top: 18px;
+  line-height: 1.5;
+  background: var(--paper);
+  padding: 12px;
+  border-radius: 4px;
+  border-left: 3px solid var(--brass);
+}
+
+/* Artigo Educativo / Explicativo */
+article.copy {
+  max-width: 680px;
+  padding: 20px 0 30px;
+  margin-top: 20px;
+}
+
+article.copy h2 {
+  font-size: 1.25rem;
+  margin-top: 36px;
+  margin-bottom: 10px;
+}
+
+article.copy p {
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+
+article.copy p.muted {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+/* Footer */
+footer.sitefoot {
+  border-top: 2px solid var(--ink);
+  padding: 22px 0 40px;
+  margin-top: 40px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+footer.sitefoot .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+footer.sitefoot .footer-links a { color: var(--ink-soft); }
+footer.sitefoot .footer-links a:hover { color: var(--brass-dark); }
+
+footer.sitefoot .footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+        <a href="financiamento-trator.html">Financiamento Trator</a>
+        <a href="cet-credito-rural.html">CET Crédito Rural</a>
+        <a href="lci-lca-vs-cdb.html">LCI/LCA vs CDB</a>
+        <a href="carro-assinatura-vs-financiamento.html" class="active">Carro por Assinatura</a>
+        <a href="amortizacao-extra.html">Amortização Extra</a>
+        <a href="emprestimo-pessoal.html">Empréstimo</a>
+        <a href="independencia-financeira.html">Independência Financeira</a>
+        <a href="preco-medio.html">Preço Médio</a>
+        <a href="salario-liquido.html">Salário Líquido</a>
+        <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+        <a href="conversor-moedas.html">Conversor de Moedas</a>
+        <a href="cripto-imposto.html">Cripto Imposto</a>
+        <a href="faturamento-mei.html">Faturamento MEI</a>
+        <a href="artigos.html">Artigos</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Veículos & Decisão Financeira</div>
+    <h1>Carro por Assinatura vs Financiamento</h1>
+    <p class="lede">Calcule o custo real total de posse (IPVA, seguro, juros, manutenção e desvalorização) e descubra se a assinatura compensa financeiramente.</p>
+  </section>
+
+  <main class="calc">
+    <div class="grid">
+      <div class="card">
+        <h2>Parâmetros de Comparação</h2>
+        <div class="sub">Preencha os valores para simular o período contratual.</div>
+
+        <label for="val-carro">Valor do Veículo Zero km (R$)</label>
+        <input type="number" id="val-carro" value="120000" min="20000" step="5000">
+
+        <label for="prazo-meses">Prazo do Contrato (meses)</label>
+        <input type="number" id="prazo-meses" value="36" min="12" step="12">
+
+        <label for="mensalidade-assinatura">Mensalidade da Assinatura (R$/mês)</label>
+        <input type="number" id="mensalidade-assinatura" value="2800" min="500" step="100">
+
+        <label for="pct-entrada">Entrada no Financiamento (%)</label>
+        <input type="number" id="pct-entrada" value="30" min="0" max="90" step="5">
+
+        <label for="taxa-juros">Taxa de Juros do Financiamento (% a.m.)</label>
+        <input type="number" id="taxa-juros" value="1.49" min="0.1" step="0.05">
+
+        <label for="pct-ipva">IPVA Médio Anual do Estado (%)</label>
+        <input type="number" id="pct-ipva" value="4.0" min="1" max="5" step="0.5">
+
+        <label for="pct-seguro">Seguro Anual (% do valor do bem)</label>
+        <input type="number" id="pct-seguro" value="4.5" min="1" step="0.5">
+
+        <label for="manutencao-anual">Manutenção / Revisões Anuais (R$)</label>
+        <input type="number" id="manutencao-anual" value="1800" min="0" step="200">
+
+        <label for="pct-depreciacao">Depreciação Total Acumulada no Período (%)</label>
+        <input type="number" id="pct-depreciacao" value="25" min="5" step="1">
+
+        <button type="button" class="btn-primary" id="btn-calcular">Calcular Custo Real</button>
+      </div>
+
+      <div class="ledger">
+        <h2>Resumo Financeiro</h2>
+
+        <div class="ledger-row">
+          <span class="label">Custo Total da Assinatura</span>
+          <span class="val" id="res-total-assinatura">R$ 100.800,00</span>
+        </div>
+
+        <div class="ledger-row">
+          <span class="label">Total de Parcelas (Financiamento)</span>
+          <span class="val" id="res-total-parcelas">R$ 108.432,12</span>
+        </div>
+
+        <div class="ledger-row cost">
+          <span class="label">IPVA + Licenciamento Acumulado</span>
+          <span class="val" id="res-total-ipva">R$ 14.400,00</span>
+        </div>
+
+        <div class="ledger-row cost">
+          <span class="label">Seguros + Manutenção Acumulados</span>
+          <span class="val" id="res-total-seguro-manut">R$ 21.600,00</span>
+        </div>
+
+        <div class="ledger-row cost">
+          <span class="label">(+) Perda por Depreciação do Veículo</span>
+          <span class="val" id="res-total-depreciacao">R$ 30.000,00</span>
+        </div>
+
+        <div class="ledger-row highlight">
+          <span class="label">(-) Valor do Carro Quitado ao Final</span>
+          <span class="val" id="res-valor-residual">R$ 90.000,00</span>
+        </div>
+
+        <div class="ledger-row highlight">
+          <span class="label">Custo Líquido Real (Financiamento)</span>
+          <span class="val" id="res-custo-liquido-financ">R$ 84.432,12</span>
+        </div>
+
+        <div class="ledger-row total">
+          <span class="label">Opção Menos Onerosa</span>
+          <span class="val" id="res-vencedor" style="color: var(--good);">Financiamento</span>
+        </div>
+
+        <div class="hint" id="res-explicacao">
+          <strong>Análise do Custo:</strong> Ao final de 36 meses, manter o veículo financiado resulta em um gasto líquido acumulado de <strong>R$ 84.432,12</strong> (já descontado o valor de revenda do bem), contra <strong>R$ 100.800,00</strong> desembolsados no serviço de assinatura.
+        </div>
+      </div>
+    </div>
+
+    <article class="copy">
+      <h2>Como calcular o Custo Total de Posse (TCO)?</h2>
+      <p>Muitos motoristas erram ao comparar a mensalidade da assinatura apenas com a parcela do financiamento. O cálculo correto exige analisar o Custo Total de Posse (Total Cost of Ownership - TCO). O financiamento gera a posse de um bem vendável no final do contrato, mas exige o desembolso de IPVA, seguro total, revisões preventivas, taxa de licenciamento e a absorção da desvalorização de mercado (depreciação).</p>
+
+      <h2>O que está incluído na mensalidade do carro por assinatura?</h2>
+      <p>As empresas de assinatura (locadoras e montadoras) embutem no valor mensal:</p>
+
+      <p>• Documentação inicial, emplacamento, IPVA e DPVAT;<br>
+      • Seguro total com cobertura contra roubo, furto e terceiros;<br>
+      • Manutenção preventiva e revisões obrigatórias de manual;<br>
+      • Assistência 24 horas e guincho em todo o território nacional;<br>
+      • Isenção do risco de revenda e perda por depreciação.</p>
+
+      <h2>Quando a assinatura vale a pena?</h2>
+      <p>A assinatura de veículo torna-se altamente atrativa quando o motorista não deseja imobilizar capital em uma entrada, quer evitar a burocracia de revenda de seminovos, possui alto custo de oportunidade para aplicar o dinheiro no mercado financeiro ou necessita deduzir despesas no Imposto de Renda (no caso de pessoas jurídicas sob o regime de Lucro Real).</p>
+
+      <p class="muted">Os valores de seguros e manutenção fornecidos no simulador são estimativas médias de mercado. Cotações reais dependem do perfil de risco e endereço do condutor.</p>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const formatarMoeda = (val) => val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  const footYear = document.getElementById('footYear');
+  if (footYear) footYear.textContent = new Date().getFullYear();
+
+  function calcularComparacao() {
+    const valCarro = parseFloat(document.getElementById('val-carro').value) || 0;
+    const meses = parseInt(document.getElementById('prazo-meses').value, 10) || 1;
+    const mensalidadeAssinatura = parseFloat(document.getElementById('mensalidade-assinatura').value) || 0;
+    const pctEntrada = (parseFloat(document.getElementById('pct-entrada').value) || 0) / 100;
+    const taxaJurosMensal = (parseFloat(document.getElementById('taxa-juros').value) || 0) / 100;
+    const pctIpva = (parseFloat(document.getElementById('pct-ipva').value) || 0) / 100;
+    const pctSeguro = (parseFloat(document.getElementById('pct-seguro').value) || 0) / 100;
+    const manutencaoAnual = parseFloat(document.getElementById('manutencao-anual').value) || 0;
+    const pctDepreciacao = (parseFloat(document.getElementById('pct-depreciacao').value) || 0) / 100;
+
+    const anos = meses / 12;
+
+    // Assinatura
+    const totalAssinatura = mensalidadeAssinatura * meses;
+
+    // Financiamento (Tabela Price)
+    const valorEntrada = valCarro * pctEntrada;
+    const valorFinanciado = valCarro - valorEntrada;
+    
+    let parcelaMensal = 0;
+    if (taxaJurosMensal > 0) {
+      parcelaMensal = valorFinanciado * (taxaJurosMensal * Math.pow(1 + taxaJurosMensal, meses)) / (Math.pow(1 + taxaJurosMensal, meses) - 1);
+    } else {
+      parcelaMensal = valorFinanciado / meses;
+    }
+
+    const totalParcelas = parcelaMensal * meses;
+    const desembolsoAquisicao = valorEntrada + totalParcelas;
+
+    // Custos acessórios do Financiamento
+    const ipvaAcumulado = (valCarro * pctIpva) * anos;
+    const seguroAcumulado = (valCarro * pctSeguro) * anos;
+    const manutencaoAcumulada = manutencaoAnual * anos;
+    const custosManutencaoSeguro = seguroAcumulado + manutencaoAcumulada;
+
+    // Depreciação e Valor Residual de Revenda
+    const valorDepreciacao = valCarro * pctDepreciacao;
+    const valorResidualCarro = valCarro - valorDepreciacao;
+
+    // Custo Líquido Real = (Entrada + Parcelas + IPVA + Seguros + Manutenção) - Valor de Revenda do Carro
+    const custoLiquidoFinanc = (desembolsoAquisicao + ipvaAcumulado + custosManutencaoSeguro) - valorResidualCarro;
+
+    document.getElementById('res-total-assinatura').textContent = formatarMoeda(totalAssinatura);
+    document.getElementById('res-total-parcelas').textContent = formatarMoeda(totalParcelas);
+    document.getElementById('res-total-ipva').textContent = formatarMoeda(ipvaAcumulado);
+    document.getElementById('res-total-seguro-manut').textContent = formatarMoeda(custosManutencaoSeguro);
+    document.getElementById('res-total-depreciacao').textContent = formatarMoeda(valorDepreciacao);
+    document.getElementById('res-valor-residual').textContent = formatarMoeda(valorResidualCarro);
+    document.getElementById('res-custo-liquido-financ').textContent = formatarMoeda(custoLiquidoFinanc);
+
+    const elVencedor = document.getElementById('res-vencedor');
+    const dif = Math.abs(totalAssinatura - custoLiquidoFinanc);
+
+    if (custoLiquidoFinanc < totalAssinatura) {
+      elVencedor.textContent = 'Financiamento';
+      elVencedor.style.color = 'var(--good)';
+      document.getElementById('res-explicacao').innerHTML = 
+        `<strong>Análise do Custo:</strong> Ao final de ${meses} meses, manter o veículo financiado resulta em um gasto líquido real de <strong>${formatarMoeda(custoLiquidoFinanc)}</strong> (já descontando os <strong>${formatarMoeda(valorResidualCarro)}</strong> recuperados na venda do seminovo). O financiamento traz uma economia líquida de <strong>${formatarMoeda(dif)}</strong> em relação à assinatura.`;
+    } else {
+      elVencedor.textContent = 'Carro por Assinatura';
+      elVencedor.style.color = 'var(--good)';
+      document.getElementById('res-explicacao').innerHTML = 
+        `<strong>Análise do Custo:</strong> A assinatura é mais vantajosa neste cenário. O gasto total da assinatura soma <strong>${formatarMoeda(totalAssinatura)}</strong>, enquanto o financiamento acumulado com juros, impostos e desvalorização gera uma perda líquida de <strong>${formatarMoeda(custoLiquidoFinanc)}</strong>. A assinatura gera uma economia de <strong>${formatarMoeda(dif)}</strong>.`;
+    }
+  }
+
+  document.getElementById('btn-calcular').addEventListener('click', calcularComparacao);
+  calcularComparacao();
+});
+</script>
+</body>
+</html>
