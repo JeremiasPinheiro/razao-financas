@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O que é o CET no Crédito Rural e Como Calcular o Custo Real do Financiamento — Razão</title>
+  <meta name="description" content="Entenda como funciona o Custo Efetivo Total (CET) no crédito rural. Descubra como taxas ocultas, seguros, TAC e projetos técnicos impactam o valor final das suas parcelas.">
+  <link rel="canonical" href="https://razaofinancas.com.br/artigo-cet-credito-rural.html">
+
+  <!-- Favicon SVG inline -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23FBFAF6' stroke='%231E2A18' stroke-width='2'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-weight='bold' font-size='20' fill='%231E2A18'>R</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
+  <!-- Código do Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4283089731677395" crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --paper: #EDF1E6;
+      --paper-line: #C7D3BC;
+      --card: #FBFAF6;
+      --ink: #1E2A18;
+      --ink-soft: #5B6B51;
+      --brass: #A8792E;
+      --brass-dark: #8A5F1F;
+      --alert: #A6503A;
+      --good: #3E6B4F;
+      --shadow: 0 1px 0 rgba(30, 42, 24, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      background:
+        repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px),
+        var(--paper);
+      color: var(--ink);
+      font-family: 'IBM Plex Sans', sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--brass);
+      color: var(--card);
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    a { color: var(--brass-dark); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- Header / Navegação ---------- */
+    .site-header {
+      padding: 26px 0 22px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .site-header .top {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand .mark {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      border: 1.5px solid var(--ink);
+      border-radius: 3px;
+      padding: 1px 8px;
+    }
+
+    .brand .tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    nav.sitenav {
+      display: flex;
+      gap: 10px 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    nav.sitenav a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+      text-decoration: none;
+      color: var(--ink-soft);
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    nav.sitenav a:hover { color: var(--ink); }
+
+    nav.sitenav a.active {
+      color: var(--alert) !important;
+      font-weight: 600 !important;
+      border-bottom: 2px solid var(--alert) !important;
+    }
+
+    /* ---------- Artigo Estilo Leitura ---------- */
+    article.post {
+      padding: 40px 0 60px;
+    }
+
+    .post-header {
+      border-bottom: 1px solid var(--paper-line);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--brass-dark);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .post-header h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      line-height: 1.15;
+      margin: 0 0 16px 0;
+    }
+
+    .post-meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+    }
+
+    .post-content h2 {
+      font-size: 1.5rem;
+      margin: 40px 0 16px;
+      line-height: 1.25;
+      border-bottom: 1px solid var(--paper-line);
+      padding-bottom: 8px;
+    }
+
+    .post-content h3 {
+      font-size: 1.2rem;
+      margin: 28px 0 12px;
+    }
+
+    .post-content p {
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+
+    .post-content ul, .post-content ol {
+      margin: 0 0 24px 20px;
+      padding: 0;
+    }
+
+    .post-content li {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    blockquote {
+      margin: 28px 0;
+      padding: 18px 24px;
+      background: var(--card);
+      border-left: 4px solid var(--brass);
+      border-radius: 4px;
+      font-style: italic;
+      color: var(--ink);
+      box-shadow: var(--shadow);
+    }
+
+    blockquote p {
+      margin: 0;
+    }
+
+    /* Box de Destaque / CTA */
+    .cta-box {
+      background: var(--card);
+      border: 1.5px solid var(--paper-line);
+      border-radius: 6px;
+      padding: 24px;
+      margin: 36px 0;
+      box-shadow: var(--shadow);
+    }
+
+    .cta-box h3 {
+      margin-top: 0;
+      color: var(--brass-dark);
+    }
+
+    .btn-cta {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 20px;
+      background: var(--brass);
+      color: var(--card);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.15s ease;
+    }
+
+    .btn-cta:hover {
+      background: var(--brass-dark);
+      text-decoration: none;
+    }
+
+    /* ---------- Rodapé ---------- */
+    footer.sitefoot {
+      border-top: 2px solid var(--ink);
+      padding: 22px 0 40px;
+      margin-top: 40px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--ink-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    footer.sitefoot .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+    footer.sitefoot .footer-links a { color: var(--ink-soft); }
+    footer.sitefoot .footer-links a:hover { color: var(--brass-dark); }
+
+    footer.sitefoot .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <header class="site-header">
+      <div class="top">
+        <a href="index.html" class="brand">
+          <span class="mark">R</span>
+          <span class="tag">Razão · Ferramentas Financeiras</span>
+        </a>
+        <nav class="sitenav">
+          <a href="index.html">Início</a>
+          <a href="juros-compostos.html">Juros compostos</a>
+          <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+          <a href="financiamento-trator.html">Financiamento Trator</a>
+          <a href="cet-credito-rural.html">CET Crédito Rural</a>
+          <a href="amortizacao-extra.html">Amortização Extra</a>
+          <a href="emprestimo-pessoal.html">Empréstimo</a>
+          <a href="independencia-financeira.html">Independência Financeira</a>
+          <a href="preco-medio.html">Preço Médio</a>
+          <a href="salario-liquido.html">Salário Líquido</a>
+          <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+          <a href="conversor-moedas.html">Conversor de Moedas</a>
+          <a href="cripto-imposto.html">Cripto Imposto</a>
+          <a href="faturamento-mei.html">Faturamento MEI</a>
+          <a href="artigos.html" class="active">Artigos</a>
+        </nav>
+      </div>
+    </header>
+
+    <article class="post">
+      <header class="post-header">
+        <div class="eyebrow">Agronegócio & Finanças</div>
+        <h1>O que é o CET no Crédito Rural e Como Calcular o Custo Real do Financiamento</h1>
+        <div class="post-meta">Publicado por Equipe Razão · Leitura de 7 min</div>
+      </header>
+
+      <div class="post-content">
+        <p>Ao planejar a aquisição de um trator, a compra de insumos para a safra ou a ampliação da infraestrutura da propriedade rural, o produtor frequentemente se depara com anúncios atraentes de linhas de crédito subsidiadas pelo governo federal, como as apresentadas no Plano Safra. Taxas de juros nominais como 5% ao ano no Pronaf ou 12,5% ao ano no Moderfrota costumam ser os principais pontos de atenção. No entanto, focar exclusivamente na taxa de juros nominal divulgada pelo banco pode ser uma armadilha para o planejamento financeiro da fazenda.</p>
+
+        <p>O valor que efetivamente sairá do caixa do produtor ao longo dos anos é determinado pelo <strong>Custo Efetivo Total (CET)</strong>. Essa métrica expressa a soma de todas as despesas associadas à concessão do financiamento e revela o verdadeiro impacto financeiro da dívida.</p>
+
+        <h2>O que é o Custo Efetivo Total (CET)?</h2>
+        <p>O CET é uma taxa percentual anualizada que contempla não apenas os juros cobrados pela instituição financeira, mas também todas as taxas administrativas, tarifas bancárias, seguros obrigatórios, tributos e honorários de terceiros exigidos para a formalização do contrato. No Brasil, o Banco Central determina que todas as instituições financeiras informem o CET de forma clara e ostensiva antes da assinatura de qualquer contrato de empréstimo ou financiamento.</p>
+
+        <p>No contexto do agronegócio, o CET tende a ser substancialmente diferente da taxa de juros contratual devido às particularidades regulatórias e exigências operacionais do crédito rural.</p>
+
+        <blockquote>
+          <p>"Comparar duas propostas de crédito rural apenas pela taxa de juros nominal é um erro frequente. O banco com a menor taxa de juros pode ter o maior CET devido aos custos operacionais embutidos."</p>
+        </blockquote>
+
+        <h2>Quais custos compõem o CET no Crédito Rural?</h2>
+        <p>Diferente de um financiamento pessoal ou de consumo urbano, a concessão de crédito rural exige garantias sólidas e comprovação técnica de viabilidade econômica. Isso gera uma série de despesas adicionais que compõem o CET final:</p>
+
+        <h3>1. Projeto Técnico Agronômico</h3>
+        <p>Para liberar recursos do Plano Safra ou de linhas próprias, os bancos e cooperativas exigem a apresentação de um projeto técnico elaborado por um engenheiro agronômico ou técnico agrícola credenciado. Este documento detalha o plano de cultivo, a capacidade de pagamento da propriedade e o cronograma de uso dos recursos. O custo do projeto varia entre 1% e 3% do valor total financiado.</p>
+
+        <h3>2. Tarifa de Abertura de Crédito (TAC) e Cadastro</h3>
+        <p>Trata-se do valor cobrado pela instituição financeira para cobrir os custos operacionais de análise cadastral, verificação de certidões e processamento das garantias reais (como a penhor de safra ou alienação fiduciária do maquinário).</p>
+
+        <h3>3. Seguro Agrícola e Seguro do Bem</h3>
+        <p>Uma das maiores despesas acessórias no crédito rural é a contratação de apólices de seguro. Quando o recurso é destinado à compra de equipamentos (como tratores e colheitadeiras), a instituição financeira exige o seguro do bem contra acidentes e roubo. Em financiamentos de custeio agrícola, o seguro da lavoura contra intempéries climáticas costuma ser obrigatório, representando um percentual considerável sobre o saldo devedor.</p>
+
+        <h3>4. IOF (Imposto sobre Operações Financeiras)</h3>
+        <p>Embora muitas operações de crédito rural com recursos controlados contem com isenção ou alíquotas reduzidas de IOF, algumas linhas de investimento comercial ou recursos livres sofrem a incidência normal do imposto, somando-se ao custo total da operação.</p>
+
+        <h2>Exemplo Prático: A Diferença entre Juros e CET</h2>
+        <p>Para visualizar o impacto real, considere a simulação de um financiamento de máquinas rurais no valor de <strong>R$ 300.000,00</strong> com prazo de quitação de 5 anos e taxa de juros nominal de <strong>12,50% ao ano</strong>:</p>
+
+        <ul>
+          <li><strong>Valor Financiado:</strong> R$ 300.000,00</li>
+          <li><strong>Taxa Nominal Anunciada:</strong> 12,50% a.a.</li>
+          <li><strong>Tarifa de Cadastro (TAC):</strong> R$ 1.500,00</li>
+          <li><strong>Elaboração de Projeto Técnico:</strong> R$ 3.000,00</li>
+          <li><strong>Seguros Obrigatórios (est. período):</strong> R$ 22.500,00</li>
+        </ul>
+
+        <p>Ao somar os custos acessórios de R$ 27.000,00 e diluí-los ao longo do prazo do contrato juntamente com a taxa de juros contratual, o <strong>Custo Efetivo Total (CET)</strong> da operação atinge aproximadamente <strong>14,30% ao ano</strong>. Isso significa que o produtor rural pagará um custo efetivo 1,8% superior ao anunciado na proposta comercial do banco.</p>
+
+        <div class="cta-box">
+          <h3>Simule o custo real da sua operação</h3>
+          <p>Utilize nossa calculadora gratuita de CET do Crédito Rural para inserir os dados do seu contrato e descobrir exatamente quanto você pagará em taxas, seguros e juros.</p>
+          <a href="cet-credito-rural.html" class="btn-cta">Acessar Simulador de CET →</a>
+        </div>
+
+        <h2>Como Reduzir o CET do seu Financiamento Rural</h2>
+        <p>Embora algumas taxas sejam regulamentadas, o produtor rural possui margem de negociação em diversos pontos da contratação:</p>
+
+        <ol>
+          <li><strong>Livre Escolha do Seguro:</strong> O produtor não é obrigado a contratar a apólice de seguro indicada pela gerência do banco. A legislação proíbe a venda casada. Pesquise cotações com corretoras independentes antes de fechar o contrato.</li>
+          <li><strong>Orçamento do Projeto Técnico:</strong> Consulte mais de um profissional credenciado para a elaboração do laudo e projeto agronômico. Os honorários podem variar significativamente.</li>
+          <li><strong>Comparação entre Bancos e Cooperativas:</strong> As cooperativas de crédito de livre admissão costumam apresentar tarifas de cadastro e abertura de crédito inferiores às dos grandes bancos comerciais.</li>
+          <li><strong>Aproveitamento de Programas Públicos:</strong> Fique atento às janelas de liberação do Proagro (Programa de Garantia da Atividade Agropecuária) para agricultura familiar, que pode reduzir o custo do seguro produtivo.</li>
+        </ol>
+
+        <h2>Conclusão</h2>
+        <p>Entender a diferença entre a taxa nominal de juros e o Custo Efetivo Total é fundamental para garantir a saúde financeira do seu empreendimento rural. Antes de assinar qualquer contrato no banco ou cooperativa, exija a apresentação do demonstrativo do CET por escrito e certifique-se de que todas as despesas acessórias foram devidamente computadas e orçadas.</p>
+      </div>
+    </article>
+
+    <footer class="sitefoot">
+      <div class="footer-links">
+        <a href="sobre.html">Quem Somos</a>
+        <a href="privacidade.html">Política de Privacidade</a>
+        <a href="termos.html">Termos de Uso</a>
+      </div>
+      <div class="footer-bottom">
+        <span>Razão — feito com HTML, CSS e JS puro.</span>
+        <span id="footYear"></span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const footYearEl = document.getElementById('footYear');
+      if (footYearEl) {
+        footYearEl.textContent = new Date().getFullYear();
+      }
+    });
+  </script>
+
+</body>
+</html>
