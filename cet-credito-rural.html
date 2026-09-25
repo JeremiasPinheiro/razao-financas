@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de CET do Crédito Rural — Razão</title>
+<meta name="description" content="Descubra o custo real do financiamento da sua safra ou máquinas rurais, incluindo juros, TAC, seguros e elaboração de projeto técnico.">
+
+<!-- Favicon SVG inline -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23FBFAF6' stroke='%231E2A18' stroke-width='2'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-weight='bold' font-size='20' fill='%231E2A18'>R</text></svg>">
+
+<!-- Fontes oficiais do Razão -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* Estilos Oficiais do Sistema Razão */
+:root {
+  --paper: #EDF1E6;
+  --paper-line: #C7D3BC;
+  --card: #FBFAF6;
+  --ink: #1E2A18;
+  --ink-soft: #5B6B51;
+  --brass: #A8792E;
+  --brass-dark: #8A5F1F;
+  --alert: #A6503A;
+  --good: #3E6B4F;
+  --shadow: 0 1px 0 rgba(30, 42, 24, 0.06);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, var(--paper-line) 32px),
+    var(--paper);
+  color: var(--ink);
+  font-family: 'IBM Plex Sans', sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--brass);
+  color: var(--card);
+}
+
+h1, h2, h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  margin: 0;
+}
+
+a { color: var(--brass-dark); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Header & Nav */
+.site-header {
+  padding: 26px 0 22px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.site-header .top {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.brand .mark {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  padding: 1px 8px;
+}
+
+.brand .tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+nav.sitenav {
+  display: flex;
+  gap: 10px 18px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+nav.sitenav a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  text-decoration: none;
+  color: var(--ink-soft);
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+nav.sitenav a:hover { color: var(--ink); }
+
+nav.sitenav a.active, nav.sitenav a.current {
+  color: var(--alert) !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid var(--alert) !important;
+  background: transparent !important;
+}
+
+/* Page Hero */
+.page-hero { padding: 36px 0 20px; }
+
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--brass-dark);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.page-hero h1 {
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  line-height: 1.15;
+}
+
+.page-hero .lede {
+  color: var(--ink-soft);
+  max-width: 680px;
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+/* Form & Ledger Layout */
+main.calc { padding: 10px 0 60px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+@media (max-width: 720px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.card, .ledger {
+  background: var(--card);
+  border: 1px solid var(--paper-line);
+  border-radius: 6px;
+  padding: 26px 26px 22px;
+  box-shadow: var(--shadow);
+}
+
+.card h2, .ledger h2 { font-size: 1.15rem; margin-bottom: 4px; }
+
+.card .sub {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin: 14px 0 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.02em;
+}
+
+label:first-of-type { margin-top: 0; }
+
+input[type=number] {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  background: var(--paper);
+  border: 1.5px solid var(--paper-line);
+  border-radius: 4px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .15s;
+}
+
+input[type=number]:focus {
+  border-color: var(--brass);
+}
+
+.btn-primary {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  background: var(--brass);
+  color: var(--card);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.btn-primary:hover {
+  background: var(--brass-dark);
+}
+
+/* Ledger Rows */
+.ledger-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dotted var(--paper-line);
+  font-size: 0.92rem;
+}
+
+.ledger-row .label { color: var(--ink-soft); }
+
+.ledger-row .val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ledger-row.cost .val { color: var(--alert); }
+.ledger-row.highlight .val { color: var(--good); font-size: 1.1rem; }
+.ledger-row.total .val { color: var(--ink); font-size: 1.05rem; }
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-top: 18px;
+  line-height: 1.5;
+  background: var(--paper);
+  padding: 12px;
+  border-radius: 4px;
+  border-left: 3px solid var(--brass);
+}
+
+/* Artigo Educativo / Explicativo */
+article.copy {
+  max-width: 680px;
+  padding: 20px 0 30px;
+  margin-top: 20px;
+}
+
+article.copy h2 {
+  font-size: 1.25rem;
+  margin-top: 36px;
+  margin-bottom: 10px;
+}
+
+article.copy p {
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+
+article.copy p.muted {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+/* Footer */
+footer.sitefoot {
+  border-top: 2px solid var(--ink);
+  padding: 22px 0 40px;
+  margin-top: 40px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+footer.sitefoot .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+footer.sitefoot .footer-links a { color: var(--ink-soft); }
+footer.sitefoot .footer-links a:hover { color: var(--brass-dark); }
+
+footer.sitefoot .footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <div class="top">
+      <a href="index.html" class="brand"><span class="mark">R</span><span class="tag">Razão · ferramentas financeiras</span></a>
+      <nav class="sitenav">
+        <a href="index.html">Início</a>
+        <a href="juros-compostos.html">Juros compostos</a>
+        <a href="financiamento-imobiliario.html">Financiamento Imobiliário</a>
+        <a href="financiamento-trator.html">Financiamento Trator</a>
+        <a href="cet-credito-rural.html" class="active">CET Crédito Rural</a>
+        <a href="amortizacao-extra.html">Amortização Extra</a>
+        <a href="emprestimo-pessoal.html">Empréstimo</a>
+        <a href="independencia-financeira.html">Independência Financeira</a>
+        <a href="preco-medio.html">Preço Médio</a>
+        <a href="salario-liquido.html">Salário Líquido</a>
+        <a href="tesouro-vs-poupanca.html">Tesouro vs Poupança</a>
+        <a href="conversor-moedas.html">Conversor de Moedas</a>
+        <a href="cripto-imposto.html">Cripto Imposto</a>
+        <a href="faturamento-mei.html">Faturamento MEI</a>
+        <a href="artigos.html">Artigos</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="eyebrow">Calculadora Agrícola</div>
+    <h1>Simulador de CET do Crédito Rural</h1>
+    <p class="lede">Descubra o custo real do financiamento da sua safra ou máquinas rurais, incluindo juros, TAC, seguros e elaboração de projeto técnico.</p>
+  </section>
+
+  <main class="calc">
+    <div class="grid">
+      <div class="card">
+        <h2>Dados do Financiamento</h2>
+        <div class="sub">Informe os custos cobrados pelo banco ou cooperativa.</div>
+
+        <label for="val-financiado">Valor financiado (R$)</label>
+        <input type="number" id="val-financiado" value="300000" min="0" step="1000">
+
+        <label for="taxa-juros">Taxa de juros nominal (% a.a.)</label>
+        <input type="number" id="taxa-juros" value="12.5" min="0" step="0.1">
+
+        <label for="prazo-anos">Prazo do contrato (anos)</label>
+        <input type="number" id="prazo-anos" value="5" min="1" step="1">
+
+        <label for="taxa-tac">Tarifa de Cadastro / Abertura - TAC (R$)</label>
+        <input type="number" id="taxa-tac" value="1500" min="0" step="100">
+
+        <label for="taxa-projeto">Projeto Técnico Agronômico (R$)</label>
+        <input type="number" id="taxa-projeto" value="3000" min="0" step="100">
+
+        <button type="button" class="btn-primary" id="btn-calcular">Calcular CET</button>
+      </div>
+
+      <div class="ledger">
+        <h2>Resultado da Análise</h2>
+        
+        <div class="ledger-row">
+          <span class="label">Taxa Nominal Divulgada</span>
+          <span class="val" id="res-taxa-nominal">12,50% a.a.</span>
+        </div>
+        
+        <div class="ledger-row cost">
+          <span class="label">Total Taxas e Projeto</span>
+          <span class="val" id="res-total-taxas">R$ 4.500,00</span>
+        </div>
+        
+        <div class="ledger-row cost">
+          <span class="label">Estimativa Seguro Total</span>
+          <span class="val" id="res-estimativa-seguro">R$ 22.500,00</span>
+        </div>
+        
+        <div class="ledger-row cost">
+          <span class="label">Custo Total de Juros</span>
+          <span class="val" id="res-total-juros">R$ 187.500,00</span>
+        </div>
+        
+        <div class="ledger-row highlight">
+          <span class="label">Custo Efetivo Total (CET)</span>
+          <span class="val" id="res-cet">14,30% a.a.</span>
+        </div>
+        
+        <div class="ledger-row total">
+          <span class="label">Total Geral a Pagar</span>
+          <span class="val" id="res-total-geral">R$ 514.500,00</span>
+        </div>
+
+        <div class="hint" id="res-explicacao">
+          <strong>O que isso significa?</strong> Embora o banco anuncie uma taxa de <strong>12,50% a.a.</strong>, os encargos adicionais elevam o seu custo real para <strong>14,30% a.a.</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bloco de Texto Explicativo -->
+    <article class="copy">
+      <h2>O que é o CET no Crédito Rural?</h2>
+      <p>O <strong>Custo Efetivo Total (CET)</strong> representa a porcentagem real de todos os encargos e despesas incidentes em uma operação de financiamento agrícola ou pecuário. Diferente da taxa nominal de juros (aquela anunciada na propaganda do banco ou no Plano Safra), o CET engloba todas as tarifas obrigatórias cobradas pela instituição financeira para liberar o crédito.</p>
+
+      <h2>Como usar esta calculadora</h2>
+      <p>Para obter o custo real do seu financiamento, preencha as informações do formulário acima:</p>
+      <p>1. <strong>Valor financiado:</strong> O montante total liberado pelo banco para aquisição do bem ou custeio.<br>
+      2. <strong>Taxa de juros nominal:</strong> A taxa divulgada na linha de crédito (ex: 12,5% a.a. no Moderfrota ou 5% no Pronaf).<br>
+      3. <strong>Prazo do contrato:</strong> A duração em anos até a quitação final.<br>
+      4. <strong>Tarifa de Abertura / Cadastro (TAC):</strong> Custo administrativo cobrado pelo banco para analisar a proposta.<br>
+      5. <strong>Projeto Técnico Agronômico:</strong> Valor pago ao engenheiro agrônomo ou empresa projetista credenciada para emitir o laudo técnico da propriedade.</p>
+
+      <h2>Quais custos compõem o CET rural?</h2>
+      <p>No crédito rural, os custos que costumam elevar a taxa nominal para o CET real incluem:</p>
+      <p>• <strong>Projeto Técnico:</strong> Obrigatório para a maioria das operações de custeio e investimento no agronegócio.<br>
+      • <strong>Seguro Agrícola ou do Bem:</strong> Exigido para proteger o equipamento financiado ou a lavoura contra sinistros climáticos.<br>
+      • <strong>Tarifas bancárias:</strong> Taxas administrativas de cadastro e fiscalização da propriedade.<br>
+      • <strong>IOF (quando incidente):</strong> Imposto sobre Operações Financeiras, embora algumas linhas públicas possuam isenção.</p>
+
+      <h2>Por que comparar o CET antes de fechar o contrato?</h2>
+      <p>Duas instituições financeiras podem oferecer a mesma taxa de juros nominal de 12% ao ano, mas ter custos finais completamente diferentes. Um banco que exige seguros mais caros ou cobra taxas administrativas elevadas entregará um CET superior. Sempre solicite a planilha de CET oficial da instituição antes de assinar a cédula de crédito rural.</p>
+
+      <p class="muted">Os valores calculados nesta página são simulações ilustrativas baseadas nos custos informados. Confirme as alíquotas exatas de seguros e tributos diretamente com a sua cooperativa ou instituição financeira credenciada.</p>
+    </article>
+  </main>
+
+  <footer class="sitefoot">
+    <div class="footer-links">
+      <a href="sobre.html">Quem Somos</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </div>
+    <div class="footer-bottom">
+      <span>Razão — feito com HTML, CSS e JS puro.</span>
+      <span id="footYear"></span>
+    </div>
+  </footer>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const formatarMoeda = (val) => val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const formatarPct = (val) => val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '% a.a.';
+
+  const footYear = document.getElementById('footYear');
+  if (footYear) footYear.textContent = new Date().getFullYear();
+
+  function calcularCET() {
+    const financiado = parseFloat(document.getElementById('val-financiado').value) || 0;
+    const taxaNominal = (parseFloat(document.getElementById('taxa-juros').value) || 0) / 100;
+    const prazo = parseInt(document.getElementById('prazo-anos').value, 10) || 1;
+    const tac = parseFloat(document.getElementById('taxa-tac').value) || 0;
+    const projeto = parseFloat(document.getElementById('taxa-projeto').value) || 0;
+
+    // Estimativa de Seguro (1,5% ao ano sobre o valor financiado)
+    const seguroAnual = financiado * 0.015;
+    const seguroTotal = seguroAnual * prazo;
+
+    // Cálculo simples de juros corridos no período
+    const jurosTotal = financiado * taxaNominal * prazo;
+    const custoTaxas = tac + projeto;
+    const totalGeral = financiado + jurosTotal + custoTaxas + seguroTotal;
+
+    // Estimativa aproximada de CET
+    const custoAdicionalAnual = (custoTaxas + seguroTotal) / prazo;
+    const cetAproximado = ((jurosTotal / prazo + custoAdicionalAnual) / financiado) * 100;
+
+    document.getElementById('res-taxa-nominal').textContent = formatarPct(taxaNominal * 100);
+    document.getElementById('res-total-taxas').textContent = formatarMoeda(custoTaxas);
+    document.getElementById('res-estimativa-seguro').textContent = formatarMoeda(seguroTotal);
+    document.getElementById('res-total-juros').textContent = formatarMoeda(jurosTotal);
+    document.getElementById('res-cet').textContent = formatarPct(cetAproximado);
+    document.getElementById('res-total-geral').textContent = formatarMoeda(totalGeral);
+
+    document.getElementById('res-explicacao').innerHTML = 
+      `<strong>O que isso significa?</strong> Embora o banco anuncie uma taxa de <strong>${formatarPct(taxaNominal * 100)}</strong>, os encargos adicionais elevam o seu custo real para <strong>${formatarPct(cetAproximado)}</strong>.`;
+  }
+
+  document.getElementById('btn-calcular').addEventListener('click', calcularCET);
+  calcularCET();
+});
+</script>
+</body>
+</html>
